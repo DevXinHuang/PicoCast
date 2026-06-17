@@ -1,0 +1,25 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Local radar data and derived research outputs.
+data/raw/*
+data/features/*
+data/candidates/*
+data/truth/*
+!data/raw/.gitkeep
+!data/features/.gitkeep
+!data/candidates/.gitkeep
+!data/truth/.gitkeep
+
+# Notebook execution artifacts.
+.ipynb_checkpoints/
