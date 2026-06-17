@@ -21,5 +21,15 @@ data/truth/*
 !data/candidates/.gitkeep
 !data/truth/.gitkeep
 
+# Case-local radar artifacts. Keep index CSVs and placeholders trackable.
+cases/*/nexrad/*/raw/*
+cases/*/nexrad/*/logs/*
+cases/*/outputs/radar_preview/*
+cases/*/outputs/candidates/*
+!cases/*/nexrad/*/raw/.gitkeep
+!cases/*/nexrad/*/logs/.gitkeep
+!cases/*/outputs/radar_preview/.gitkeep
+!cases/*/outputs/candidates/.gitkeep
+
 # Notebook execution artifacts.
 .ipynb_checkpoints/

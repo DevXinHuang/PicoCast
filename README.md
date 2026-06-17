@@ -90,6 +90,36 @@ Create a track preview plot:
 python scripts/plot_case_track.py cases/k7uaz_20260322/config.yaml
 ```
 
+List the KEMX Level II files for the known flight window without downloading:
+
+```bash
+python scripts/download_nexrad_case.py cases/k7uaz_20260322/config.yaml --dry-run
+```
+
+Download and index the KEMX Level II files:
+
+```bash
+python scripts/download_nexrad_case.py cases/k7uaz_20260322/config.yaml
+```
+
+Match each indexed radar scan time to the expected balloon position:
+
+```bash
+python scripts/match_track_to_radar_scans.py cases/k7uaz_20260322/config.yaml
+```
+
+Render quick reflectivity preview plots with expected-position overlays:
+
+```bash
+python scripts/preview_nexrad_case.py cases/k7uaz_20260322/config.yaml
+```
+
+Preview plotting requires Py-ART, so install the radar extra first:
+
+```bash
+python -m pip install -e ".[dev,radar]"
+```
+
 The validation workflow uses known balloon time/position/altitude before any
 blind detection. Later NEXRAD Level II comparisons should ask whether compact
 non-weather radar candidates appear near these expected balloon positions.
