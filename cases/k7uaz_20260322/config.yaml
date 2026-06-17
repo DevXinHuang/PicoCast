@@ -1,0 +1,12 @@
+case_id: k7uaz_20260322
+case_name: K7UAZ Pico Balloon Launch Day
+date_local: 2026-03-22
+timezone: America/Phoenix
+source_csv: raw/K7UAZ_39_12m_launch_day_20260322.csv
+primary_radar_site: KEMX
+candidate_radar_sites:
+  - KEMX
+  - KIWA
+  - KFSX
+  - KEPZ
+notes: First PicoCAST validation case using known launch-day balloon telemetry.

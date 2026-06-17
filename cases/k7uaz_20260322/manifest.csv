@@ -1,0 +1,2 @@
+case_id,date_local,start_time_local,end_time_local,start_time_utc,end_time_utc,n_points,lat_min,lat_max,lon_min,lon_max,alt_min_km,alt_max_km,primary_radar_site,source_csv
+k7uaz_20260322,2026-03-22,2026-03-22T12:18:00-0700,2026-03-22T15:28:00-0700,2026-03-22T19:18:00Z,2026-03-22T22:28:00Z,12,32.23,32.35,-110.96,-109.79,2.34,12.0,KEMX,raw/K7UAZ_39_12m_launch_day_20260322.csv

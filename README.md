@@ -74,6 +74,26 @@ dual-pol texture context, groups compact detections, and links candidates across
 scan times. Supervised ML, multi-radar fusion, PostGIS, and real-time SNS/S3
 ingest are follow-on phases.
 
+## Validation Cases
+
+The first validation case is `cases/k7uaz_20260322`, built from K7UAZ
+launch-day telemetry on March 22, 2026. Generate the clean expected track and
+manifest from the raw CSV:
+
+```bash
+python scripts/build_case_from_csv.py cases/k7uaz_20260322/config.yaml
+```
+
+Create a track preview plot:
+
+```bash
+python scripts/plot_case_track.py cases/k7uaz_20260322/config.yaml
+```
+
+The validation workflow uses known balloon time/position/altitude before any
+blind detection. Later NEXRAD Level II comparisons should ask whether compact
+non-weather radar candidates appear near these expected balloon positions.
+
 ## NOAA Data Attribution
 
 When distributing derived results from NOAA/NEXRAD data, attribute NOAA/NWS as
