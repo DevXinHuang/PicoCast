@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Radar Science Visual Lab – k7uaz_20260322</title>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --panel: #1a1a2e;
+      --panel-border: #2a2a44;
+      --ink: #e0e0ee;
+      --muted: #8888aa;
+      --accent-blue: #4488cc;
+      --accent-green: #44dd88;
+      --accent-red: #ff4444;
+      --accent-amber: #ffaa44;
+      --accent-purple: #9966ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      padding: 0;
+    }
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(16, 24, 40, 0.97), rgba(26, 26, 46, 0.95)),
+        radial-gradient(circle at 80% 20%, rgba(68, 136, 204, 0.2), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(68, 221, 136, 0.15), transparent 40%);
+      padding: 40px 32px 32px;
+      border-bottom: 3px solid var(--accent-amber);
+    }
+    .hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero .subtitle {
+      color: var(--accent-amber);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 700px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 32px 60px;
+    }
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 28px 28px 24px;
+      margin-bottom: 24px;
+    }
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--panel-border);
+    }
+    .section h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin: 16px 0 8px;
+    }
+    .section p, .section li {
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .section ul, .section ol {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+    .section li {
+      margin-bottom: 6px;
+    }
+    .legend-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px 16px;
+      align-items: start;
+      margin: 16px 0;
+    }
+    .legend-swatch {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .legend-swatch.circle {
+      border-radius: 50%;
+    }
+    .legend-swatch.line {
+      width: 36px;
+      height: 3px;
+      border-radius: 2px;
+      align-self: center;
+    }
+    .legend-desc {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .legend-desc .detail {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .caveat {
+      background: rgba(255, 170, 68, 0.08);
+      border-left: 3px solid var(--accent-amber);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 13px;
+      color: var(--accent-amber);
+    }
+    .caveat strong {
+      color: #ffc966;
+    }
+    .info-box {
+      background: rgba(68, 136, 204, 0.08);
+      border-left: 3px solid var(--accent-blue);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #88bbff;
+    }
+    .note-box {
+      background: rgba(136, 136, 170, 0.08);
+      border-left: 3px solid var(--muted);
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    table.data-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    table.data-table td:first-child {
+      color: var(--muted);
+      width: 45%;
+    }
+    table.data-table td:last-child {
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .svg-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .map-embed-wrapper {
+      margin: 16px 0;
+    }
+    .map-iframe {
+      width: 100%;
+      height: 450px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: #222;
+    }
+    .map-link {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .map-link a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .map-link a:hover {
+      text-decoration: underline;
+    }
+    .mistakes-list {
+      counter-reset: mistake;
+      list-style: none;
+      padding-left: 0;
+    }
+    .mistakes-list li {
+      counter-increment: mistake;
+      padding: 10px 16px 10px 48px;
+      position: relative;
+      background: rgba(255, 68, 68, 0.04);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 68, 68, 0.1);
+    }
+    .mistakes-list li::before {
+      content: counter(mistake);
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      width: 22px;
+      height: 22px;
+      background: rgba(255, 68, 68, 0.15);
+      color: var(--accent-red);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    code {
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--accent-purple);
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      border-top: 1px solid var(--panel-border);
+      margin-top: 32px;
+    }
+    a { color: var(--accent-blue); }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="subtitle">PicoCAST · Radar Review Aid</div>
+    <h1>🔬 Radar Science Visual Lab</h1>
+    <p>
+      An educational guide for understanding candidate radar feature maps.
+      This page explains what the map symbols mean, how radar geometry works,
+      and common interpretation pitfalls. All features described here are
+      <strong>plausible candidates for visual review</strong> – not confirmed
+      balloon detections.
+    </p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ============================================================ -->
+  <!-- SECTION 1: How to read the candidate map                      -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-map-guide">
+    <h2>§1 — How to read the candidate map</h2>
+    <p>
+      The validation map shows a single ranked candidate radar feature and
+      its spatial relationship to the expected balloon region. Here is what
+      each element means:
+    </p>
+
+    <div class="legend-grid">
+      <span class="legend-swatch" style="background:rgba(51,136,255,0.2);
+            border-color:#3388ff;"></span>
+      <div class="legend-desc">
+        <strong>Blue shaded square</strong> — Maidenhead grid-square region
+        from balloon telemetry.
+        <span class="detail">
+          This is an approximate expected balloon region derived from the
+          telemetry grid locator, not from exact GPS coordinates. The true
+          balloon position could be anywhere within this square.
+        </span>
+      </div>
+
+      <span class="legend-swatch circle" style="background:#000;
+            border-color:#444;"></span>
+      <div class="legend-desc">
+        <strong>Black circle</strong> — Expected grid-square center.
+        <span class="detail">
+          The geometric center of the Maidenhead grid square. Used as the
+          reference point for distance calculations, but the actual balloon
+          position within the grid square is unknown.
+        </span>
+      </div>
+
+      <span class="legend-swatch circle" style="background:#ff4444;
+            border-color:rgba(255,255,255,0.4);"></span>
+      <div class="legend-desc">
+        <strong>Red marker</strong> — Candidate radar feature center.
+        <span class="detail">
+          The location of the candidate radar return. This is a radar feature
+          that scored well in the candidate search – it has not been confirmed
+          as the balloon.
+        </span>
+      </div>
+
+      <span class="legend-swatch line" style="background:#ff4444;"></span>
+      <div class="legend-desc">
+        <strong>Red line</strong> — Horizontal separation.
+        <span class="detail">
+          The great-circle distance between the expected grid-square center
+          and the candidate radar feature. Shorter distances are more
+          interesting but do not prove association.
+        </span>
+      </div>
+
+      <span class="legend-swatch circle" style="background:#ccc;
+            border-color:#999;"></span>
+      <div class="legend-desc">
+        <strong>White/gray dots</strong> — Nearby NEXRAD radar gates.
+        <span class="detail">
+          Individual radar sample volumes (gates) from the same scan, colored
+          by reflectivity. These show the local radar context around the
+          candidate feature.
+        </span>
+      </div>
+
+      <span class="legend-swatch circle" style="background:#88bbff;
+            border-color:#4488cc;"></span>
+      <div class="legend-desc">
+        <strong>Blue highlighted points</strong> — Candidate-related gates.
+        <span class="detail">
+          Gates that are part of or near the candidate cluster. These are
+          highlighted for review context – they are not confirmed balloon
+          detections.
+        </span>
+      </div>
+    </div>
+
+    <h3>Key metrics shown on the map</h3>
+    <ul>
+      <li>
+        <strong>max dBZ</strong>: Strongest reflectivity in the local
+        candidate group. Picoballoons are weak radar targets, so values
+        near or below 0 dBZ are expected if present at all.
+      </li>
+      <li>
+        <strong>Altitude mismatch</strong>: Difference between the expected
+        balloon altitude (from telemetry) and the radar gate/beam-center
+        altitude. Beam-center altitude is an approximation – the actual
+        beam has width that increases with range.
+      </li>
+    </ul>
+
+    <div class="caveat">
+      <strong>⚠ Important caveat:</strong> The balloon position is estimated
+      from Maidenhead grid-square centers, not exact GPS. The grid square is
+      roughly 5–9 km across. Distance and altitude figures use this estimated
+      center, so the true separation could be larger or smaller.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 2: Plan-view geometry                                 -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-plan-view">
+    <h2>§2 — Plan-view geometry</h2>
+    <p>
+      The plan-view (top-down) map answers a key question: <em>Is the radar
+      candidate horizontally near the expected balloon region?</em>
+    </p>
+
+    
+        <div class="map-embed-wrapper">
+          <iframe src="../../maps/rank_01_validation_map.html" class="map-iframe"
+                  title="Rank 1 validation map"
+                  sandbox="allow-scripts allow-same-origin"></iframe>
+          <p class="map-link">
+            <a href="../../maps/rank_01_validation_map.html" target="_blank" rel="noopener">
+              Open full validation map in new tab ↗
+            </a>
+          </p>
+        </div>
+
+
+    <div class="info-box">
+      <strong>What to look for:</strong> The red candidate marker should be
+      near or within the blue grid-square region. The red line shows the
+      horizontal separation. Range rings (if shown) help you gauge the
+      distance from the radar site. Closer candidates are more interesting,
+      but horizontal closeness alone is not sufficient – altitude must also
+      be considered.
+    </div>
+
+    <h3>Geometry summary for Rank 1</h3>
+    <table class="data-table">
+      <tr><td>Radar site</td><td>KEMX</td></tr>
+      <tr><td>Scan time (UTC)</td><td>2026-03-22T20:28:40Z</td></tr>
+      <tr><td>Expected grid square</td><td>DM42pi</td></tr>
+      <tr><td>Horizontal distance to candidate</td><td>2.18 km</td></tr>
+      <tr><td>Range from radar to candidate</td><td>47.7 km</td></tr>
+    </table>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 3: Vertical beam / altitude intuition                 -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-vertical">
+    <h2>§3 — Vertical beam / altitude intuition</h2>
+    <p>
+      Horizontal closeness alone is not enough. The candidate also needs
+      to be close to the expected balloon altitude. At longer ranges, the
+      radar beam is higher and wider, so altitude interpretation has
+      greater uncertainty.
+    </p>
+
+    <div class="svg-container">
+      <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;width:100%;height:auto;background:#1a1a2e;border-radius:8px;font-family:Inter,sans-serif;">
+<line x1="80" y1="291.9896960159033" x2="660" y2="291.9896960159033" stroke="#5a5a7a" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="664" y="295.9896960159033" fill="#8a8aaa" font-size="10">ground (1621 m)</text>
+<polygon points="80.0,292.0 91.6,287.9 103.2,283.8 114.8,279.7 126.4,275.6 138.0,271.5 149.6,267.4 161.2,263.3 172.8,259.2 184.4,255.0 196.0,250.9 207.6,246.8 219.2,242.7 230.8,238.5 242.4,234.4 254.0,230.2 265.6,226.1 277.2,221.9 288.8,217.8 300.4,213.6 312.0,209.5 323.6,205.3 335.2,201.1 346.8,197.0 358.4,192.8 370.0,188.6 381.6,184.4 393.2,180.2 404.8,176.0 416.4,171.8 428.0,167.6 439.6,163.4 451.2,159.2 462.8,155.0 474.4,150.8 486.0,146.6 497.6,142.4 509.2,138.1 520.8,133.9 532.4,129.7 544.0,125.4 555.6,121.2 567.2,116.9 578.8,112.7 590.4,108.4 602.0,104.2 613.6,99.9 625.2,95.6 636.8,91.4 648.4,87.1 660.0,82.8 660.0,112.4 648.4,116.1 636.8,119.8 625.2,123.5 613.6,127.1 602.0,130.8 590.4,134.5 578.8,138.1 567.2,141.8 555.6,145.4 544.0,149.1 532.4,152.7 520.8,156.4 509.2,160.0 497.6,163.7 486.0,167.3 474.4,170.9 462.8,174.5 451.2,178.2 439.6,181.8 428.0,185.4 416.4,189.0 404.8,192.6 393.2,196.2 381.6,199.8 370.0,203.4 358.4,207.0 346.8,210.6 335.2,214.2 323.6,217.7 312.0,221.3 300.4,224.9 288.8,228.4 277.2,232.0 265.6,235.6 254.0,239.1 242.4,242.7 230.8,246.2 219.2,249.8 207.6,253.3 196.0,256.8 184.4,260.4 172.8,263.9 161.2,267.4 149.6,270.9 138.0,274.5 126.4,278.0 114.8,281.5 103.2,285.0 91.6,288.5 80.0,292.0" fill="rgba(100,180,255,0.12)" stroke="none"/>
+<polyline points="80.0,292.0 91.6,288.2 103.2,284.4 114.8,280.6 126.4,276.8 138.0,273.0 149.6,269.2 161.2,265.4 172.8,261.5 184.4,257.7 196.0,253.9 207.6,250.0 219.2,246.2 230.8,242.4 242.4,238.5 254.0,234.7 265.6,230.8 277.2,227.0 288.8,223.1 300.4,219.3 312.0,215.4 323.6,211.5 335.2,207.6 346.8,203.8 358.4,199.9 370.0,196.0 381.6,192.1 393.2,188.2 404.8,184.3 416.4,180.4 428.0,176.5 439.6,172.6 451.2,168.7 462.8,164.8 474.4,160.9 486.0,156.9 497.6,153.0 509.2,149.1 520.8,145.1 532.4,141.2 544.0,137.3 555.6,133.3 567.2,129.4 578.8,125.4 590.4,121.4 602.0,117.5 613.6,113.5 625.2,109.5 636.8,105.6 648.4,101.6 660.0,97.6" fill="none" stroke="#64b4ff" stroke-width="1.5" stroke-dasharray="4,3"/>
+<polyline points="80.0,292.0 91.6,287.9 103.2,283.8 114.8,279.7 126.4,275.6 138.0,271.5 149.6,267.4 161.2,263.3 172.8,259.2 184.4,255.0 196.0,250.9 207.6,246.8 219.2,242.7 230.8,238.5 242.4,234.4 254.0,230.2 265.6,226.1 277.2,221.9 288.8,217.8 300.4,213.6 312.0,209.5 323.6,205.3 335.2,201.1 346.8,197.0 358.4,192.8 370.0,188.6 381.6,184.4 393.2,180.2 404.8,176.0 416.4,171.8 428.0,167.6 439.6,163.4 451.2,159.2 462.8,155.0 474.4,150.8 486.0,146.6 497.6,142.4 509.2,138.1 520.8,133.9 532.4,129.7 544.0,125.4 555.6,121.2 567.2,116.9 578.8,112.7 590.4,108.4 602.0,104.2 613.6,99.9 625.2,95.6 636.8,91.4 648.4,87.1 660.0,82.8" fill="none" stroke="#64b4ff" stroke-width="0.8" opacity="0.5"/>
+<polyline points="80.0,292.0 91.6,288.5 103.2,285.0 114.8,281.5 126.4,278.0 138.0,274.5 149.6,270.9 161.2,267.4 172.8,263.9 184.4,260.4 196.0,256.8 207.6,253.3 219.2,249.8 230.8,246.2 242.4,242.7 254.0,239.1 265.6,235.6 277.2,232.0 288.8,228.4 300.4,224.9 312.0,221.3 323.6,217.7 335.2,214.2 346.8,210.6 358.4,207.0 370.0,203.4 381.6,199.8 393.2,196.2 404.8,192.6 416.4,189.0 428.0,185.4 439.6,181.8 451.2,178.2 462.8,174.5 474.4,170.9 486.0,167.3 497.6,163.7 509.2,160.0 520.8,156.4 532.4,152.7 544.0,149.1 555.6,145.4 567.2,141.8 578.8,138.1 590.4,134.5 602.0,130.8 613.6,127.1 625.2,123.5 636.8,119.8 648.4,116.1 660.0,112.4" fill="none" stroke="#64b4ff" stroke-width="0.8" opacity="0.5"/>
+<circle cx="80.0" cy="291.9896960159033" r="6" fill="#4488cc" stroke="white" stroke-width="1.5"/>
+<text x="80.0" y="279.9896960159033" text-anchor="middle" fill="#88bbff" font-size="11" font-weight="600">KEMX</text>
+<line x1="80" y1="83.67348629172537" x2="660" y2="83.67348629172537" stroke="#44dd88" stroke-width="1.5" stroke-dasharray="8,4"/>
+<text x="84" y="77.67348629172537" fill="#44dd88" font-size="10" font-weight="600">Expected balloon alt ≈ 7443 m</text>
+<circle cx="660.0" cy="97.60937629421022" r="7" fill="#ff4444" stroke="white" stroke-width="1.5"/>
+<text x="650.0" y="85.60937629421022" text-anchor="end" fill="#ff6666" font-size="10" font-weight="600">Candidate gate (7054 m)</text>
+<line x1="674.0" y1="83.67348629172537" x2="674.0" y2="97.60937629421022" stroke="#ffaa44" stroke-width="2"/>
+<text x="680.0" y="94.6414312929678" fill="#ffaa44" font-size="10" font-weight="600">Δalt ≈ 389 m</text>
+<text x="350.0" y="392" text-anchor="middle" fill="#aaaacc" font-size="11">Range from radar (km)</text>
+<text x="14" y="200.0" text-anchor="middle" fill="#aaaacc" font-size="11" transform="rotate(-90, 14, 200.0)">Altitude (m)</text>
+<line x1="80.0" y1="350" x2="80.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="80.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">0</text>
+<line x1="196.0" y1="350" x2="196.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="196.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">10</text>
+<line x1="312.0" y1="350" x2="312.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="312.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">19</text>
+<line x1="428.0" y1="350" x2="428.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="428.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">29</text>
+<line x1="544.0" y1="350" x2="544.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="544.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">38</text>
+<line x1="660.0" y1="350" x2="660.0" y2="355" stroke="#8a8aaa" stroke-width="1"/>
+<text x="660.0" y="366" text-anchor="middle" fill="#8a8aaa" font-size="9">48</text>
+<line x1="75" y1="350.0" x2="80" y2="350.0" stroke="#8a8aaa" stroke-width="1"/>
+<text x="72" y="353.0" text-anchor="end" fill="#8a8aaa" font-size="9">0</text>
+<line x1="75" y1="278.4353516110329" x2="80" y2="278.4353516110329" stroke="#8a8aaa" stroke-width="1"/>
+<text x="72" y="281.4353516110329" text-anchor="end" fill="#8a8aaa" font-size="9">2000</text>
+<line x1="75" y1="206.8707032220658" x2="80" y2="206.8707032220658" stroke="#8a8aaa" stroke-width="1"/>
+<text x="72" y="209.8707032220658" text-anchor="end" fill="#8a8aaa" font-size="9">4000</text>
+<line x1="75" y1="135.30605483309867" x2="80" y2="135.30605483309867" stroke="#8a8aaa" stroke-width="1"/>
+<text x="72" y="138.30605483309867" text-anchor="end" fill="#8a8aaa" font-size="9">6000</text>
+<line x1="75" y1="63.74140644413156" x2="80" y2="63.74140644413156" stroke="#8a8aaa" stroke-width="1"/>
+<text x="72" y="66.74140644413157" text-anchor="end" fill="#8a8aaa" font-size="9">8000</text>
+<text x="656.0" y="74.82159173849593" text-anchor="end" fill="#64b4ff" font-size="9" opacity="0.8">beam width ≈ 827 m</text>
+<text x="120" y="271.9896960159033" fill="#64b4ff" font-size="9" opacity="0.7">approx elev ≈ 6.4°</text>
+</svg>
+    </div>
+
+    <div class="caveat">
+      <strong>⚠ Approximate teaching diagram.</strong> The beam geometry
+      shown is computed from approximate radar equations using a 4/3 effective
+      Earth radius model. The actual elevation angle used by the radar for
+      this scan may differ. Beam width and altitude are approximate.
+    </div>
+
+    <h3>What this diagram shows</h3>
+    <ul>
+      <li>
+        <strong>Blue line and shading</strong>: The approximate radar beam
+        centerline and beam-width envelope from the radar site to the
+        candidate range.
+      </li>
+      <li>
+        <strong>Green dashed line</strong>: The expected balloon altitude
+        from telemetry (grid-square center interpolation).
+      </li>
+      <li>
+        <strong>Red dot</strong>: The candidate radar gate altitude
+        (beam-center approximation at the gate range).
+      </li>
+      <li>
+        <strong>Orange bar</strong>: The altitude mismatch between the
+        expected balloon altitude and the candidate gate altitude.
+      </li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Key insight:</strong> Beam width grows with range. At
+      48 km range, the beam is
+      approximately ±0.5° wide, meaning the altitude uncertainty of a
+      single gate is significant. A candidate that is close in beam-center
+      altitude is interesting, but the true reflecting object could be
+      anywhere within the beam width.
+    </div>
+
+    <h3>Altitude metrics for Rank 1</h3>
+    <table class="data-table">
+      <tr><td>Candidate altitude (beam-center)</td><td>7054 m</td></tr>
+      <tr><td>Expected balloon altitude</td><td>7443 m</td></tr>
+      <tr><td>Vertical mismatch</td><td>389 m</td></tr>
+      <tr><td>Expected balloon alt (interp.)</td><td>7443 m</td></tr><tr><td>Candidate gate alt (beam-center)</td><td>7054 m</td></tr><tr><td>Vertical mismatch (signed)</td><td>-389 m</td></tr><tr><td>Altitude consistency</td><td>strong altitude match</td></tr><tr><td>Altitude priority rank</td><td>38</td></tr>
+    </table>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 4: Doppler intuition preview                          -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-doppler">
+    <h2>§4 — Doppler intuition preview</h2>
+    <p>
+      NEXRAD measures <em>radial velocity</em> — the component of motion
+      directly toward or away from the radar, not the full speed of the
+      object. Understanding this is crucial for interpreting Doppler
+      evidence.
+    </p>
+
+    <div class="svg-container">
+      <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;height:auto;background:#1a1a2e;border-radius:8px;font-family:Inter,sans-serif;">
+<line x1="80" y1="200" x2="380" y2="100" stroke="#555577" stroke-width="1.5" stroke-dasharray="6,4"/>
+<circle cx="80" cy="200" r="8" fill="#4488cc" stroke="white" stroke-width="1.5"/>
+<text x="80" y="222" text-anchor="middle" fill="#88bbff" font-size="11" font-weight="600">Radar</text>
+<circle cx="380" cy="100" r="7" fill="#44dd88" stroke="white" stroke-width="1.5"/>
+<text x="380" y="86" text-anchor="middle" fill="#66eebb" font-size="11" font-weight="600">Balloon</text>
+<line x1="380" y1="100" x2="450" y2="130" stroke="#ffaa44" stroke-width="2.5" marker-end="url(#arrowMotion)"/>
+<text x="458" y="128" fill="#ffaa44" font-size="10" font-weight="600">Balloon motion</text>
+<line x1="380" y1="100" x2="434.0" y2="82.0" stroke="#ff4444" stroke-width="2" marker-end="url(#arrowRad)"/>
+<text x="377.0" y="111.0" fill="#ff6666" font-size="10" font-weight="600">toward/away</text>
+<text x="377.0" y="123.0" fill="#ff6666" font-size="9">= Doppler-visible</text>
+<line x1="434.0" y1="82.0" x2="450" y2="130" stroke="#44aaff" stroke-width="2" marker-end="url(#arrowSide)"/>
+<text x="450" y="98" fill="#66bbff" font-size="10" font-weight="600">sideways</text>
+<text x="450" y="110" fill="#66bbff" font-size="9">= weak Doppler</text>
+<line x1="434.0" y1="82.0" x2="434.0" y2="82.0" stroke="transparent" stroke-width="0"/>
+<text x="200.0" y="140.0" fill="#8888aa" font-size="9" transform="rotate(-18.4, 200.0, 140.0)">line of sight</text>
+<defs>
+<marker id="arrowMotion" markerWidth="8" markerHeight="6" refX="8" refY="3"
+        orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#ffaa44"/></marker>
+<marker id="arrowRad" markerWidth="8" markerHeight="6" refX="8" refY="3"
+        orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#ff4444"/></marker>
+<marker id="arrowSide" markerWidth="8" markerHeight="6" refX="8" refY="3"
+        orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#44aaff"/></marker>
+</defs>
+<text x="250.0" y="310" text-anchor="middle" fill="#8888aa" font-size="10">Doppler measures only the toward/away component of motion</text>
+</svg>
+    </div>
+
+    <h3>Key Doppler concepts</h3>
+    <ul>
+      <li>
+        <strong>Radial velocity</strong> is motion along the radar's
+        line of sight — toward or away from the radar antenna.
+      </li>
+      <li>
+        If a balloon moves mostly <strong>sideways</strong> relative to
+        the radar (perpendicular to the line of sight), its radial velocity
+        can be <strong>near zero</strong> even though it is moving quickly.
+      </li>
+      <li>
+        <strong>Low radial velocity does not mean the object is
+        stationary.</strong> It may simply mean the motion is mostly
+        sideways.
+      </li>
+      <li>
+        <strong>Near-zero Doppler</strong> can make velocity evidence
+        weak or harder to interpret for balloon-like targets.
+      </li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Future development:</strong> The next PicoCAST development
+      phase should compute the expected radial velocity for each radar/scan
+      geometry, enabling direct comparison between expected and observed
+      Doppler. This would strengthen or weaken the candidate association.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 5: Candidate explanation card                         -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-candidate-card">
+    <h2>Rank 1 candidate: why it is interesting</h2>
+
+    <table class="data-table">
+      <tr><td>Candidate rank</td><td>1</td></tr>
+      <tr><td>Candidate score</td><td>0.734</td></tr>
+      <tr><td>Candidate label</td><td>strong candidate</td></tr>
+      <tr><td>Radar site</td><td>KEMX</td></tr>
+      <tr><td>Scan time (UTC)</td><td>2026-03-22T20:28:40Z</td></tr>
+      <tr><td>Search window</td><td>normal</td></tr>
+      <tr><td>Horizontal distance</td><td>2.18 km</td></tr>
+      <tr><td>Vertical mismatch</td><td>389 m</td></tr>
+      <tr><td>Max reflectivity</td><td>-6.0 dBZ</td></tr>
+      <tr><td>Number of gates</td><td>2</td></tr>
+      <tr><td>Range from radar</td><td>47.7 km</td></tr>
+      <tr><td>Expected grid square</td><td>DM42pi</td></tr>
+      <tr><td>Cross-radar association</td><td>Not available for this candidate.</td></tr>
+    </table>
+
+    <p>
+      This candidate is interesting because it is close to the expected
+      balloon region both horizontally (2.2 km) and
+      vertically (389 m altitude mismatch).
+      However, the balloon position is estimated from a Maidenhead
+      grid-square center (not exact GPS), and the radar gate altitude is a
+      beam-center approximation. <strong>This should be treated as a review
+      candidate, not a confirmed balloon detection.</strong>
+    </p>
+
+    <div class="caveat">
+      <strong>⚠ Grid-square caveat:</strong> The expected balloon position
+      is the center of a DM42pi Maidenhead grid square, which
+      is approximately 5–9 km across. The actual balloon could be anywhere
+      within this square, meaning the true horizontal distance could be
+      significantly different from 2.18 km.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SECTION 6: Common radar mistakes                              -->
+  <!-- ============================================================ -->
+  <div class="section" id="sec-mistakes">
+    <h2>Common ways to fool yourself with radar</h2>
+    <p>
+      When reviewing radar candidates for possible balloon association,
+      be aware of these common interpretation pitfalls:
+    </p>
+
+    <ol class="mistakes-list">
+      <li>
+        <strong>Close horizontally, wrong altitude.</strong> A radar
+        feature can appear at the same latitude/longitude as the expected
+        balloon but at a completely different altitude. Always check both
+        horizontal and vertical proximity.
+      </li>
+      <li>
+        <strong>Beam width increases with range.</strong> At short range
+        (e.g., 20 km), the NEXRAD beam is narrow (~350 m). At long range
+        (e.g., 200 km), it is much wider (~3,500 m). This means altitude
+        estimates from a single gate become less precise at greater
+        distances from the radar.
+      </li>
+      <li>
+        <strong>Radar scans are not instantaneous.</strong> A single
+        volume scan takes several minutes. The balloon telemetry timestamp
+        and the radar scan time may not perfectly overlap, and the
+        balloon moves during this interval. Small timing mismatches
+        can introduce position errors.
+      </li>
+      <li>
+        <strong>Radial velocity is not full speed.</strong> NEXRAD
+        Doppler measures only the toward/away component of motion.
+        If the object moves mostly sideways relative to the radar,
+        observed radial velocity will be small regardless of actual
+        speed.
+      </li>
+      <li>
+        <strong>Near-zero Doppler ≠ stationary object.</strong> A
+        target moving perpendicular to the radar line of sight has
+        near-zero radial velocity. Do not conclude that an object
+        with low Doppler is not moving.
+      </li>
+      <li>
+        <strong>Weak point targets have many possible explanations.</strong>
+        A radar return near the expected balloon region could be weather,
+        biological scatter (birds, insects), ground clutter, anomalous
+        propagation, side-lobe contamination, or processing artifacts.
+        The candidate scoring helps prioritize, but does not rule out
+        alternative explanations.
+      </li>
+      <li>
+        <strong>Cross-radar consistency is stronger, but still not
+        proof.</strong> Seeing similar features from multiple radars
+        at the same time and location significantly increases
+        confidence, but coincidental agreement is possible.
+        Multi-radar association should be treated as strong evidence,
+        not definitive proof.
+      </li>
+    </ol>
+  </div>
+
+  <div class="footer">
+    PicoCAST Radar Science Visual Lab · k7uaz_20260322 ·
+    Generated for educational review purposes only ·
+    All features described are candidate radar returns requiring visual
+    inspection – not confirmed balloon detections
+  </div>
+
+</div>
+
+</body>
+</html>
