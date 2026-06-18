@@ -153,6 +153,23 @@ def make_candidate_validation_map(
     scan_time = parse_utc(scan_time_str)
     search_window = cand_props.get("search_window", "normal")
 
+    # ---- load altitude validation data if available -------------------------
+    alt_csv = cand_dir / "altitude_validation" / "altitude_prioritized_candidates.csv"
+    alt_info: dict = {}
+    if alt_csv.exists():
+        alt_df = pd.read_csv(alt_csv)
+        match = alt_df[alt_df["original_candidate_rank"] == rank]
+        if not match.empty:
+            row = match.iloc[0]
+            alt_info = {
+                "expected_alt_m": row.get("interpolated_expected_alt_m"),
+                "candidate_alt_m": row.get("candidate_alt_m"),
+                "signed_vertical_m": row.get("signed_vertical_interp_m"),
+                "abs_vertical_m": row.get("abs_vertical_interp_m"),
+                "altitude_label": row.get("altitude_consistency_label", ""),
+                "altitude_priority_rank": row.get("altitude_priority_rank"),
+            }
+
     # ---- find the closest expected-track point ------------------------------
     track_point = find_closest_track_point(expected_track.get("features", []), scan_time)
     if track_point is None:
@@ -233,6 +250,23 @@ def make_candidate_validation_map(
     v_dist = cand_props.get("vertical_distance_m", 0)
     max_dbz = cand_props.get("max_reflectivity_dbz", None)
 
+    # Build altitude info lines for popup
+    alt_lines = ""
+    if alt_info:
+        exp_a = alt_info.get("expected_alt_m")
+        cand_a = alt_info.get("candidate_alt_m")
+        signed_v = alt_info.get("signed_vertical_m")
+        alt_label = alt_info.get("altitude_label", "")
+        alt_rank = alt_info.get("altitude_priority_rank")
+        alt_lines = (
+            f"<b>Altitude:</b><br>"
+            f"&nbsp;Expected balloon alt: {exp_a:.0f} m (interpolated)<br>"
+            f"&nbsp;Candidate gate alt: {cand_a:.0f} m (beam-center)<br>"
+            f"&nbsp;Vertical mismatch: {signed_v:+.0f} m<br>"
+            f"&nbsp;Altitude match: {alt_label.replace('_', ' ')}<br>"
+            f"&nbsp;Altitude priority rank: {alt_rank}<br>"
+        )
+
     popup_html = (
         f"<b>Rank {rank}</b> – {label}<br>"
         f"Score: {score:.3f}<br>"
@@ -240,8 +274,10 @@ def make_candidate_validation_map(
         f"V-dist: {v_dist:.0f} m<br>"
         f"Max dBZ: {max_dbz}<br>"
         f"Scan: {scan_time_str}<br>"
+        f"{alt_lines}"
         f"<i>Balloon position is estimated from Maidenhead grid-square "
-        f"centers, not exact GPS.</i>"
+        f"centers, not exact GPS. Radar gate altitude is beam-center "
+        f"altitude (beam width increases with range).</i>"
     )
 
     folium.CircleMarker(
@@ -311,16 +347,26 @@ def make_candidate_validation_map(
     ring_group.add_to(fmap)
 
     # ---- title --------------------------------------------------------------
+    # Build altitude summary for title
+    alt_title = ""
+    if alt_info:
+        signed_v = alt_info.get("signed_vertical_m")
+        alt_label = alt_info.get("altitude_label", "").replace("_", " ")
+        alt_title = (
+            f'<br>Alt mismatch: {signed_v:+.0f} m · {alt_label}'
+        )
+
     title_html = (
         f'<div style="position:fixed;top:10px;left:60px;z-index:1000;'
         f'background:white;padding:8px 14px;border-radius:6px;'
         f'box-shadow:0 2px 6px rgba(0,0,0,.3);font-size:14px;">'
         f'<b>Rank {rank}</b> – {label} – score {score:.3f}<br>'
         f'H-dist {h_dist:.2f} km · V-dist {v_dist:.0f} m · '
-        f'max dBZ {max_dbz}<br>'
+        f'max dBZ {max_dbz}{alt_title}<br>'
         f'<span style="font-size:11px;color:#666;">'
         f'Balloon position estimated from Maidenhead grid-square centers, '
-        f'not exact GPS.</span>'
+        f'not exact GPS. Gate altitude is beam-center (beam width '
+        f'increases with range).</span>'
         f'</div>'
     )
     fmap.get_root().html.add_child(folium.Element(title_html))
