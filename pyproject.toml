@@ -27,6 +27,7 @@ dependencies = [
   "folium>=0.17",
   "maidenhead>=1.5",
   "geopy>=2.4",
+  "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]

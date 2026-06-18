@@ -16,6 +16,7 @@ import pandas as pd
 import yaml
 from botocore import UNSIGNED
 from botocore.config import Config
+from tqdm import tqdm
 
 # Standard constants
 EARTH_RADIUS_M = 6371000.0
@@ -394,7 +395,7 @@ def main():
                 executor.submit(download_single_file, s3, bucket, key, path)
                 for s3, bucket, key, path in downloads_todo
             ]
-            for fut in as_completed(futures):
+            for fut in tqdm(as_completed(futures), total=len(futures), desc="Downloading"):
                 key, success = fut.result()
                 if success:
                     downloaded_keys.add(key)

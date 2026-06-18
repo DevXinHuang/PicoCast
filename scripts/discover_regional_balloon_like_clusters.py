@@ -14,6 +14,7 @@ import numpy as np
 import numpy.ma as ma
 import pandas as pd
 import yaml
+from tqdm import tqdm
 
 # Suppress Py-ART and deprecation warnings to keep logs clean
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -209,7 +210,7 @@ def discover_radar_clusters(
     
     all_clusters = []
     
-    for _, match_row in matches.iterrows():
+    for _, match_row in tqdm(matches.iterrows(), total=len(matches), desc=f"Clustering {site}"):
         scan_time_str = str(match_row["scan_time_utc"])
         filename = str(match_row["scan_filename"])
         local_path = case_dir / "nexrad" / site / "raw" / filename
