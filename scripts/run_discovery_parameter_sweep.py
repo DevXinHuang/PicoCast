@@ -78,6 +78,7 @@ def discover_candidates_from_cache(
     track_lats: np.ndarray,
     track_lons: np.ndarray,
     track_grids: list[str],
+    max_gates_to_cluster: int = 200000,
 ) -> list[dict]:
     # Apply thresholds
     alt_mask = cache_df["abs_vertical_distance_m"] <= alt_padding
@@ -92,6 +93,8 @@ def discover_candidates_from_cache(
         return []
         
     lats = filtered_df["gate_lat_deg"].to_numpy()
+    if len(lats) > max_gates_to_cluster:
+        return []
     lons = filtered_df["gate_lon_deg"].to_numpy()
     alts = filtered_df["gate_alt_m"].to_numpy()
     refl = filtered_df["reflectivity_dbz"].to_numpy()
@@ -461,6 +464,7 @@ def main():
     
     # Tracklet linking config
     tl_cfg = config.get("tracklet_linking", {})
+    max_gates_to_cluster = discovery.get("max_gates_per_scan_to_cluster", 200000)
     
     # Load track polylines
     track_path = case_dir / "expected_track.csv"
@@ -519,6 +523,7 @@ def main():
                                 track_lats=track_lats,
                                 track_lons=track_lons,
                                 track_grids=track_grids,
+                                max_gates_to_cluster=max_gates_to_cluster,
                             )
                             candidates.extend(cands)
                             

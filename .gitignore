@@ -47,6 +47,7 @@ cases/*/outputs/discovery/regional_discovered_clusters.parquet
 cases/*/outputs/discovery/KEMX/
 cases/*/outputs/discovery/KIWA/
 cases/*/outputs/ml/
+cases/*/cache/
 
 # Notebook execution artifacts.
 .ipynb_checkpoints/

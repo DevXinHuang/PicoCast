@@ -63,6 +63,16 @@ performance:
   per_file_parallel: false
   write_intermediate_parquet: true
   do_not_keep_all_gates_in_memory: true
+  process_one_file_at_a_time: true
+
+gate_cache:
+  enabled: true
+  output_format: parquet
+  compression: zstd
+  float_precision: float32
+  cache_all_valid_gates: true
+  cache_only_discovery_region: false
+  overwrite: false
 
 tracklet_linking:
   method: branching_forward_search
