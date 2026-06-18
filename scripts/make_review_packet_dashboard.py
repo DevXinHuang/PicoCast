@@ -277,6 +277,8 @@ def point_to_record(row: pd.Series) -> dict:
             else None
         ),
         "nearest_grid": row.get("nearest_grid", ""),
+        "doppler_consistency_label": row.get("doppler_consistency_label", "missing_doppler"),
+        "doppler_notes": row.get("doppler_notes", ""),
     }
 
 
@@ -352,13 +354,23 @@ def build_dashboard_data(config_path: Path, top_n: int = 10) -> dict:
     review_dir = case_dir / "outputs" / "discovery" / "review_packet"
     review_queue = pd.read_csv(review_dir / "tracklet_review_queue.csv")
     cross_radar = pd.read_csv(review_dir / "cross_radar_review_queue.csv")
-    points = pd.read_csv(case_dir / "outputs" / "discovery" / "plausible_tracklet_points.csv")
+    
+    points_path = case_dir / "outputs" / "discovery" / "doppler_validation" / "doppler_validated_points.csv"
+    if not points_path.exists():
+        points_path = case_dir / "outputs" / "discovery" / "plausible_tracklet_points.csv"
+    points = pd.read_csv(points_path)
+    
     track = compute_grid_center_speeds(pd.read_csv(case_dir / "expected_track.csv"))
     points = enrich_candidate_points(points, track)
 
     active_sites = {
         site for sites in review_queue["radar_sites"].dropna().map(parse_ids) for site in sites
     }
+    doppler_summary_path = case_dir / "outputs" / "discovery" / "doppler_validation" / "doppler_tracklet_summary.csv"
+    doppler_summaries = []
+    if doppler_summary_path.exists():
+        doppler_summaries = pd.read_csv(doppler_summary_path).to_dict("records")
+
     items = build_review_items(review_queue, points, cross_radar, top_n)
 
     top_item = items[0] if items else {}
@@ -383,6 +395,7 @@ def build_dashboard_data(config_path: Path, top_n: int = 10) -> dict:
         "radar_sites": radar_site_records(config, active_sites),
         "range_rings_km": config.get("mapping", {}).get("range_rings_km", [50, 100, 150, 200]),
         "review_items": items,
+        "doppler_summaries": doppler_summaries,
         "colors": SITE_COLORS,
     }
     return clean_value(data)
@@ -752,11 +765,24 @@ def render_dashboard_html(data: dict) -> str:
         <button class="tab-btn active" data-tab="altitude">Altitude</button>
         <button class="tab-btn" data-tab="mismatch">Vertical mismatch</button>
         <button class="tab-btn" data-tab="speed">Speed</button>
+        <button class="tab-btn" data-tab="doppler">Doppler</button>
         <button class="tab-btn" data-tab="table">Point table</button>
       </div>
       <div class="chart-wrap tab-panel" id="altitudePanel"><canvas id="altitudeChart"></canvas></div>
       <div class="chart-wrap tab-panel" id="mismatchPanel" style="display:none;"><canvas id="mismatchChart"></canvas></div>
       <div class="chart-wrap tab-panel" id="speedPanel" style="display:none;"><canvas id="speedChart"></canvas></div>
+      <div class="table-wrap tab-panel" id="dopplerPanel" style="display:none;">
+        <div style="padding: 1rem; color: var(--ink);">
+          <h3 style="margin-top: 0;">Doppler Validation Context</h3>
+          <p>Geometry/altitude remain interesting. Doppler does not currently strengthen the association.</p>
+          <ul>
+            <li>Most points have missing Doppler velocity.</li>
+            <li>Valid Doppler points show large radial-velocity residuals.</li>
+            <li>Spectrum width and RHOHV are context only, not proof.</li>
+          </ul>
+          <div id="dopplerSummaryTarget" style="margin-top: 1.5rem; overflow-x: auto;"></div>
+        </div>
+      </div>
       <div class="table-wrap tab-panel" id="tablePanel" style="display:none;"></div>
     </section>
   </div>
@@ -1094,6 +1120,48 @@ def render_dashboard_html(data: dict) -> str:
         </table>`;
     }}
 
+    function renderDopplerSummary(item) {{
+      if (!dashboardData.doppler_summaries || dashboardData.doppler_summaries.length === 0) {{
+        document.getElementById("dopplerSummaryTarget").innerHTML = "<p>No Doppler data available.</p>";
+        return;
+      }}
+      
+      const relatedSummaries = dashboardData.doppler_summaries.filter(ds => item.tracklet_ids.includes(ds.tracklet_id));
+      if (relatedSummaries.length === 0) {{
+        document.getElementById("dopplerSummaryTarget").innerHTML = "<p>No Doppler data for this candidate.</p>";
+        return;
+      }}
+      
+      const rows = relatedSummaries.map(ds => `
+        <tr>
+          <td><strong>${{ds.tracklet_id}}</strong></td>
+          <td>${{ds.n_valid_doppler_points}} / ${{ds.n_points}}</td>
+          <td>${{fmt(ds.median_observed_radial_velocity_ms, 1)}}</td>
+          <td>${{fmt(ds.median_expected_radial_velocity_ms, 1)}}</td>
+          <td>${{fmt(ds.median_abs_radial_velocity_residual_ms, 1)}}</td>
+          <td><span class="badge" style="background:#fef0f0; color:#c53030; border:1px solid #fed7d7;">${{ds.doppler_consistency_label}}</span></td>
+          <td>${{ds.doppler_notes || ""}}</td>
+        </tr>
+      `).join("");
+      
+      document.getElementById("dopplerSummaryTarget").innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Tracklet</th>
+              <th>Valid Doppler Points</th>
+              <th>Median Observed RV (m/s)</th>
+              <th>Median Expected RV (m/s)</th>
+              <th>Median Abs Residual (m/s)</th>
+              <th>Label</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>${{rows}}</tbody>
+        </table>
+      `;
+    }}
+
     function updateSelection() {{
       const item = selectedItem();
       renderRankButtons();
@@ -1101,6 +1169,7 @@ def render_dashboard_html(data: dict) -> str:
       updateMap(item);
       renderCharts(item);
       renderPointTable(item);
+      renderDopplerSummary(item);
     }}
 
     document.querySelectorAll(".tab-btn").forEach(button => {{

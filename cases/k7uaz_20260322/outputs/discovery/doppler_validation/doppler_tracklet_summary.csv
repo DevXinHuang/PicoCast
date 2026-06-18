@@ -1,0 +1,3 @@
+tracklet_id,radar_site,n_points,n_valid_doppler_points,fraction_valid_doppler,median_observed_radial_velocity_ms,median_expected_radial_velocity_ms,median_abs_radial_velocity_residual_ms,max_abs_radial_velocity_residual_ms,median_spectrum_width_ms,median_rhohv,doppler_sign_convention,doppler_consistency_label,doppler_notes
+KEMX_T004,KEMX,7,2,0.2857142857142857,0.625,-12.819813570804643,13.444813570804643,17.341670854744983,8.25,1.052,neither_sign_matches,doppler_inconsistent,Needs visual inspection
+KIWA_T001,KIWA,6,2,0.3333333333333333,0.08499999999999996,-18.2721902445988,18.3571902445988,21.77995352057768,2.915,1.012,neither_sign_matches,doppler_inconsistent,Needs visual inspection
