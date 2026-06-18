@@ -189,3 +189,39 @@ def test_gate_cache_and_sweeps(mock_case_env):
         
         assert len(stability_df) > 0
         assert "stability_label" in stability_df.columns
+        assert (stability_df["detection_fraction"] <= 1.0).all()
+        assert "member_tracklet_count" in stability_df.columns
+        assert "n_possible_sweeps" in stability_df.columns
+
+
+def test_stability_counts_unique_sweeps_not_members():
+    from scripts.run_discovery_parameter_sweep import (
+        TrackletCandidateGroup,
+        compute_stability_rows,
+    )
+
+    def make_tracklet(sweep_id: str, cluster_suffix: str) -> dict:
+        return {
+            "radar_site": "KEMX",
+            "sweep_id": sweep_id,
+            "duration_min": 20.0,
+            "nodes": [
+                {"scan_time_utc": "2026-03-22T20:00:00Z", "cluster_id": f"a{cluster_suffix}"},
+                {"scan_time_utc": "2026-03-22T20:10:00Z", "cluster_id": f"b{cluster_suffix}"},
+                {"scan_time_utc": "2026-03-22T20:20:00Z", "cluster_id": f"c{cluster_suffix}"},
+            ],
+        }
+
+    first = make_tracklet("SWEEP_001", "1")
+    group = TrackletCandidateGroup(first, group_id=1)
+    group.add(make_tracklet("SWEEP_001", "2"))
+    group.add(make_tracklet("SWEEP_002", "3"))
+    group.add(make_tracklet("SWEEP_003", "4"))
+
+    rows = compute_stability_rows([group], n_possible_sweeps=3)
+
+    assert rows[0]["detection_count"] == 3
+    assert rows[0]["member_tracklet_count"] == 4
+    assert rows[0]["n_possible_sweeps"] == 3
+    assert rows[0]["detection_fraction"] == 1.0
+    assert rows[0]["stability_label"] == "stable_candidate"

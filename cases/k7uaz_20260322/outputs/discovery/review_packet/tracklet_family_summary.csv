@@ -1,0 +1,6 @@
+family_id,radar_site,representative_tracklet_id,member_tracklet_ids,n_members,start_time_utc,end_time_utc,n_points_representative,duration_min,median_abs_vertical_mismatch_m,mean_distance_to_corridor_km,spaghetti_score,tracklet_score,quality_label,stability_label,detection_fraction,review_priority_score
+KIWA_F001,KIWA,KIWA_T004,KIWA_T001;KIWA_T002;KIWA_T003;KIWA_T004;KIWA_T005;KIWA_T006;KIWA_T009;KIWA_T010,8,2026-03-22T19:26:39Z,2026-03-22T20:23:34Z,7,56.9,78.2,9.44,75.93,1.2146,excellent_plausible_tracklet,stable_candidate,1.0,0.7977
+KEMX_F001,KEMX,KEMX_T007,KEMX_T004;KEMX_T007,2,2026-03-22T19:53:25Z,2026-03-22T20:57:01Z,8,63.6,38.7,4.1,144.05,1.2236,excellent_plausible_tracklet,moderately_stable_candidate,0.5417,0.7862
+KEMX_F002,KEMX,KEMX_T010,KEMX_T001;KEMX_T002;KEMX_T003;KEMX_T005;KEMX_T008;KEMX_T009;KEMX_T010,7,2026-03-22T19:53:25Z,2026-03-22T20:28:40Z,6,35.2,63.8,5.82,77.44,1.2225,excellent_plausible_tracklet,unstable_candidate,0.2917,0.7135
+KEMX_F003,KEMX,KEMX_T006,KEMX_T006,1,2026-03-22T19:53:25Z,2026-03-22T20:28:40Z,6,35.2,88.5,6.84,64.62,1.2263,excellent_plausible_tracklet,unstable_candidate,0.2917,0.7031
+KIWA_F002,KIWA,KIWA_T008,KIWA_T007;KIWA_T008,2,2026-03-22T19:26:39Z,2026-03-22T20:16:28Z,7,49.8,147.6,8.78,193.12,1.2127,excellent_plausible_tracklet,stable_candidate,1.0,0.6929

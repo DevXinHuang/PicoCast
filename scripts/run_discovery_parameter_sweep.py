@@ -46,6 +46,9 @@ class TrackletCandidateGroup:
         self.group_id = group_id
         self.radar_site = first_tracklet["radar_site"]
         self.scan_times = set([n["scan_time_utc"] for n in first_tracklet["nodes"]])
+        self.sweep_ids = set()
+        if "sweep_id" in first_tracklet:
+            self.sweep_ids.add(first_tracklet["sweep_id"])
         self.members = [first_tracklet]
         
     def matches(self, other_tracklet) -> bool:
@@ -61,6 +64,55 @@ class TrackletCandidateGroup:
     def add(self, other_tracklet):
         self.members.append(other_tracklet)
         self.scan_times.update([n["scan_time_utc"] for n in other_tracklet["nodes"]])
+        if "sweep_id" in other_tracklet:
+            self.sweep_ids.add(other_tracklet["sweep_id"])
+
+
+def stability_label(detection_fraction: float) -> str:
+    if detection_fraction >= 0.75:
+        return "stable_candidate"
+    if detection_fraction >= 0.35:
+        return "moderately_stable_candidate"
+    return "unstable_candidate"
+
+
+def compute_stability_rows(
+    candidate_groups: list[TrackletCandidateGroup],
+    n_possible_sweeps: int,
+) -> list[dict]:
+    stability_rows = []
+
+    for g in candidate_groups:
+        scan_times_sorted = sorted(g.scan_times)
+        start_time = scan_times_sorted[0] if scan_times_sorted else ""
+        end_time = scan_times_sorted[-1] if scan_times_sorted else ""
+
+        n_points_median = float(np.median([len(m["nodes"]) for m in g.members]))
+        duration_median = float(np.median([m["duration_min"] for m in g.members]))
+
+        member_tracklet_count = len(g.members)
+        detection_count = len(g.sweep_ids) if g.sweep_ids else member_tracklet_count
+        detection_fraction = detection_count / n_possible_sweeps if n_possible_sweeps else 0.0
+        detection_fraction = float(np.clip(detection_fraction, 0.0, 1.0))
+        label = stability_label(detection_fraction)
+
+        tracklet_sig = f"{g.radar_site}_{start_time}_{end_time}"
+
+        stability_rows.append({
+            "tracklet_signature": tracklet_sig,
+            "radar_site": g.radar_site,
+            "start_time_utc": start_time,
+            "end_time_utc": end_time,
+            "n_points_median": round(n_points_median, 1),
+            "duration_min_median": round(duration_median, 1),
+            "detection_count": detection_count,
+            "member_tracklet_count": member_tracklet_count,
+            "n_possible_sweeps": n_possible_sweeps,
+            "detection_fraction": round(detection_fraction, 4),
+            "stability_label": label,
+        })
+
+    return stability_rows
 
 
 def load_config(config_path: Path) -> dict:
@@ -600,44 +652,9 @@ def main():
             group_id = len(candidate_groups) + 1
             candidate_groups.append(TrackletCandidateGroup(t, group_id))
             
-    # Calculate stability metrics
-    stability_rows = []
-    
-    for g in candidate_groups:
-        # Get start/end scan time
-        scan_times_sorted = sorted(g.scan_times)
-        start_time = scan_times_sorted[0] if scan_times_sorted else ""
-        end_time = scan_times_sorted[-1] if scan_times_sorted else ""
-        
-        # Calculate medians of key metrics across members
-        n_points_median = float(np.median([len(m["nodes"]) for m in g.members]))
-        duration_median = float(np.median([m["duration_min"] for m in g.members]))
-        
-        detection_count = len(g.members)
-        # Fraction of sweep configs for this site
-        # Since each site runs total_combinations runs, the total runs for *this* site is total_combinations
-        detection_fraction = detection_count / total_combinations
-        
-        if detection_fraction >= 0.75:
-            label = "stable_candidate"
-        elif detection_fraction >= 0.35:
-            label = "moderately_stable_candidate"
-        else:
-            label = "unstable_candidate"
-            
-        tracklet_sig = f"{g.radar_site}_{start_time}_{end_time}"
-        
-        stability_rows.append({
-            "tracklet_signature": tracklet_sig,
-            "radar_site": g.radar_site,
-            "start_time_utc": start_time,
-            "end_time_utc": end_time,
-            "n_points_median": round(n_points_median, 1),
-            "duration_min_median": round(duration_median, 1),
-            "detection_count": detection_count,
-            "detection_fraction": round(detection_fraction, 4),
-            "stability_label": label,
-        })
+    # Calculate stability metrics. Count unique sweep configurations instead
+    # of raw member tracklets so the detection fraction is bounded by 1.0.
+    stability_rows = compute_stability_rows(candidate_groups, total_combinations)
         
     STABILITY_COLUMNS = [
         "tracklet_signature",
@@ -647,6 +664,8 @@ def main():
         "n_points_median",
         "duration_min_median",
         "detection_count",
+        "member_tracklet_count",
+        "n_possible_sweeps",
         "detection_fraction",
         "stability_label",
     ]

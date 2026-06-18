@@ -117,8 +117,8 @@ def main():
         lines.append(
             "> [!NOTE]\n"
             "> **Interpretation:** PicoCAST identified telemetry-consistent candidate tracklets with strong "
-            "cross-radar candidate associations. This provides high prior probability of balloon-associated returns "
-            "occurring in both KEMX and KIWA sweeps."
+            "cross-radar candidate associations. These are near-track radar features worth visual inspection "
+            "in the KEMX and KIWA sweeps."
         )
     else:
         lines.append(
@@ -226,8 +226,8 @@ def main():
                  "The vertical filter restricted analysis to ±1500 m of the telemetry altitude.")
     lines.append("2. **Altitude Match:** Multiple tracklets in both KEMX and KIWA show excellent vertical agreement (median mismatch < 300 m) "
                  "with the expected balloon telemetry.")
-    lines.append("3. **Cross-Radar Support:** Cross-radar association indicates that candidates from KEMX and KIWA are spatially and temporally compatible, "
-                 "suggesting they could represent the same physical target.")
+    lines.append("3. **Cross-Radar Support:** Cross-radar association indicates that candidates from KEMX and KIWA are spatially and temporally compatible enough "
+                 "to prioritize visual inspection.")
     lines.append("4. **Exact GPS Caveat:** Because the balloon horizontal telemetry comes from Maidenhead grid squares, the exact GPS track "
                  "is uncertain. We cannot make positive claims of detected balloons or confirmed tracks.")
     lines.append("")

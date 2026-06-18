@@ -138,6 +138,26 @@ This workflow produces near-track radar candidate CSVs, plots, and a cautious
 human-readable report under `cases/k7uaz_20260322/outputs/candidates/KEMX/`.
 It is for candidate inspection only and does not confirm a balloon association.
 
+Regional KEMX/KIWA sweep stabilization and tonight review packet:
+
+```bash
+python scripts/run_discovery_parameter_sweep.py cases/k7uaz_20260322/config.yaml --primary-sites
+python scripts/filter_plausible_tracklets.py cases/k7uaz_20260322/config.yaml --primary-sites
+python scripts/associate_cross_radar_tracklets.py cases/k7uaz_20260322/config.yaml --primary-sites --overwrite
+python scripts/write_regional_discovery_report.py cases/k7uaz_20260322/config.yaml --primary-sites --overwrite
+python scripts/build_tracklet_review_packet.py cases/k7uaz_20260322/config.yaml --top-n 10
+python scripts/make_review_packet_gis_overlay.py cases/k7uaz_20260322/config.yaml --top-n 10
+```
+
+The review packet deduplicates near-duplicate tracklet families, ranks
+cross-radar associations before single-radar families, and writes cautious
+inspection artifacts under
+`cases/k7uaz_20260322/outputs/discovery/review_packet/`. Treat its contents as
+telemetry-consistent near-track radar features requiring visual inspection and
+multi-radar confirmation. The GIS overlay HTML places the review queue on top of
+the expected telemetry track, Maidenhead grid squares, radar sites, and range
+rings.
+
 ### Geospatial Mapping
 
 Export GeoJSON layers and create interactive HTML maps for visual inspection of

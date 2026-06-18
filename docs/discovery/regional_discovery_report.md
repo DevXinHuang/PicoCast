@@ -6,13 +6,13 @@ This report summarizes the multi-radar balloon-like object discovery mode run. I
 
 **Key Findings:**
 - **Radars analyzed:** 2 sites included out of 5 total regional stations.
-- **Discovered clusters:** 9371 compact radar returns within the corridor.
+- **Discovered clusters:** 9373 compact radar returns within the corridor.
 - **Linked tracklets:** 20 candidate tracklets linked across multiple scans.
 - **Telemetry-consistent tracklets:** 20 candidate tracklets show close altitude-time agreement.
 - **Cross-radar associations:** 100 associations where two radars see compatible trajectory behavior.
 
 > [!NOTE]
-> **Interpretation:** PicoCAST identified telemetry-consistent candidate tracklets with strong cross-radar candidate associations. This provides high prior probability of balloon-associated returns occurring in both KEMX and KIWA sweeps.
+> **Interpretation:** PicoCAST identified telemetry-consistent candidate tracklets with strong cross-radar candidate associations. These are near-track radar features worth visual inspection in the KEMX and KIWA sweeps.
 
 ## Radars Evaluated & Geometry Status
 
@@ -38,8 +38,8 @@ This report summarizes the multi-radar balloon-like object discovery mode run. I
 
 We filtered raw gates to a piecewise linear expected-track corridor (40 km horizontal, ±1500 m vertical) and ran DBSCAN (eps=1.0 km, min_samples=1) to find compact candidates:
 
-- **KEMX:** 6631 candidate clusters found
-- **KIWA:** 2740 candidate clusters found
+- **KEMX:** 6632 candidate clusters found
+- **KIWA:** 2741 candidate clusters found
 
 ## Linked Candidate Tracklets
 
@@ -202,7 +202,7 @@ Pairs of tracklets from different radars overlapping in time and sharing close h
 
 1. **Corridor Coverage:** Candidate returns were restricted to a 40 km wide horizontal band around the estimated balloon track. The vertical filter restricted analysis to ±1500 m of the telemetry altitude.
 2. **Altitude Match:** Multiple tracklets in both KEMX and KIWA show excellent vertical agreement (median mismatch < 300 m) with the expected balloon telemetry.
-3. **Cross-Radar Support:** Cross-radar association indicates that candidates from KEMX and KIWA are spatially and temporally compatible, suggesting they could represent the same physical target.
+3. **Cross-Radar Support:** Cross-radar association indicates that candidates from KEMX and KIWA are spatially and temporally compatible enough to prioritize visual inspection.
 4. **Exact GPS Caveat:** Because the balloon horizontal telemetry comes from Maidenhead grid squares, the exact GPS track is uncertain. We cannot make positive claims of detected balloons or confirmed tracks.
 
 ---

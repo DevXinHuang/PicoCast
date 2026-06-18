@@ -46,8 +46,11 @@ cases/*/nexrad/*/index/*
 cases/*/outputs/discovery/regional_discovered_clusters.parquet
 cases/*/outputs/discovery/KEMX/
 cases/*/outputs/discovery/KIWA/
+cases/*/outputs/discovery/review_packet/plots/*.png
 cases/*/outputs/ml/
 cases/*/cache/
+
+!cases/*/outputs/discovery/review_packet/plots/.gitkeep
 
 # Notebook execution artifacts.
 .ipynb_checkpoints/
