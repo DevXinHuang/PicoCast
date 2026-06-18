@@ -672,7 +672,7 @@ def render_lab_html(data: dict, iframe_rel_path: str | None = None) -> str:
             rel_path = iframe_rel_path
         else:
             map_filename = Path(data["validation_map_rel"]).name
-            rel_path = "../../maps/" + map_filename
+            rel_path = "./" + map_filename
         validation_map_embed = f"""
         <div class="map-embed-wrapper">
           <iframe src="{_esc(rel_path)}" class="map-iframe"
@@ -1371,18 +1371,33 @@ def make_radar_science_lab(
 
     # Write to discovery review_packet
     map_filename = Path(data["validation_map_rel"]).name if data["validation_map_rel"] else ""
-    html_discovery = render_lab_html(data, iframe_rel_path=f"../../maps/{map_filename}" if map_filename else None)
+    html_discovery = render_lab_html(data, iframe_rel_path=f"./{map_filename}" if map_filename else None)
     output_path = review_dir / "radar_science_lab.html"
     output_path.write_text(html_discovery, encoding="utf-8")
     print(f"Wrote {output_path}")
 
+    # Copy validation map if it exists
+    if data["validation_map_rel"]:
+        src_map = case_dir / data["validation_map_rel"]
+        if src_map.exists():
+            import shutil
+            shutil.copy2(src_map, review_dir / map_filename)
+            print(f"Copied validation map {src_map.name} to {review_dir}")
+
     # Also write to case-level review_packet for convenience
     case_review_dir = case_dir / "review_packet"
     case_review_dir.mkdir(parents=True, exist_ok=True)
-    html_case = render_lab_html(data, iframe_rel_path=f"../../outputs/maps/{map_filename}" if map_filename else None)
+    html_case = render_lab_html(data, iframe_rel_path=f"./{map_filename}" if map_filename else None)
     case_output_path = case_review_dir / "radar_science_lab.html"
     case_output_path.write_text(html_case, encoding="utf-8")
     print(f"Wrote {case_output_path}")
+
+    if data["validation_map_rel"]:
+        src_map = case_dir / data["validation_map_rel"]
+        if src_map.exists():
+            import shutil
+            shutil.copy2(src_map, case_review_dir / map_filename)
+            print(f"Copied validation map {src_map.name} to {case_review_dir}")
 
     return output_path
 

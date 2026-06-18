@@ -1153,6 +1153,41 @@ def main() -> None:
     print(f"Wrote review dashboard: {html_path}")
     print(f"Wrote dashboard data: {data_path}")
 
+    # 1. Generate Radar Science Visual Lab
+    try:
+        from scripts.make_radar_science_lab import make_radar_science_lab
+        make_radar_science_lab(args.config, rank=1)
+    except Exception as e:
+        print(f"Warning: Failed to auto-generate radar science lab: {e}")
+
+    # 2. Publish all assets to docs/review_packet
+    case_dir = args.config.parent
+    review_dir = case_dir / "outputs" / "discovery" / "review_packet"
+    docs_dir = ROOT / "docs" / "review_packet"
+    docs_dir.mkdir(parents=True, exist_ok=True)
+
+    import shutil
+    if review_dir.exists():
+        for item in review_dir.iterdir():
+            dst = docs_dir / item.name
+            if item.is_dir():
+                shutil.copytree(item, dst, dirs_exist_ok=True)
+            else:
+                shutil.copy2(item, dst)
+        print(f"Published all review packet assets to {docs_dir}")
+
+    # 3. Validate assets using the validation module
+    try:
+        from scripts.validate_review_packet_assets import validate_directory
+        print("\n--- Running Asset Validation ---")
+        success = validate_directory(docs_dir)
+        if not success:
+            print("Error: Asset validation failed.")
+            sys.exit(1)
+    except Exception as e:
+        print(f"Error executing validator: {e}")
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
