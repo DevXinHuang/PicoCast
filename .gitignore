@@ -46,6 +46,7 @@ cases/*/nexrad/*/index/*
 cases/*/outputs/discovery/regional_discovered_clusters.parquet
 cases/*/outputs/discovery/KEMX/
 cases/*/outputs/discovery/KIWA/
+cases/*/outputs/ml/
 
 # Notebook execution artifacts.
 .ipynb_checkpoints/
