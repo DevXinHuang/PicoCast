@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PicoCAST — Interactive Geospatial Maps</title>
+    <title>PicoCAST — Interactive Maps & Altitude Validation</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -142,26 +142,123 @@
         }
         .footer a { color: #58a6ff; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+
+        /* Altitude validation section */
+        .plot-section {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .plot-section h3 {
+            color: #58a6ff;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        .plot-section .plot-img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            margin-bottom: 1rem;
+        }
+        .plot-section .explanation {
+            color: #8b949e;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .plot-section .explanation strong {
+            color: #c9d1d9;
+        }
+        .plot-section .key-finding {
+            background: #0d1117;
+            border-left: 3px solid #3fb950;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.85rem;
+            color: #7ee787;
+        }
+        .plot-section .caveat {
+            background: #0d1117;
+            border-left: 3px solid #9e6a03;
+            padding: 0.75rem 1rem;
+            margin-top: 0.75rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.85rem;
+            color: #e3b341;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        .results-table th {
+            text-align: left;
+            padding: 0.5rem 0.6rem;
+            background: #0d1117;
+            color: #f0f6fc;
+            border-bottom: 2px solid #21262d;
+            font-size: 0.8rem;
+        }
+        .results-table td {
+            padding: 0.45rem 0.6rem;
+            border-bottom: 1px solid #21262d;
+        }
+        .results-table .excellent { color: #3fb950; font-weight: 600; }
+        .results-table .strong { color: #58a6ff; font-weight: 600; }
+        .results-table .moderate { color: #e3b341; }
+        .nav-pills {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .nav-pills a {
+            background: #21262d;
+            color: #58a6ff;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .nav-pills a:hover {
+            background: #30363d;
+        }
     </style>
 </head>
 <body>
     <div class="hero">
         <h1>🎈 PicoCAST</h1>
         <p class="subtitle">
-            Interactive geospatial maps for the K7UAZ pico-balloon validation case.
-            Inspect the Maidenhead grid-square track, KEMX radar candidates, and radar geometry
-            overlaid on real-world terrain.
+            Interactive geospatial maps and altitude-first validation for the K7UAZ
+            pico-balloon case. Uses radar gate altitude — not just horizontal distance —
+            as the primary discriminator for candidate quality.
         </p>
         <span class="badge">K7UAZ · 2026-03-22 · KEMX Radar</span>
+        <div class="nav-pills" style="justify-content: center; margin-top: 1.2rem;">
+            <a href="#maps">Interactive Maps</a>
+            <a href="#altitude">Altitude Validation</a>
+            <a href="#geojson">GeoJSON Layers</a>
+            <a href="#guide">Layers Guide</a>
+        </div>
     </div>
 
     <div class="container">
         <div class="warning-banner">
-            Balloon position is estimated from Maidenhead grid-square centers, not exact GPS.
-            Candidate offsets are relative to the grid-center estimate.
+            Balloon horizontal position is estimated from 6-character Maidenhead grid squares
+            (~4.6 × 7.1 km at this latitude). Altitude from telemetry is much more reliable.
+            Candidate offsets are relative to the grid-center estimate, not exact GPS.
         </div>
 
-        <h2 class="section-title">Interactive Maps</h2>
+        <!-- ============================================================ -->
+        <!-- INTERACTIVE MAPS -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="maps">Interactive Maps</h2>
         <div class="cards">
             <a class="card" href="maps/interactive_candidate_map.html">
                 <h3>🗺️ Interactive Candidate Map</h3>
@@ -177,7 +274,7 @@
                 <p>
                     Focused view on the best candidate. Shows the matching grid square,
                     distance line from grid center to candidate, nearby radar gates
-                    colored by reflectivity, and altitude mismatch details.
+                    colored by reflectivity, and altitude consistency details.
                 </p>
                 <span class="tag">Candidate Detail</span>
             </a>
@@ -192,7 +289,191 @@
             </a>
         </div>
 
-        <h2 class="section-title">GeoJSON Data Layers</h2>
+        <!-- ============================================================ -->
+        <!-- ALTITUDE-FIRST VALIDATION -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="altitude">Altitude-First Validation</h2>
+
+        <div style="color: #8b949e; font-size: 0.95rem; line-height: 1.6; margin-top: 0.5rem; margin-bottom: 1rem;">
+            The balloon's horizontal position comes from Maidenhead grid squares — each square is several km across.
+            But the <strong style="color: #c9d1d9;">altitude from telemetry is much more precise</strong>.
+            This section asks: <em>do the candidate radar returns follow the balloon altitude-time profile?</em>
+            <br><br>
+            We use the term <strong style="color: #c9d1d9;">"altitude-consistent near-track candidate"</strong>
+            — not "detection." Altitude consistency is necessary but not sufficient evidence.
+        </div>
+
+        <!-- Plot 1: Altitude vs Time -->
+        <div class="plot-section">
+            <h3>📊 Plot 1 — Candidate Altitude vs. Expected Balloon Altitude</h3>
+            <img class="plot-img" src="altitude_validation/altitude_time_candidate_overlay.png"
+                 alt="Candidate altitude vs expected balloon altitude over time">
+            <div class="explanation">
+                <strong>What this shows:</strong> The blue line is the expected balloon altitude from telemetry
+                (linearly interpolated between reporting points). The shaded band is ±500 m. Each dot is a radar
+                candidate cluster, colored by its composite candidate score (green = high, red = low).
+                Pink-circled dots are the focus candidates (ranks 1, 3, 6, 7, 9).
+                <br><br>
+                <strong>What to look for:</strong> Candidates that fall on or near the blue altitude curve —
+                especially within the ±500 m band — are altitude-consistent. Candidates far above or below
+                the curve are likely weather clutter, terrain, or other non-balloon targets.
+            </div>
+            <div class="key-finding">
+                <strong>Key finding:</strong> Several candidates closely track the ascending balloon altitude,
+                particularly R3 (−133 m), R6 (+25 m), and R7 (−118 m) during the 20:00–20:14 UTC period.
+                These are classified as "excellent altitude match."
+            </div>
+        </div>
+
+        <!-- Plot 2: Vertical Mismatch -->
+        <div class="plot-section">
+            <h3>📊 Plot 2 — Signed Vertical Mismatch vs. Time</h3>
+            <img class="plot-img" src="altitude_validation/vertical_mismatch_vs_time.png"
+                 alt="Signed vertical mismatch (candidate minus expected altitude) over time">
+            <div class="explanation">
+                <strong>What this shows:</strong> For each candidate, the signed vertical mismatch
+                (candidate altitude − expected balloon altitude) is plotted against scan time.
+                The black line is 0 m (perfect altitude match). Dashed guide lines are drawn at
+                ±250 m, ±500 m, and ±1,000 m.
+                <br><br>
+                <strong>What to look for:</strong> Good candidates cluster near 0.
+                A negative value means the candidate is below the expected altitude;
+                positive means above. Focus candidates (pink dots) are labeled by rank.
+            </div>
+            <div class="key-finding">
+                <strong>Key finding:</strong> R6 has only +25 m mismatch. R3 and R7 are within ±150 m.
+                R1 and R9 (both at 20:28 UTC) have −389 m mismatch — still within the "strong" band
+                but not excellent.
+            </div>
+            <div class="caveat">
+                <strong>Caveat:</strong> Radar gate altitude is the beam-center altitude. The physical beam
+                has width that increases with range from KEMX. At ~100 km range, the beam may span several
+                hundred meters vertically, so a mismatch of a few hundred meters doesn't necessarily
+                mean the balloon was outside the beam.
+            </div>
+        </div>
+
+        <!-- Plot 3: Gate Altitude Distribution -->
+        <div class="plot-section">
+            <h3>📊 Plot 3 — Nearby Gate Altitude Distributions</h3>
+            <img class="plot-img" src="altitude_validation/nearby_gate_altitude_distribution.png"
+                 alt="Histogram of nearby radar gate altitudes at key scan times">
+            <div class="explanation">
+                <strong>What this shows:</strong> For 6 key scan times spread across the flight, the histogram
+                shows the altitude distribution of <em>all</em> nearby radar gates (from the 2.18M-row
+                near_track_gates.csv). The blue dashed line is the expected balloon altitude.
+                The pink line is the best candidate's altitude at that scan time.
+                <br><br>
+                <strong>What to look for:</strong> If the candidate altitude is at a "special" position in
+                the distribution — away from the bulk of the gates — that supports it being a distinct target
+                (like a balloon) rather than part of a large weather feature. If the candidate altitude falls
+                in the middle of a dense cluster of gates at similar altitude, it could be weather.
+            </div>
+        </div>
+
+        <!-- Plot 4: Rank Comparison -->
+        <div class="plot-section">
+            <h3>📊 Plot 4 — Altitude-First Rank vs. Original Rank</h3>
+            <img class="plot-img" src="altitude_validation/altitude_priority_rank_vs_original_rank.png"
+                 alt="Scatter plot comparing altitude-first rank to original composite rank">
+            <div class="explanation">
+                <strong>What this shows:</strong> Each dot is one of the top 30 candidates. The X-axis is the
+                original composite rank (which weighted horizontal distance, reflectivity, compactness, etc.).
+                The Y-axis is the new altitude-priority rank (which puts altitude consistency first).
+                <br><br>
+                <strong>How to read it:</strong>
+                Points <em>below</em> the diagonal were <strong>promoted</strong> by altitude-first scoring
+                (altitude match is better than the original score suggested).
+                Points <em>above</em> the diagonal were <strong>demoted</strong>
+                (original score was high but altitude match is poor).
+                Points near the diagonal didn't change much.
+            </div>
+            <div class="key-finding">
+                <strong>Key finding:</strong> Original Rank 6 moves to altitude-priority Rank 4 (+25 m mismatch).
+                Original Rank 3 moves to altitude-priority Rank 7 (−133 m).
+                Original Rank 1 drops to altitude-priority Rank 38 (−389 m mismatch, demoted by the altitude-first method).
+            </div>
+        </div>
+
+        <!-- Altitude-Prioritized Results Table -->
+        <div class="plot-section">
+            <h3>📋 Focus Candidates: Original Rank vs. Altitude Rank</h3>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Orig Rank</th>
+                        <th>Alt Rank</th>
+                        <th>Scan Time</th>
+                        <th>Signed Mismatch</th>
+                        <th>Altitude Label</th>
+                        <th>Composite Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>R1</td>
+                        <td>→ 38</td>
+                        <td>20:28:40</td>
+                        <td>−389 m</td>
+                        <td class="strong">strong altitude match</td>
+                        <td>0.734</td>
+                    </tr>
+                    <tr>
+                        <td>R3</td>
+                        <td>→ 7</td>
+                        <td>20:00:31</td>
+                        <td>−133 m</td>
+                        <td class="excellent">excellent altitude match</td>
+                        <td>0.715</td>
+                    </tr>
+                    <tr>
+                        <td>R6</td>
+                        <td>→ 4</td>
+                        <td>20:14:42</td>
+                        <td>+25 m</td>
+                        <td class="excellent">excellent altitude match ✨</td>
+                        <td>0.674</td>
+                    </tr>
+                    <tr>
+                        <td>R7</td>
+                        <td>→ 13</td>
+                        <td>20:07:36</td>
+                        <td>−118 m</td>
+                        <td class="excellent">excellent altitude match</td>
+                        <td>0.674</td>
+                    </tr>
+                    <tr>
+                        <td>R9</td>
+                        <td>→ 39</td>
+                        <td>20:28:40</td>
+                        <td>−389 m</td>
+                        <td class="strong">strong altitude match</td>
+                        <td>0.666</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="explanation" style="margin-top: 1rem;">
+                <strong>Reading the table:</strong> "Orig Rank" is the original composite score ranking.
+                "Alt Rank" is the new altitude-priority ranking. R6 stands out with only +25 m altitude
+                mismatch at 20:14 UTC — the closest match in the entire dataset.
+                R3 and R7 are also excellent.
+                R1 and R9 are demoted because their −389 m mismatch, while still "strong," is not as
+                compelling as the excellent-match candidates.
+            </div>
+            <div class="caveat">
+                <strong>This is not a detection claim.</strong> These candidates are
+                "altitude-consistent near-track candidates." Many factors — weather, ground clutter,
+                biological targets — can produce radar returns at similar altitudes. Altitude consistency
+                raises the prior probability but is not proof.
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- GeoJSON Layers -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="geojson">GeoJSON Data Layers</h2>
         <table class="layers-table">
             <thead>
                 <tr>
@@ -242,7 +523,11 @@
             </tbody>
         </table>
 
-        <h2 class="section-title">Map Layers Guide</h2>
+        <!-- ============================================================ -->
+        <!-- Map Layers Guide -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="guide">Map Layers Guide</h2>
         <table class="layers-table">
             <thead>
                 <tr><th>Layer</th><th>Default</th><th>What to Look For</th></tr>
@@ -250,7 +535,7 @@
             <tbody>
                 <tr><td>Expected Track</td><td>Visible</td><td>Green→red altitude gradient shows ascent profile</td></tr>
                 <tr><td>Grid Squares</td><td>Visible</td><td>Blue→red time gradient; candidate should be near/inside</td></tr>
-                <tr><td>Top Candidates</td><td>Visible</td><td>Numbered rank labels; click for score/distance details</td></tr>
+                <tr><td>Top Candidates</td><td>Visible</td><td>Numbered rank labels; click for score/distance/altitude details</td></tr>
                 <tr><td>All Candidates</td><td>Hidden</td><td>Toggle on to see full 254-cluster coverage</td></tr>
                 <tr><td>Candidate Gates</td><td>Hidden</td><td>Toggle on to see gate-level reflectivity (top 5 only)</td></tr>
                 <tr><td>KEMX Radar</td><td>Visible</td><td>Tower icon; check candidate range is plausible</td></tr>
@@ -261,7 +546,8 @@
 
     <div class="footer">
         <p>PicoCAST — Picoballoon Candidate Search Tool</p>
-        <p><a href="https://github.com/DevXinHuang/PicoCast">GitHub Repository</a></p>
+        <p><a href="https://github.com/DevXinHuang/PicoCast">GitHub Repository</a> ·
+           <a href="altitude_validation/altitude_validation_report.md">Full Altitude Validation Report</a></p>
     </div>
 </body>
 </html>
