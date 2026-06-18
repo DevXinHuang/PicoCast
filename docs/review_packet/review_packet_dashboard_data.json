@@ -2102,6 +2102,164 @@
       "doppler_notes": "Needs visual inspection"
     }
   ],
+  "wind_points": [
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 19:53:25+00:00",
+      "candidate_speed_kmh": null,
+      "candidate_bearing_deg": null,
+      "hrrr_wind_speed_kmh": 123.90587339282224,
+      "hrrr_wind_to_direction_deg": 94.43698217350318,
+      "speed_difference_kmh": null,
+      "speed_ratio": null,
+      "bearing_difference_deg": null,
+      "wind_consistency_label": "insufficient_wind_data"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:00:31+00:00",
+      "candidate_speed_kmh": 63.5427249452442,
+      "candidate_bearing_deg": 139.6463663263017,
+      "hrrr_wind_speed_kmh": 132.41287660006336,
+      "hrrr_wind_to_direction_deg": 93.60351085042176,
+      "speed_difference_kmh": -68.87015165481915,
+      "speed_ratio": 0.4798832755304237,
+      "bearing_difference_deg": 46.042855475879946,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:07:36+00:00",
+      "candidate_speed_kmh": 54.77590157421727,
+      "candidate_bearing_deg": 123.25198017832348,
+      "hrrr_wind_speed_kmh": 141.6353309648439,
+      "hrrr_wind_to_direction_deg": 93.35325470670352,
+      "speed_difference_kmh": -86.85942939062662,
+      "speed_ratio": 0.3867389669023579,
+      "bearing_difference_deg": 29.89872547161997,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:14:42+00:00",
+      "candidate_speed_kmh": 106.51790355747588,
+      "candidate_bearing_deg": 66.02287797972099,
+      "hrrr_wind_speed_kmh": 150.06850259276212,
+      "hrrr_wind_to_direction_deg": 93.63710498427996,
+      "speed_difference_kmh": -43.55059903528624,
+      "speed_ratio": 0.7097952049707018,
+      "bearing_difference_deg": -27.614227004558984,
+      "wind_consistency_label": "weak_atmospheric_wind_consistency"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:21:35+00:00",
+      "candidate_speed_kmh": 23.71498658997237,
+      "candidate_bearing_deg": 54.74538513675759,
+      "hrrr_wind_speed_kmh": 153.08312006402377,
+      "hrrr_wind_to_direction_deg": 93.69582845525338,
+      "speed_difference_kmh": -129.3681334740514,
+      "speed_ratio": 0.1549157515214876,
+      "bearing_difference_deg": -38.950443318495786,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:28:40+00:00",
+      "candidate_speed_kmh": 18.685367970313308,
+      "candidate_bearing_deg": 73.26160652074134,
+      "hrrr_wind_speed_kmh": 168.3831883059175,
+      "hrrr_wind_to_direction_deg": 91.11234009624648,
+      "speed_difference_kmh": -149.6978203356042,
+      "speed_ratio": 0.1109693203834925,
+      "bearing_difference_deg": -17.85073357550516,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KEMX_T004",
+      "scan_time_utc": "2026-03-22 20:49:55+00:00",
+      "candidate_speed_kmh": 34.988476005340935,
+      "candidate_bearing_deg": 61.09197402155013,
+      "hrrr_wind_speed_kmh": 184.2710349763158,
+      "hrrr_wind_to_direction_deg": 90.0116165420633,
+      "speed_difference_kmh": -149.28255897097486,
+      "speed_ratio": 0.1898750718464134,
+      "bearing_difference_deg": -28.91964252051315,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 19:26:39+00:00",
+      "candidate_speed_kmh": null,
+      "candidate_bearing_deg": null,
+      "hrrr_wind_speed_kmh": 76.70188263387585,
+      "hrrr_wind_to_direction_deg": 93.7210554445578,
+      "speed_difference_kmh": null,
+      "speed_ratio": null,
+      "bearing_difference_deg": null,
+      "wind_consistency_label": "insufficient_wind_data"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 19:33:45+00:00",
+      "candidate_speed_kmh": 13.304636970396404,
+      "candidate_bearing_deg": 275.91904204096534,
+      "hrrr_wind_speed_kmh": 74.61562560035341,
+      "hrrr_wind_to_direction_deg": 91.97971207933382,
+      "speed_difference_kmh": -61.31098862995701,
+      "speed_ratio": 0.178308991760747,
+      "bearing_difference_deg": -176.06067003836847,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 19:40:52+00:00",
+      "candidate_speed_kmh": 0.2375485991506249,
+      "candidate_bearing_deg": 312.9119189374936,
+      "hrrr_wind_speed_kmh": 101.82990339085303,
+      "hrrr_wind_to_direction_deg": 95.006986529728,
+      "speed_difference_kmh": -101.5923547917024,
+      "speed_ratio": 0.0023327980410512,
+      "bearing_difference_deg": -142.0950675922344,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 19:48:00+00:00",
+      "candidate_speed_kmh": 59.25122335044322,
+      "candidate_bearing_deg": 23.169957753044855,
+      "hrrr_wind_speed_kmh": 118.7019402350017,
+      "hrrr_wind_to_direction_deg": 94.9510054330969,
+      "speed_difference_kmh": -59.45071688455848,
+      "speed_ratio": 0.4991596871385577,
+      "bearing_difference_deg": -71.78104768005204,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 19:55:07+00:00",
+      "candidate_speed_kmh": 29.876169572802343,
+      "candidate_bearing_deg": 44.258158974912874,
+      "hrrr_wind_speed_kmh": 118.21164826658963,
+      "hrrr_wind_to_direction_deg": 95.00182032888551,
+      "speed_difference_kmh": -88.3354786937873,
+      "speed_ratio": 0.2527345655939584,
+      "bearing_difference_deg": -50.74366135397264,
+      "wind_consistency_label": "wind_inconsistent"
+    },
+    {
+      "tracklet_id": "KIWA_T001",
+      "scan_time_utc": "2026-03-22 20:02:14+00:00",
+      "candidate_speed_kmh": 126.69080866400871,
+      "candidate_bearing_deg": 18.616282683774216,
+      "hrrr_wind_speed_kmh": 135.30084383807312,
+      "hrrr_wind_to_direction_deg": 93.39499776215705,
+      "speed_difference_kmh": -8.610035174064393,
+      "speed_ratio": 0.9363637732786884,
+      "bearing_difference_deg": -74.77871507838283,
+      "wind_consistency_label": "wind_inconsistent"
+    }
+  ],
   "colors": {
     "KEMX": "#d73027",
     "KIWA": "#1f78b4"
