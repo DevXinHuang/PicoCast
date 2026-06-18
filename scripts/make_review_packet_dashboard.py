@@ -371,6 +371,11 @@ def build_dashboard_data(config_path: Path, top_n: int = 10) -> dict:
     if doppler_summary_path.exists():
         doppler_summaries = pd.read_csv(doppler_summary_path).to_dict("records")
 
+    wind_summary_path = case_dir / "outputs" / "wind_context" / "wind_validated_tracklets.csv"
+    wind_points = []
+    if wind_summary_path.exists():
+        wind_points = pd.read_csv(wind_summary_path).to_dict("records")
+
     items = build_review_items(review_queue, points, cross_radar, top_n)
 
     top_item = items[0] if items else {}
@@ -396,6 +401,7 @@ def build_dashboard_data(config_path: Path, top_n: int = 10) -> dict:
         "range_rings_km": config.get("mapping", {}).get("range_rings_km", [50, 100, 150, 200]),
         "review_items": items,
         "doppler_summaries": doppler_summaries,
+        "wind_points": wind_points,
         "colors": SITE_COLORS,
     }
     return clean_value(data)
@@ -766,6 +772,7 @@ def render_dashboard_html(data: dict) -> str:
         <button class="tab-btn" data-tab="mismatch">Vertical mismatch</button>
         <button class="tab-btn" data-tab="speed">Speed</button>
         <button class="tab-btn" data-tab="doppler">Doppler</button>
+        <button class="tab-btn" data-tab="wind">Atmospheric Wind</button>
         <button class="tab-btn" data-tab="table">Point table</button>
       </div>
       <div class="chart-wrap tab-panel" id="altitudePanel"><canvas id="altitudeChart"></canvas></div>
@@ -784,6 +791,17 @@ def render_dashboard_html(data: dict) -> str:
         </div>
       </div>
       <div class="table-wrap tab-panel" id="tablePanel" style="display:none;"></div>
+      <div class="table-wrap tab-panel" id="windPanel" style="display:none;">
+        <div style="padding: 1rem; color: var(--ink);">
+          <h3 style="margin-top: 0;">Atmospheric Wind Consistency</h3>
+          <p>This panel compares the candidate's geometric motion to NOAA HRRR/RAP atmospheric winds.</p>
+          <ul>
+            <li>If a candidate is a drifting balloon, its speed and heading must roughly match the winds at its altitude.</li>
+            <li>Large discrepancies indicate the tracklet is likely an altitude-matching artifact, not a physical object drifting with the wind.</li>
+          </ul>
+          <div id="windSummaryTarget" style="margin-top: 1.5rem; overflow-x: auto;"></div>
+        </div>
+      </div>
     </section>
   </div>
   <footer>
@@ -1120,6 +1138,49 @@ def render_dashboard_html(data: dict) -> str:
         </table>`;
     }}
 
+    function renderWindSummary(item) {{
+      if (!dashboardData.wind_points || dashboardData.wind_points.length === 0) {{
+        document.getElementById("windSummaryTarget").innerHTML = "<p>No wind data available.</p>";
+        return;
+      }}
+      
+      const relatedPoints = dashboardData.wind_points.filter(wp => item.tracklet_ids.includes(wp.tracklet_id));
+      if (relatedPoints.length === 0) {{
+        document.getElementById("windSummaryTarget").innerHTML = "<p>No wind data for this candidate.</p>";
+        return;
+      }}
+      
+      const rows = relatedPoints.map(wp => `
+        <tr>
+          <td>${{wp.scan_time_utc}}</td>
+          <td>${{fmt(wp.candidate_speed_kmh, 1)}}</td>
+          <td>${{fmt(wp.candidate_bearing_deg, 1)}}&deg;</td>
+          <td>${{fmt(wp.hrrr_wind_speed_kmh, 1)}}</td>
+          <td>${{fmt(wp.hrrr_wind_to_direction_deg, 1)}}&deg;</td>
+          <td>${{fmt(wp.speed_difference_kmh, 1)}}</td>
+          <td>${{fmt(wp.bearing_difference_deg, 1)}}&deg;</td>
+          <td><span class="badge" style="background:#fef0f0; color:#c53030; border:1px solid #fed7d7;">${{wp.wind_consistency_label}}</span></td>
+        </tr>
+      `).join("");
+      
+      document.getElementById("windSummaryTarget").innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Scan Time</th>
+              <th>Candidate Speed (km/h)</th>
+              <th>Candidate Bearing</th>
+              <th>Wind Speed (km/h)</th>
+              <th>Wind Bearing</th>
+              <th>Speed Diff (km/h)</th>
+              <th>Bearing Diff</th>
+              <th>Label</th>
+            </tr>
+          </thead>
+          <tbody>${{rows}}</tbody>
+        </table>`;
+    }}
+
     function renderDopplerSummary(item) {{
       if (!dashboardData.doppler_summaries || dashboardData.doppler_summaries.length === 0) {{
         document.getElementById("dopplerSummaryTarget").innerHTML = "<p>No Doppler data available.</p>";
@@ -1168,8 +1229,11 @@ def render_dashboard_html(data: dict) -> str:
       renderDetails(item);
       updateMap(item);
       renderCharts(item);
-      renderPointTable(item);
+      renderMismatchTable(item);
+      renderSpeedTable(item);
       renderDopplerSummary(item);
+      renderWindSummary(item);
+      renderPointTable(item);
     }}
 
     document.querySelectorAll(".tab-btn").forEach(button => {{

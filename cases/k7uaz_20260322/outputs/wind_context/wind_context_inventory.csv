@@ -1,0 +1,5 @@
+model,cycle_time_utc,status,file
+hrrr,2026-03-22 19:00,success,/Users/dhuang/data/hrrr/20260322/hrrr.t19z.wrfprsf00.grib2
+hrrr,2026-03-22 20:00,success,/Users/dhuang/data/hrrr/20260322/hrrr.t20z.wrfprsf00.grib2
+hrrr,2026-03-22 21:00,success,/Users/dhuang/data/hrrr/20260322/hrrr.t21z.wrfprsf00.grib2
+hrrr,2026-03-22 22:00,success,/Users/dhuang/data/hrrr/20260322/hrrr.t22z.wrfprsf00.grib2
