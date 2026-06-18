@@ -240,6 +240,7 @@
         </p>
         <span class="badge">K7UAZ · 2026-03-22 · KEMX Radar</span>
         <div class="nav-pills" style="justify-content: center; margin-top: 1.2rem;">
+            <a href="#about">About PicoCAST</a>
             <a href="#maps">Interactive Maps</a>
             <a href="#altitude">Altitude Validation</a>
             <a href="#pathfit">Path Fitting</a>
@@ -249,6 +250,27 @@
     </div>
 
     <div class="container">
+        <!-- ============================================================ -->
+        <!-- ABOUT PICOCAST -->
+        <!-- ============================================================ -->
+        
+        <h2 class="section-title" id="about">About PicoCAST</h2>
+        <div class="explanation" style="margin-bottom: 2rem;">
+            <p style="margin-bottom: 1rem;">
+                <strong>PicoCAST</strong> is an experimental research pipeline designed to detect and track weak, non-stationary targets (like amateur high-altitude pico-balloons) within archived NOAA NEXRAD Level II weather radar data.
+            </p>
+            <p style="margin-bottom: 1rem;">
+                Detecting objects with a radar cross-section of mere centimeters at ranges up to 200 km is a classic "needle in a haystack" problem. Traditional weather algorithms filter these out as noise or biological clutter. PicoCAST takes a different approach:
+            </p>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                <li><strong>Interpretability First:</strong> We use explicit, tunable heuristics rather than opaque machine learning models to extract point-target features (reflectivity, velocity, dual-pol texture).</li>
+                <li><strong>Telemetry-Guided Validation:</strong> We use known pico-balloon flight telemetry (horizontal Maidenhead grid squares + highly accurate GPS altitude) to validate our detections against ground truth.</li>
+                <li><strong>Altitude-Constrained Tracking:</strong> Because horizontal grid squares are large (~5km wide), we heavily weight the vertical correlation between the radar beam's gate altitude and the balloon's reported altitude.</li>
+            </ul>
+            <p>
+                The validation case presented below focuses on the <strong>K7UAZ</strong> balloon launch on March 22, 2026, tracked by the <strong>KEMX</strong> radar station in Tucson, Arizona.
+            </p>
+        </div>
         <div class="warning-banner">
             Balloon horizontal position is estimated from 6-character Maidenhead grid squares
             (~4.6 × 7.1 km at this latitude). Altitude from telemetry is much more reliable.

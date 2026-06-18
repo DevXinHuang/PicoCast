@@ -161,6 +161,27 @@ open cases/k7uaz_20260322/outputs/maps/rank_01_validation_map.html
 > **Note:** Balloon position is estimated from Maidenhead grid-square centers,
 > not exact GPS. Candidate offsets are relative to the grid-center estimate.
 
+### Altitude-First Validation
+
+Because the balloon horizontal position comes from coarse Maidenhead grid squares (~5-7 km wide), but the telemetry altitude is precise, we run an altitude-first validation to rescore candidates:
+
+```bash
+python scripts/validate_altitude_consistency.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+```
+
+This promotes candidates whose radar gate altitude strongly matches the balloon telemetry altitude, generating updated scores, histograms, and mismatch plots in `outputs/candidates/KEMX/altitude_validation/`.
+
+### Candidate Trajectory Fitting
+
+Finally, test whether the top altitude-consistent candidates can form a physically plausible, continuous trajectory without impossible jumps:
+
+```bash
+python scripts/fit_candidate_path.py cases/k7uaz_20260322/config.yaml --radar-site KEMX --start-time 2026-03-22T20:00:00Z --end-time 2026-03-22T20:30:00Z
+python scripts/make_path_dashboard.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+```
+
+This outputs a smoothed trajectory GeoJSON and an interactive dashboard integrating the GIS map and an altitude vs. time progression chart.
+
 ## NOAA Data Attribution
 
 When distributing derived results from NOAA/NEXRAD data, attribute NOAA/NWS as
