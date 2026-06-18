@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PicoCAST K7UAZ Review Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #637083;
+      --line: #d7dce3;
+      --blue: #1f78b4;
+      --red: #d73027;
+      --purple: #7b3294;
+      --green: #18864b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f3f6f9 0%, #eef2f6 42%, #f8fafc 100%);
+      color: var(--ink);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .hero {
+      padding: 28px 32px 26px;
+      background:
+        linear-gradient(135deg, rgba(16, 24, 32, 0.96), rgba(32, 45, 56, 0.94)),
+        radial-gradient(circle at 82% 24%, rgba(215, 48, 39, 0.28), transparent 30%),
+        radial-gradient(circle at 70% 86%, rgba(31, 120, 180, 0.28), transparent 34%);
+      color: white;
+      border-bottom: 4px solid #d29922;
+    }
+    .hero-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #f3c969;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 52px;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+    .hero p { margin: 0; color: #d7e0ea; max-width: 920px; line-height: 1.5; font-size: 16px; }
+    .hero-card {
+      min-width: 260px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .hero-card span { display: block; color: #ccd6e0; font-size: 12px; margin-bottom: 4px; }
+    .hero-card strong { font-size: 22px; }
+    .shell {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 18px 24px 28px;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+    .metric strong { font-size: 20px; }
+    .story {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 16px;
+    }
+    .story-step {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 14px 13px;
+      min-height: 132px;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+    }
+    .story-step::before {
+      content: attr(data-step);
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #17202a;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .story-step h2 { margin: 0 0 6px; font-size: 15px; }
+    .story-step p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.42; }
+    .story-step.final { border-color: #d29922; box-shadow: 0 6px 18px rgba(210, 153, 34, 0.13); }
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }
+    .section-heading h2 { margin: 0 0 4px; font-size: 16px; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      border: 1px solid #e0b33c;
+      background: #fff8e5;
+      color: #614500;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(520px, 1.6fr) minmax(340px, 0.8fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(16, 24, 32, 0.06);
+      overflow: hidden;
+    }
+    #map { height: 610px; width: 100%; }
+    .side { padding: 16px; }
+    .side h2 { margin: 0 0 8px; font-size: 18px; }
+    .side p { color: var(--muted); line-height: 1.45; }
+    .rank-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .rank-btn {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+    }
+    .rank-btn.active {
+      border-color: #2f80ed;
+      background: #eaf3ff;
+      box-shadow: inset 0 0 0 1px #2f80ed;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .detail {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #fbfcfe;
+    }
+    .detail span { display: block; color: var(--muted); font-size: 11px; }
+    .detail strong { font-size: 15px; }
+    .caveat {
+      border-left: 4px solid #d29922;
+      background: #fff8e5;
+      padding: 10px 12px;
+      color: #604100;
+      line-height: 1.4;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+    .evidence-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .evidence-strip div {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #fbfcfe;
+    }
+    .evidence-strip span { display: block; color: var(--muted); font-size: 11px; }
+    .evidence-strip strong { font-size: 14px; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .tab-btn {
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      background: #eef2f6;
+      border-radius: 6px 6px 0 0;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .tab-btn.active { background: white; color: #0b63ce; font-weight: 700; }
+    .chart-wrap { padding: 16px; height: 360px; }
+    .chart-wrap canvas { width: 100%; height: 300px; }
+    .table-wrap { padding: 16px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 13px; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: #f2f5f8; color: #344054; position: sticky; top: 0; }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #edf2f7;
+    }
+    .site-kemx { color: var(--red); }
+    .site-kiwa { color: var(--blue); }
+    footer {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 24px 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 980px) {
+      .layout, .summary, .story, .hero-inner, .evidence-strip { grid-template-columns: 1fr; }
+      .hero { padding: 24px 24px 26px; }
+      .hero h1 { font-size: 40px; }
+      #map { height: 520px; }
+    }
+    @media (max-width: 520px) {
+      .hero h1 { font-size: 34px; }
+      .hero p { font-size: 15px; }
+      .shell { padding: 16px 16px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">PicoCAST review packet</p>
+        <h1>K7UAZ Candidate Radar Feature Review</h1>
+        <p>
+          A chronological research view: start with the known balloon telemetry,
+          compare the strongest KEMX/KIWA near-track features, then inspect altitude
+          and speed consistency before making any science claim.
+        </p>
+      </div>
+      <div class="hero-card">
+        <span>Primary artifact</span>
+        <strong>Open this page first</strong>
+      </div>
+    </div>
+  </header>
+  <div class="shell">
+    <section class="summary">
+      <div class="metric"><span>Case</span><strong id="caseMetric"></strong></div>
+      <div class="metric"><span>Top candidate</span><strong id="topMetric"></strong></div>
+      <div class="metric"><span>Review items shown</span><strong id="countMetric"></strong></div>
+      <div class="metric"><span>Major telemetry gap</span><strong id="gapMetric"></strong></div>
+    </section>
+    <section class="story" aria-label="Research path">
+      <article class="story-step" data-step="1">
+        <h2>Telemetry anchored the search</h2>
+        <p>K7UAZ launch-day records provide time, grid-center position, altitude, climb rate, and speed context.</p>
+      </article>
+      <article class="story-step" data-step="2">
+        <h2>KEMX/KIWA scans were matched</h2>
+        <p>Radar scans were compared against the expected track, using the known flight window before any blind search.</p>
+      </article>
+      <article class="story-step" data-step="3">
+        <h2>Tracklets were deduplicated</h2>
+        <p>Near-duplicate families were collapsed so the review queue favors inspectable evidence over repeated variants.</p>
+      </article>
+      <article class="story-step final" data-step="4">
+        <h2>This page is the review packet</h2>
+        <p>Ranked candidates, GIS context, altitude mismatch, speed comparison, and caveats are combined here.</p>
+      </article>
+    </section>
+    <main class="layout">
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <h2>Geospatial Review</h2>
+            <p>Telemetry grid centers, radar sites, range rings, top tracklets, and cross-radar association links.</p>
+          </div>
+          <span class="status-pill">Visual inspection only</span>
+        </div>
+        <div id="map"></div>
+      </section>
+    <aside class="panel side">
+      <h2>Candidate Review</h2>
+      <p id="selectedReason"></p>
+      <div class="rank-list" id="rankList"></div>
+      <div class="detail-grid" id="detailGrid"></div>
+      <div class="evidence-strip">
+        <div><span>Default focus</span><strong>A001</strong></div>
+        <div><span>Radars</span><strong>KEMX + KIWA</strong></div>
+        <div><span>Status</span><strong>Needs inspection</strong></div>
+      </div>
+      <div class="caveat">
+        Candidate radar feature, not a detection claim. Horizontal balloon position comes from
+        Maidenhead grid centers, not GPS. Speed comparison is approximate during telemetry gaps.
+      </div>
+    </aside>
+    </main>
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Telemetry Consistency Checks</h2>
+          <p>Altitude is the strongest comparison. Speed is approximate because balloon positions are grid-center estimates.</p>
+        </div>
+        <span class="status-pill">No confirmed association</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="altitude">Altitude</button>
+        <button class="tab-btn" data-tab="mismatch">Vertical mismatch</button>
+        <button class="tab-btn" data-tab="speed">Speed</button>
+        <button class="tab-btn" data-tab="table">Point table</button>
+      </div>
+      <div class="chart-wrap tab-panel" id="altitudePanel"><canvas id="altitudeChart"></canvas></div>
+      <div class="chart-wrap tab-panel" id="mismatchPanel" style="display:none;"><canvas id="mismatchChart"></canvas></div>
+      <div class="chart-wrap tab-panel" id="speedPanel" style="display:none;"><canvas id="speedChart"></canvas></div>
+      <div class="table-wrap tab-panel" id="tablePanel" style="display:none;"></div>
+    </section>
+  </div>
+  <footer>
+    Data source: K7UAZ launch-day telemetry and archived NEXRAD Level II derived candidates.
+    Review status: near-track radar features requiring visual inspection and multi-radar confirmation.
+  </footer>
+  <script>
+    const dashboardData = {"case": {"case_id": "k7uaz_20260322", "case_name": "K7UAZ Pico Balloon Launch Day", "date_local": "2026-03-22", "timezone": "America/Phoenix", "top_candidate": "A001", "total_review_items": 11, "shown_review_items": 10}, "caveats": ["Candidate radar feature, not a detection claim.", "Horizontal balloon position comes from Maidenhead grid centers, not GPS.", "Speed comparison is approximate, especially during telemetry gaps."], "telemetry": [{"time_utc": "2026-03-22T19:18:00Z", "lat_deg": 32.27, "lon_deg": -110.96, "alt_m": 2340.0, "speed_kmh": 19.0, "grid_center_speed_kmh": null, "vertical_speed_m_min": null, "maidenhead_grid": "DM42mg", "gap_from_previous_min": null, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T19:28:00Z", "lat_deg": 32.27, "lon_deg": -110.88, "alt_m": 2880.0, "speed_kmh": 37.0, "grid_center_speed_kmh": 45.12962551394763, "vertical_speed_m_min": 54.0, "maidenhead_grid": "DM42ng", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T19:38:00Z", "lat_deg": 32.31, "lon_deg": -110.79, "alt_m": 3660.0, "speed_kmh": 48.0, "grid_center_speed_kmh": 57.34742019974653, "vertical_speed_m_min": 78.0, "maidenhead_grid": "DM42oh", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T19:48:00Z", "lat_deg": 32.35, "lon_deg": -110.71, "alt_m": 4280.0, "speed_kmh": 30.0, "grid_center_speed_kmh": 52.40395414879431, "vertical_speed_m_min": 62.0, "maidenhead_grid": "DM42pi", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T21:18:00Z", "lat_deg": 32.31, "lon_deg": -110.29, "alt_m": 11280.0, "speed_kmh": 33.0, "grid_center_speed_kmh": 26.474752430241768, "vertical_speed_m_min": 78.0, "maidenhead_grid": "DM42uh", "gap_from_previous_min": 90.0, "is_gap_from_previous": true}, {"time_utc": "2026-03-22T21:28:00Z", "lat_deg": 32.31, "lon_deg": -110.21, "alt_m": 11440.0, "speed_kmh": 37.0, "grid_center_speed_kmh": 45.10972006401611, "vertical_speed_m_min": 16.0, "maidenhead_grid": "DM42vh", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T21:38:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0, "speed_kmh": 41.0, "grid_center_speed_kmh": 52.421095571370316, "vertical_speed_m_min": 30.0, "maidenhead_grid": "DM42wg", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T21:48:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0, "speed_kmh": 41.0, "grid_center_speed_kmh": 0.0, "vertical_speed_m_min": 0.0, "maidenhead_grid": "DM42wg", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T21:58:00Z", "lat_deg": 32.27, "lon_deg": -110.04, "alt_m": 11780.0, "speed_kmh": 41.0, "grid_center_speed_kmh": 50.77082839090517, "vertical_speed_m_min": 4.0, "maidenhead_grid": "DM42xg", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T22:08:00Z", "lat_deg": 32.27, "lon_deg": -109.96, "alt_m": 11760.0, "speed_kmh": 41.0, "grid_center_speed_kmh": 45.129625513961976, "vertical_speed_m_min": -2.0, "maidenhead_grid": "DM52ag", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T22:18:00Z", "lat_deg": 32.23, "lon_deg": -109.88, "alt_m": 12000.0, "speed_kmh": 37.0, "grid_center_speed_kmh": 52.43822002505849, "vertical_speed_m_min": 24.0, "maidenhead_grid": "DM52bf", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}, {"time_utc": "2026-03-22T22:28:00Z", "lat_deg": 32.23, "lon_deg": -109.79, "alt_m": 11780.0, "speed_kmh": 37.0, "grid_center_speed_kmh": 50.7931972775618, "vertical_speed_m_min": -22.0, "maidenhead_grid": "DM52cf", "gap_from_previous_min": 10.0, "is_gap_from_previous": false}], "telemetry_gaps": [{"start_time_utc": "2026-03-22T19:48:00Z", "end_time_utc": "2026-03-22T21:18:00Z", "gap_min": 90.0, "start_grid": "DM42pi", "end_grid": "DM42uh"}], "grid_squares": [{"grid": "DM42mg", "coordinates": [[32.25, -111.0], [32.25, -110.91666666666667], [32.291666666666664, -110.91666666666667], [32.291666666666664, -111.0], [32.25, -111.0]]}, {"grid": "DM42ng", "coordinates": [[32.25, -110.91666666666667], [32.25, -110.83333333333333], [32.291666666666664, -110.83333333333333], [32.291666666666664, -110.91666666666667], [32.25, -110.91666666666667]]}, {"grid": "DM42oh", "coordinates": [[32.291666666666664, -110.83333333333333], [32.291666666666664, -110.75], [32.333333333333336, -110.75], [32.333333333333336, -110.83333333333333], [32.291666666666664, -110.83333333333333]]}, {"grid": "DM42pi", "coordinates": [[32.333333333333336, -110.75], [32.333333333333336, -110.66666666666667], [32.375, -110.66666666666667], [32.375, -110.75], [32.333333333333336, -110.75]]}, {"grid": "DM42uh", "coordinates": [[32.291666666666664, -110.33333333333333], [32.291666666666664, -110.25], [32.333333333333336, -110.25], [32.333333333333336, -110.33333333333333], [32.291666666666664, -110.33333333333333]]}, {"grid": "DM42vh", "coordinates": [[32.291666666666664, -110.25], [32.291666666666664, -110.16666666666667], [32.333333333333336, -110.16666666666667], [32.333333333333336, -110.25], [32.291666666666664, -110.25]]}, {"grid": "DM42wg", "coordinates": [[32.25, -110.16666666666667], [32.25, -110.08333333333333], [32.291666666666664, -110.08333333333333], [32.291666666666664, -110.16666666666667], [32.25, -110.16666666666667]]}, {"grid": "DM42xg", "coordinates": [[32.25, -110.08333333333333], [32.25, -110.0], [32.291666666666664, -110.0], [32.291666666666664, -110.08333333333333], [32.25, -110.08333333333333]]}, {"grid": "DM52ag", "coordinates": [[32.25, -110.0], [32.25, -109.91666666666667], [32.291666666666664, -109.91666666666667], [32.291666666666664, -110.0], [32.25, -110.0]]}, {"grid": "DM52bf", "coordinates": [[32.208333333333336, -109.91666666666667], [32.208333333333336, -109.83333333333333], [32.25, -109.83333333333333], [32.25, -109.91666666666667], [32.208333333333336, -109.91666666666667]]}, {"grid": "DM52cf", "coordinates": [[32.208333333333336, -109.83333333333333], [32.208333333333336, -109.75], [32.25, -109.75], [32.25, -109.83333333333333], [32.208333333333336, -109.83333333333333]]}], "radar_sites": [{"site": "KEMX", "lat": 31.89365, "lon": -110.63025, "alt_m": 1621.2, "color": "#d73027"}, {"site": "KIWA", "lat": 33.28923, "lon": -111.66991, "alt_m": 434.6, "color": "#1f78b4"}], "range_rings_km": [50, 100, 150, 200], "review_items": [{"review_rank": 1, "item_type": "cross_radar_association", "item_id": "A001", "tracklet_ids": ["KEMX_T004", "KIWA_T001"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F001", "KIWA_F001"], "review_priority_score": 0.8597, "review_reason": "strong_cross_radar_candidate with 8.8 min overlap, 9.8 km median horizontal separation, 144 m median altitude separation (16 raw association variants in this family pair)", "plot_path": "plots/review_rank_01_A001.png", "stats": {"median_abs_vertical_mismatch_m": 69.69999999999982, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 34.95496507655865, "max_candidate_speed_kmh": 126.97306646197082, "median_corridor_distance_km": 3.23, "reflectivity_min_dbz": -6.5, "reflectivity_max_dbz": 17.0, "low_confidence_speed_points": 1, "time_overlap_min": 8.8, "median_horizontal_difference_km": 9.83, "median_altitude_difference_m": 143.8, "association_label": "strong_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.391056, "lon": -110.760378, "alt_m": 4810.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 109.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -1.5, "distance_to_track_corridor_km": 6.35, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 63.588113974407115, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 54.74159089857422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:49:55Z", "lat": 32.427367, "lon": -110.367497, "alt_m": 9049.5, "expected_alt_m": 9095.7, "vertical_mismatch_m": -46.20000000000073, "candidate_segment_speed_kmh": 34.95496507655865, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 12.17, "nearest_grid": "DM42uh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T004": [{"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.391056, "lon": -110.760378, "alt_m": 4810.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 109.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -1.5, "distance_to_track_corridor_km": 6.35, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 63.588113974407115, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 54.74159089857422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:49:55Z", "lat": 32.427367, "lon": -110.367497, "alt_m": 9049.5, "expected_alt_m": 9095.7, "vertical_mismatch_m": -46.20000000000073, "candidate_segment_speed_kmh": 34.95496507655865, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 12.17, "nearest_grid": "DM42uh"}], "KIWA_T001": [{"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}]}}, {"review_rank": 2, "item_type": "cross_radar_association", "item_id": "A007", "tracklet_ids": ["KEMX_T003", "KIWA_T001"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F002", "KIWA_F001"], "review_priority_score": 0.822, "review_reason": "moderate_cross_radar_candidate with 8.8 min overlap, 15.1 km median horizontal separation, 92 m median altitude separation (56 raw association variants in this family pair)", "plot_path": "plots/review_rank_02_A007.png", "stats": {"median_abs_vertical_mismatch_m": 53.40000000000009, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 34.92805353366212, "max_candidate_speed_kmh": 126.97306646197082, "median_corridor_distance_km": 3.2199999999999998, "reflectivity_min_dbz": -6.0, "reflectivity_max_dbz": 17.0, "low_confidence_speed_points": 1, "time_overlap_min": 8.8, "median_horizontal_difference_km": 15.05, "median_altitude_difference_m": 91.8, "association_label": "moderate_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 73.96939173369492, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.30168, "lon": -110.728036, "alt_m": 5841.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 37.100000000000364, "candidate_segment_speed_kmh": 38.70708804373005, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 3.77, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.269329, "lon": -110.736586, "alt_m": 6528.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 171.80000000000018, "candidate_segment_speed_kmh": 31.14901902359419, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.0, "distance_to_track_corridor_km": 6.46, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.279594, "lon": -110.747895, "alt_m": 6688.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -204.0, "candidate_segment_speed_kmh": 13.597145930656335, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.331478, "lon": -110.783348, "alt_m": 7445.7, "expected_alt_m": 7443.0, "vertical_mismatch_m": 2.699999999999818, "candidate_segment_speed_kmh": 56.43365603089624, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 1.74, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T003": [{"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 73.96939173369492, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.30168, "lon": -110.728036, "alt_m": 5841.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 37.100000000000364, "candidate_segment_speed_kmh": 38.70708804373005, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 3.77, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.269329, "lon": -110.736586, "alt_m": 6528.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 171.80000000000018, "candidate_segment_speed_kmh": 31.14901902359419, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.0, "distance_to_track_corridor_km": 6.46, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.279594, "lon": -110.747895, "alt_m": 6688.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -204.0, "candidate_segment_speed_kmh": 13.597145930656335, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.331478, "lon": -110.783348, "alt_m": 7445.7, "expected_alt_m": 7443.0, "vertical_mismatch_m": 2.699999999999818, "candidate_segment_speed_kmh": 56.43365603089624, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 1.74, "nearest_grid": "DM42oh"}], "KIWA_T001": [{"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}]}}, {"review_rank": 3, "item_type": "cross_radar_association", "item_id": "A012", "tracklet_ids": ["KEMX_T004", "KIWA_T007"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F001", "KIWA_F002"], "review_priority_score": 0.8195, "review_reason": "moderate_cross_radar_candidate with 23.1 min overlap, 15.9 km median horizontal separation, 87 m median altitude separation (4 raw association variants in this family pair)", "plot_path": "plots/review_rank_03_A012.png", "stats": {"median_abs_vertical_mismatch_m": 89.44999999999982, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 43.34652776164184, "max_candidate_speed_kmh": 118.61361048978219, "median_corridor_distance_km": 3.76, "reflectivity_min_dbz": -6.5, "reflectivity_max_dbz": 13.5, "low_confidence_speed_points": 1, "time_overlap_min": 23.1, "median_horizontal_difference_km": 15.88, "median_altitude_difference_m": 86.7, "association_label": "moderate_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.391056, "lon": -110.760378, "alt_m": 4810.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 109.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -1.5, "distance_to_track_corridor_km": 6.35, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 63.588113974407115, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 54.74159089857422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:49:55Z", "lat": 32.427367, "lon": -110.367497, "alt_m": 9049.5, "expected_alt_m": 9095.7, "vertical_mismatch_m": -46.20000000000073, "candidate_segment_speed_kmh": 34.95496507655865, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 12.17, "nearest_grid": "DM42uh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T004": [{"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.391056, "lon": -110.760378, "alt_m": 4810.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 109.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -1.5, "distance_to_track_corridor_km": 6.35, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 63.588113974407115, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 54.74159089857422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:49:55Z", "lat": 32.427367, "lon": -110.367497, "alt_m": 9049.5, "expected_alt_m": 9095.7, "vertical_mismatch_m": -46.20000000000073, "candidate_segment_speed_kmh": 34.95496507655865, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 12.17, "nearest_grid": "DM42uh"}], "KIWA_T007": [{"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}]}}, {"review_rank": 4, "item_type": "cross_radar_association", "item_id": "A051", "tracklet_ids": ["KEMX_T005", "KIWA_T007"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F002", "KIWA_F002"], "review_priority_score": 0.7949, "review_reason": "moderate_cross_radar_candidate with 23.1 min overlap, 14.8 km median horizontal separation, 223 m median altitude separation (14 raw association variants in this family pair)", "plot_path": "plots/review_rank_04_A051.png", "stats": {"median_abs_vertical_mismatch_m": 94.19999999999982, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 42.00635551862803, "max_candidate_speed_kmh": 118.61361048978219, "median_corridor_distance_km": 3.42, "reflectivity_min_dbz": -6.5, "reflectivity_max_dbz": 13.5, "low_confidence_speed_points": 1, "time_overlap_min": 23.1, "median_horizontal_difference_km": 14.78, "median_altitude_difference_m": 222.9, "association_label": "moderate_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.39856, "lon": -110.687353, "alt_m": 4795.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 94.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 5.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.354786, "lon": -110.69198, "alt_m": 5346.0, "expected_alt_m": 5253.5, "vertical_mismatch_m": 92.5, "candidate_segment_speed_kmh": 41.29698370286445, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 0.72, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.303262, "lon": -110.702162, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 49.20176870202204, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 4.85, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.269329, "lon": -110.736586, "alt_m": 6528.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 171.80000000000018, "candidate_segment_speed_kmh": 42.00635551862803, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.0, "distance_to_track_corridor_km": 6.46, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.279594, "lon": -110.747895, "alt_m": 6688.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -204.0, "candidate_segment_speed_kmh": 13.597145930656335, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.331478, "lon": -110.783348, "alt_m": 7445.7, "expected_alt_m": 7443.0, "vertical_mismatch_m": 2.699999999999818, "candidate_segment_speed_kmh": 56.43365603089624, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 1.74, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T005": [{"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.39856, "lon": -110.687353, "alt_m": 4795.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 94.19999999999982, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 5.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.354786, "lon": -110.69198, "alt_m": 5346.0, "expected_alt_m": 5253.5, "vertical_mismatch_m": 92.5, "candidate_segment_speed_kmh": 41.29698370286445, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 0.72, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.303262, "lon": -110.702162, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 49.20176870202204, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 4.85, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.269329, "lon": -110.736586, "alt_m": 6528.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 171.80000000000018, "candidate_segment_speed_kmh": 42.00635551862803, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.0, "distance_to_track_corridor_km": 6.46, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.279594, "lon": -110.747895, "alt_m": 6688.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -204.0, "candidate_segment_speed_kmh": 13.597145930656335, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.331478, "lon": -110.783348, "alt_m": 7445.7, "expected_alt_m": 7443.0, "vertical_mismatch_m": 2.699999999999818, "candidate_segment_speed_kmh": 56.43365603089624, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 1.74, "nearest_grid": "DM42oh"}], "KIWA_T007": [{"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}]}}, {"review_rank": 5, "item_type": "cross_radar_association", "item_id": "A078", "tracklet_ids": ["KEMX_T006", "KIWA_T001"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F003", "KIWA_F001"], "review_priority_score": 0.7803, "review_reason": "moderate_cross_radar_candidate with 8.8 min overlap, 16.9 km median horizontal separation, 233 m median altitude separation (8 raw association variants in this family pair)", "plot_path": "plots/review_rank_05_A078.png", "stats": {"median_abs_vertical_mismatch_m": 106.84999999999991, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 43.834689733465225, "max_candidate_speed_kmh": 126.97306646197082, "median_corridor_distance_km": 3.665, "reflectivity_min_dbz": -7.0, "reflectivity_max_dbz": 17.0, "low_confidence_speed_points": 1, "time_overlap_min": 8.8, "median_horizontal_difference_km": 16.94, "median_altitude_difference_m": 233.0, "association_label": "moderate_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T006": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}], "KIWA_T001": [{"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.315397, "lon": -110.827107, "alt_m": 4573.0, "expected_alt_m": 4280.0, "vertical_mismatch_m": 293.0, "candidate_segment_speed_kmh": 59.36922573999472, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 6.0, "distance_to_track_corridor_km": 2.16, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.338281, "lon": -110.800838, "alt_m": 4550.6, "expected_alt_m": 4833.5, "vertical_mismatch_m": -282.89999999999964, "candidate_segment_speed_kmh": 29.88786568717589, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 17.0, "distance_to_track_corridor_km": 3.23, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 126.97306646197082, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}]}}, {"review_rank": 6, "item_type": "cross_radar_association", "item_id": "A098", "tracklet_ids": ["KEMX_T006", "KIWA_T007"], "radar_sites": ["KEMX", "KIWA"], "family_ids": ["KEMX_F003", "KIWA_F002"], "review_priority_score": 0.7502, "review_reason": "moderate_cross_radar_candidate with 23.1 min overlap, 22.0 km median horizontal separation, 164 m median altitude separation (2 raw association variants in this family pair)", "plot_path": "plots/review_rank_06_A098.png", "stats": {"median_abs_vertical_mismatch_m": 144.0, "max_abs_vertical_mismatch_m": 510.5, "median_candidate_speed_kmh": 46.795132820735134, "max_candidate_speed_kmh": 118.61361048978219, "median_corridor_distance_km": 4.1, "reflectivity_min_dbz": -7.0, "reflectivity_max_dbz": 13.5, "low_confidence_speed_points": 1, "time_overlap_min": 23.1, "median_horizontal_difference_km": 22.02, "median_altitude_difference_m": 164.5, "association_label": "moderate_cross_radar_candidate"}, "points": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T006": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}], "KIWA_T007": [{"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.255364, "lon": -110.839702, "alt_m": 2843.5, "expected_alt_m": 2807.1, "vertical_mismatch_m": 36.40000000000009, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 1.5, "distance_to_track_corridor_km": 3.21, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.256827, "lon": -110.856321, "alt_m": 2818.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": -510.5, "candidate_segment_speed_kmh": 13.277772139272313, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 2.34, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.257, "lon": -110.85654, "alt_m": 3768.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": -69.69999999999982, "candidate_segment_speed_kmh": 0.23758712207597493, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 2.5, "distance_to_track_corridor_km": 2.31, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.299578, "lon": -110.859639, "alt_m": 4098.2, "expected_alt_m": 4280.0, "vertical_mismatch_m": -181.80000000000018, "candidate_segment_speed_kmh": 39.89792270254854, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 12.0, "distance_to_track_corridor_km": 2.02, "nearest_grid": "DM42ng"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.34509, "lon": -110.791223, "alt_m": 4548.7, "expected_alt_m": 4833.5, "vertical_mismatch_m": -284.8000000000002, "candidate_segment_speed_kmh": 68.97898164072387, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 13.5, "distance_to_track_corridor_km": 3.42, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.466688, "lon": -110.749812, "alt_m": 5407.0, "expected_alt_m": 5387.0, "vertical_mismatch_m": 20.0, "candidate_segment_speed_kmh": 118.61361048978219, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 13.52, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:16:28Z", "lat": 32.566172, "lon": -110.739933, "alt_m": 6346.5, "expected_alt_m": 6494.1, "vertical_mismatch_m": -147.60000000000036, "candidate_segment_speed_kmh": 46.795132820735134, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 9.5, "distance_to_track_corridor_km": 24.23, "nearest_grid": "DM42pi"}]}}, {"review_rank": 7, "item_type": "tracklet_family", "item_id": "KIWA_F001", "tracklet_ids": ["KIWA_T004"], "radar_sites": ["KIWA"], "family_ids": ["KIWA_F001"], "review_priority_score": 0.7977, "review_reason": "excellent_plausible_tracklet representative; 78 m median vertical mismatch, 9.4 km mean corridor distance", "plot_path": "plots/review_rank_07_KIWA_F001.png", "stats": {"median_abs_vertical_mismatch_m": 78.19999999999982, "max_abs_vertical_mismatch_m": 334.6999999999998, "median_candidate_speed_kmh": 44.786188972438495, "max_candidate_speed_kmh": 109.45744664584107, "median_corridor_distance_km": 6.92, "reflectivity_min_dbz": -0.5, "reflectivity_max_dbz": 10.0, "low_confidence_speed_points": 1, "time_overlap_min": null, "median_horizontal_difference_km": null, "median_altitude_difference_m": null, "association_label": null}, "points": [{"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.218439, "lon": -110.962432, "alt_m": 2780.0, "expected_alt_m": 2807.1, "vertical_mismatch_m": -27.09999999999991, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 0.5, "distance_to_track_corridor_km": 5.74, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.27399, "lon": -110.97086, "alt_m": 3537.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": 208.5, "candidate_segment_speed_kmh": 52.6279650426405, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 1.11, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.313397, "lon": -110.97047, "alt_m": 3857.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": 19.300000000000182, "candidate_segment_speed_kmh": 36.94441290223649, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.426633, "lon": -110.93547, "alt_m": 3967.5, "expected_alt_m": 4280.0, "vertical_mismatch_m": -312.5, "candidate_segment_speed_kmh": 109.45744664584107, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 3.0, "distance_to_track_corridor_km": 17.44, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.450665, "lon": -110.854762, "alt_m": 5168.2, "expected_alt_m": 4833.5, "vertical_mismatch_m": 334.6999999999998, "candidate_segment_speed_kmh": 67.71385879420248, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 10.0, "distance_to_track_corridor_km": 16.58, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.437712, "lon": -110.812751, "alt_m": 5336.7, "expected_alt_m": 5387.0, "vertical_mismatch_m": -50.30000000000018, "candidate_segment_speed_kmh": 35.38577025343961, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 5.5, "distance_to_track_corridor_km": 13.33, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:23:34Z", "lat": 32.411261, "lon": -110.722324, "alt_m": 7124.5, "expected_alt_m": 7046.3, "vertical_mismatch_m": 78.19999999999982, "candidate_segment_speed_kmh": 25.263625868677995, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 6.92, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KIWA_T004": [{"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:26:39Z", "lat": 32.218439, "lon": -110.962432, "alt_m": 2780.0, "expected_alt_m": 2807.1, "vertical_mismatch_m": -27.09999999999991, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 45.12962551394763, "is_low_confidence_speed": true, "reflectivity_dbz": 0.5, "distance_to_track_corridor_km": 5.74, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:33:45Z", "lat": 32.27399, "lon": -110.97086, "alt_m": 3537.0, "expected_alt_m": 3328.5, "vertical_mismatch_m": 208.5, "candidate_segment_speed_kmh": 52.6279650426405, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 1.11, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:40:52Z", "lat": 32.313397, "lon": -110.97047, "alt_m": 3857.0, "expected_alt_m": 3837.7, "vertical_mismatch_m": 19.300000000000182, "candidate_segment_speed_kmh": 36.94441290223649, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:48:00Z", "lat": 32.426633, "lon": -110.93547, "alt_m": 3967.5, "expected_alt_m": 4280.0, "vertical_mismatch_m": -312.5, "candidate_segment_speed_kmh": 109.45744664584107, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 3.0, "distance_to_track_corridor_km": 17.44, "nearest_grid": "DM42mg"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T19:55:07Z", "lat": 32.450665, "lon": -110.854762, "alt_m": 5168.2, "expected_alt_m": 4833.5, "vertical_mismatch_m": 334.6999999999998, "candidate_segment_speed_kmh": 67.71385879420248, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 10.0, "distance_to_track_corridor_km": 16.58, "nearest_grid": "DM42oh"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:02:14Z", "lat": 32.437712, "lon": -110.812751, "alt_m": 5336.7, "expected_alt_m": 5387.0, "vertical_mismatch_m": -50.30000000000018, "candidate_segment_speed_kmh": 35.38577025343961, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 5.5, "distance_to_track_corridor_km": 13.33, "nearest_grid": "DM42pi"}, {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "scan_time_utc": "2026-03-22T20:23:34Z", "lat": 32.411261, "lon": -110.722324, "alt_m": 7124.5, "expected_alt_m": 7046.3, "vertical_mismatch_m": 78.19999999999982, "candidate_segment_speed_kmh": 25.263625868677995, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 4.5, "distance_to_track_corridor_km": 6.92, "nearest_grid": "DM42pi"}]}}, {"review_rank": 8, "item_type": "tracklet_family", "item_id": "KEMX_F001", "tracklet_ids": ["KEMX_T007"], "radar_sites": ["KEMX"], "family_ids": ["KEMX_F001"], "review_priority_score": 0.7862, "review_reason": "excellent_plausible_tracklet representative; 39 m median vertical mismatch, 4.1 km mean corridor distance", "plot_path": "plots/review_rank_08_KEMX_F001.png", "stats": {"median_abs_vertical_mismatch_m": 38.70000000000027, "max_abs_vertical_mismatch_m": 464.5, "median_candidate_speed_kmh": 59.361659573406534, "max_candidate_speed_kmh": 106.3813699595991, "median_corridor_distance_km": 4.105, "reflectivity_min_dbz": -6.5, "reflectivity_max_dbz": 1.0, "low_confidence_speed_points": 0, "time_overlap_min": null, "median_horizontal_difference_km": null, "median_altitude_difference_m": null, "association_label": null}, "points": [{"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.325964, "lon": -110.652261, "alt_m": 5084.0, "expected_alt_m": 5253.5, "vertical_mismatch_m": -169.5, "candidate_segment_speed_kmh": 59.361659573406534, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 2.05, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 17.518194258805096, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:35:45Z", "lat": 32.353967, "lon": -110.392678, "alt_m": 8046.5, "expected_alt_m": 7993.9, "vertical_mismatch_m": 52.600000000000364, "candidate_segment_speed_kmh": 74.02554708183587, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 3.78, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:57:01Z", "lat": 32.328725, "lon": -110.104091, "alt_m": 9643.0, "expected_alt_m": 9648.0, "vertical_mismatch_m": -5.0, "candidate_segment_speed_kmh": 76.8992269782422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 6.54, "nearest_grid": "DM42wg"}], "points_by_tracklet": {"KEMX_T007": [{"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.325964, "lon": -110.652261, "alt_m": 5084.0, "expected_alt_m": 5253.5, "vertical_mismatch_m": -169.5, "candidate_segment_speed_kmh": 59.361659573406534, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 2.05, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 17.518194258805096, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.353516, "lon": -110.528887, "alt_m": 6381.5, "expected_alt_m": 6356.7, "vertical_mismatch_m": 24.800000000000182, "candidate_segment_speed_kmh": 106.3813699595991, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 2.3, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.367675, "lon": -110.505281, "alt_m": 6583.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": -309.0, "candidate_segment_speed_kmh": 23.703720699860536, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.5, "distance_to_track_corridor_km": 4.11, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.373402, "lon": -110.482834, "alt_m": 7907.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": 464.5, "candidate_segment_speed_kmh": 18.654015793488092, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.98, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:35:45Z", "lat": 32.353967, "lon": -110.392678, "alt_m": 8046.5, "expected_alt_m": 7993.9, "vertical_mismatch_m": 52.600000000000364, "candidate_segment_speed_kmh": 74.02554708183587, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 3.78, "nearest_grid": "DM42uh"}, {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:57:01Z", "lat": 32.328725, "lon": -110.104091, "alt_m": 9643.0, "expected_alt_m": 9648.0, "vertical_mismatch_m": -5.0, "candidate_segment_speed_kmh": 76.8992269782422, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 1.0, "distance_to_track_corridor_km": 6.54, "nearest_grid": "DM42wg"}]}}, {"review_rank": 9, "item_type": "tracklet_family", "item_id": "KEMX_F002", "tracklet_ids": ["KEMX_T010"], "radar_sites": ["KEMX"], "family_ids": ["KEMX_F002"], "review_priority_score": 0.7135, "review_reason": "excellent_plausible_tracklet representative; 64 m median vertical mismatch, 5.8 km mean corridor distance", "plot_path": "plots/review_rank_09_KEMX_F002.png", "stats": {"median_abs_vertical_mismatch_m": 63.80000000000018, "max_abs_vertical_mismatch_m": 211.5, "median_candidate_speed_kmh": 65.57677515918306, "max_candidate_speed_kmh": 73.96939173369492, "median_corridor_distance_km": 4.154999999999999, "reflectivity_min_dbz": -5.0, "reflectivity_max_dbz": 0.0, "low_confidence_speed_points": 0, "time_overlap_min": null, "median_horizontal_difference_km": null, "median_altitude_difference_m": null, "association_label": null}, "points": [{"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 73.96939173369492, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.297154, "lon": -110.780349, "alt_m": 5912.0, "expected_alt_m": 5804.4, "vertical_mismatch_m": 107.60000000000036, "candidate_segment_speed_kmh": 69.55080990701457, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 1.69, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.32971, "lon": -110.822839, "alt_m": 6358.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": 1.300000000000182, "candidate_segment_speed_kmh": 45.54680582150041, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 3.38, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.389223, "lon": -110.860937, "alt_m": 7067.5, "expected_alt_m": 6892.0, "vertical_mismatch_m": 175.5, "candidate_segment_speed_kmh": 65.57677515918306, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 0.0, "distance_to_track_corridor_km": 10.91, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.405865, "lon": -110.868798, "alt_m": 7231.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": -211.5, "candidate_segment_speed_kmh": 16.87561639495564, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 12.9, "nearest_grid": "DM42oh"}], "points_by_tracklet": {"KEMX_T010": [{"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.387394, "lon": -110.634818, "alt_m": 4706.5, "expected_alt_m": 4701.3, "vertical_mismatch_m": 5.199999999999818, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 4.93, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.339373, "lon": -110.708662, "alt_m": 5233.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": -20.0, "candidate_segment_speed_kmh": 73.96939173369492, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 1.08, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.297154, "lon": -110.780349, "alt_m": 5912.0, "expected_alt_m": 5804.4, "vertical_mismatch_m": 107.60000000000036, "candidate_segment_speed_kmh": 69.55080990701457, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 1.69, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.32971, "lon": -110.822839, "alt_m": 6358.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": 1.300000000000182, "candidate_segment_speed_kmh": 45.54680582150041, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.0, "distance_to_track_corridor_km": 3.38, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.389223, "lon": -110.860937, "alt_m": 7067.5, "expected_alt_m": 6892.0, "vertical_mismatch_m": 175.5, "candidate_segment_speed_kmh": 65.57677515918306, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": 0.0, "distance_to_track_corridor_km": 10.91, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.405865, "lon": -110.868798, "alt_m": 7231.5, "expected_alt_m": 7443.0, "vertical_mismatch_m": -211.5, "candidate_segment_speed_kmh": 16.87561639495564, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -4.5, "distance_to_track_corridor_km": 12.9, "nearest_grid": "DM42oh"}]}}, {"review_rank": 10, "item_type": "tracklet_family", "item_id": "KEMX_F003", "tracklet_ids": ["KEMX_T006"], "radar_sites": ["KEMX"], "family_ids": ["KEMX_F003"], "review_priority_score": 0.7031, "review_reason": "excellent_plausible_tracklet representative; 88 m median vertical mismatch, 6.8 km mean corridor distance", "plot_path": "plots/review_rank_10_KEMX_F003.png", "stats": {"median_abs_vertical_mismatch_m": 88.5, "max_abs_vertical_mismatch_m": 239.0, "median_candidate_speed_kmh": 53.13453917536139, "max_candidate_speed_kmh": 80.69291009294257, "median_corridor_distance_km": 7.7, "reflectivity_min_dbz": -7.0, "reflectivity_max_dbz": -0.5, "low_confidence_speed_points": 0, "time_overlap_min": null, "median_horizontal_difference_km": null, "median_altitude_difference_m": null, "association_label": null}, "points": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}], "points_by_tracklet": {"KEMX_T006": [{"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T19:53:25Z", "lat": 32.229177, "lon": -110.725138, "alt_m": 4729.8, "expected_alt_m": 4701.3, "vertical_mismatch_m": 28.5, "candidate_segment_speed_kmh": null, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -6.5, "distance_to_track_corridor_km": 10.85, "nearest_grid": "DM42oh"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:00:31Z", "lat": 32.275286, "lon": -110.665351, "alt_m": 5492.5, "expected_alt_m": 5253.5, "vertical_mismatch_m": 239.0, "candidate_segment_speed_kmh": 64.30152586802811, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -3.5, "distance_to_track_corridor_km": 7.79, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:07:36Z", "lat": 32.307385, "lon": -110.65124, "alt_m": 5818.5, "expected_alt_m": 5804.4, "vertical_mismatch_m": 14.100000000000364, "candidate_segment_speed_kmh": 32.253817599947475, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -5.0, "distance_to_track_corridor_km": 4.1, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:14:42Z", "lat": 32.341311, "lon": -110.634516, "alt_m": 6170.0, "expected_alt_m": 6356.7, "vertical_mismatch_m": -186.69999999999982, "candidate_segment_speed_kmh": 34.53484029156906, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -7.0, "distance_to_track_corridor_km": 0.17, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:21:35Z", "lat": 32.415829, "lon": -110.678472, "alt_m": 6925.0, "expected_alt_m": 6892.0, "vertical_mismatch_m": 33.0, "candidate_segment_speed_kmh": 80.69291009294257, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 7.61, "nearest_grid": "DM42pi"}, {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "scan_time_utc": "2026-03-22T20:28:40Z", "lat": 32.441125, "lon": -110.738211, "alt_m": 7299.0, "expected_alt_m": 7443.0, "vertical_mismatch_m": -144.0, "candidate_segment_speed_kmh": 53.13453917536139, "expected_speed_kmh": 37.0, "expected_grid_center_speed_kmh": 50.7931972775618, "is_low_confidence_speed": false, "reflectivity_dbz": -0.5, "distance_to_track_corridor_km": 10.49, "nearest_grid": "DM42pi"}]}}], "colors": {"KEMX": "#d73027", "KIWA": "#1f78b4"}};
+    const siteColors = dashboardData.colors;
+    let selectedRank = 1;
+    let map;
+    let candidateLayer;
+    let linkLayer;
+    let altitudeChart;
+    let mismatchChart;
+    let speedChart;
+
+    function fmt(value, digits = 1, suffix = "") {
+      if (value === null || value === undefined || Number.isNaN(value)) return "n/a";
+      return Number(value).toFixed(digits) + suffix;
+    }
+    function timeMs(value) { return new Date(value).getTime(); }
+    function timeLabel(value) {
+      return new Date(value).toISOString().substring(11, 16) + "Z";
+    }
+    function chartX(value) { return timeMs(value); }
+    function tickTime(value) { return new Date(value).toISOString().substring(11, 16); }
+    function selectedItem() {
+      return dashboardData.review_items.find(item => item.review_rank === selectedRank)
+        || dashboardData.review_items[0];
+    }
+
+    function initSummary() {
+      document.getElementById("caseMetric").textContent = dashboardData.case.case_id;
+      document.getElementById("topMetric").textContent = dashboardData.case.top_candidate || "n/a";
+      document.getElementById("countMetric").textContent =
+        dashboardData.case.shown_review_items + " of " + dashboardData.case.total_review_items;
+      const majorGap = dashboardData.telemetry_gaps[0];
+      document.getElementById("gapMetric").textContent =
+        majorGap ? majorGap.start_time_utc.substring(11, 16) + "Z to "
+          + majorGap.end_time_utc.substring(11, 16) + "Z" : "none";
+    }
+
+    function initMap() {
+      const centerLat = dashboardData.telemetry.reduce((s, p) => s + p.lat_deg, 0)
+        / dashboardData.telemetry.length;
+      const centerLon = dashboardData.telemetry.reduce((s, p) => s + p.lon_deg, 0)
+        / dashboardData.telemetry.length;
+      map = L.map("map", { scrollWheelZoom: true }).setView([centerLat, centerLon], 9);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "OpenStreetMap"
+      }).addTo(map);
+      L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "Esri", maxZoom: 18 }
+      ).addTo(map);
+
+      dashboardData.grid_squares.forEach(grid => {
+        L.polygon(grid.coordinates, {
+          color: "#5d6673",
+          weight: 1,
+          fillColor: "#9aa5b1",
+          fillOpacity: 0.16
+        }).bindTooltip("Maidenhead grid " + grid.grid).addTo(map);
+      });
+
+      const telem = dashboardData.telemetry;
+      for (let i = 0; i < telem.length - 1; i++) {
+        const gap = telem[i + 1].is_gap_from_previous;
+        L.polyline(
+          [[telem[i].lat_deg, telem[i].lon_deg], [telem[i + 1].lat_deg, telem[i + 1].lon_deg]],
+          { color: "#202020", weight: 4, opacity: gap ? 0.42 : 0.75, dashArray: gap ? "10 8" : null }
+        ).bindTooltip(gap ? "Telemetry gap bridged by interpolation" : "Telemetry segment").addTo(map);
+      }
+      telem.forEach(point => {
+        L.circleMarker([point.lat_deg, point.lon_deg], {
+          radius: 4,
+          color: "#111",
+          fillColor: "#fff",
+          fillOpacity: 1
+        }).bindTooltip(
+          "Telemetry " + timeLabel(point.time_utc) + "<br>Alt " + fmt(point.alt_m, 0, " m")
+          + "<br>Speed " + fmt(point.speed_kmh, 0, " km/h")
+        ).addTo(map);
+      });
+
+      dashboardData.radar_sites.forEach(site => {
+        L.circleMarker([site.lat, site.lon], {
+          radius: 7,
+          color: site.color,
+          fillColor: "#fff",
+          fillOpacity: 1,
+          weight: 2
+        }).bindTooltip(site.site + " radar").addTo(map);
+        dashboardData.range_rings_km.forEach(radius => {
+          L.circle([site.lat, site.lon], {
+            radius: radius * 1000,
+            color: site.color,
+            fill: false,
+            opacity: 0.18,
+            weight: 1
+          }).addTo(map);
+        });
+      });
+
+      candidateLayer = L.layerGroup().addTo(map);
+      linkLayer = L.layerGroup().addTo(map);
+    }
+
+    function updateMap(item) {
+      candidateLayer.clearLayers();
+      linkLayer.clearLayers();
+      const bounds = [];
+      const centroids = {};
+      item.tracklet_ids.forEach(trackletId => {
+        const pts = item.points_by_tracklet[trackletId] || [];
+        if (!pts.length) return;
+        const site = pts[0].radar_site;
+        const color = siteColors[site] || "#555";
+        const latLngs = pts.map(p => [p.lat, p.lon]);
+        latLngs.forEach(ll => bounds.push(ll));
+        centroids[trackletId] = [
+          pts.reduce((s, p) => s + p.lat, 0) / pts.length,
+          pts.reduce((s, p) => s + p.lon, 0) / pts.length
+        ];
+        L.polyline(latLngs, { color, weight: 5, opacity: 0.9 }).addTo(candidateLayer);
+        pts.forEach(p => {
+          L.circleMarker([p.lat, p.lon], {
+            radius: 6,
+            color,
+            fillColor: color,
+            fillOpacity: 0.9
+          }).bindPopup(
+            "<b>" + trackletId + "</b><br>" +
+            "Radar: " + site + "<br>" +
+            "UTC: " + p.scan_time_utc + "<br>" +
+            "Candidate alt: " + fmt(p.alt_m, 0, " m") + "<br>" +
+            "Expected alt: " + fmt(p.expected_alt_m, 0, " m") + "<br>" +
+            "Mismatch: " + fmt(p.vertical_mismatch_m, 0, " m") + "<br>" +
+            "Reflectivity: " + fmt(p.reflectivity_dbz, 1, " dBZ") + "<br>" +
+            "Candidate speed: " + fmt(p.candidate_segment_speed_kmh, 1, " km/h")
+          ).addTo(candidateLayer);
+        });
+      });
+      if (item.tracklet_ids.length >= 2) {
+        const first = centroids[item.tracklet_ids[0]];
+        const second = centroids[item.tracklet_ids[1]];
+        if (first && second) {
+          L.polyline([first, second], {
+            color: "#7b3294",
+            weight: 3,
+            opacity: 0.85,
+            dashArray: "8 8"
+          }).bindTooltip("Cross-radar candidate association " + item.item_id).addTo(linkLayer);
+        }
+      }
+      if (bounds.length) map.fitBounds(bounds, { padding: [35, 35], maxZoom: 11 });
+    }
+
+    function renderRankButtons() {
+      const container = document.getElementById("rankList");
+      container.innerHTML = "";
+      dashboardData.review_items.forEach(item => {
+        const button = document.createElement("button");
+        button.className = "rank-btn" + (item.review_rank === selectedRank ? " active" : "");
+        button.innerHTML = "<strong>#" + item.review_rank + " " + item.item_id + "</strong><br>"
+          + "<span>" + item.tracklet_ids.join("; ") + "</span>";
+        button.addEventListener("click", () => {
+          selectedRank = item.review_rank;
+          updateSelection();
+        });
+        container.appendChild(button);
+      });
+    }
+
+    function renderDetails(item) {
+      document.getElementById("selectedReason").textContent = item.review_reason;
+      const s = item.stats;
+      const details = [
+        ["Priority", fmt(item.review_priority_score, 3)],
+        ["Median vertical mismatch", fmt(s.median_abs_vertical_mismatch_m, 0, " m")],
+        ["Max vertical mismatch", fmt(s.max_abs_vertical_mismatch_m, 0, " m")],
+        ["Median radar speed", fmt(s.median_candidate_speed_kmh, 1, " km/h")],
+        ["Max radar speed", fmt(s.max_candidate_speed_kmh, 1, " km/h")],
+        ["Median corridor distance", fmt(s.median_corridor_distance_km, 1, " km")],
+        ["Reflectivity range", fmt(s.reflectivity_min_dbz, 1) + " to " + fmt(s.reflectivity_max_dbz, 1) + " dBZ"],
+        ["Low-confidence speed pts", String(s.low_confidence_speed_points)]
+      ];
+      document.getElementById("detailGrid").innerHTML = details.map(d =>
+        '<div class="detail"><span>' + d[0] + '</span><strong>' + d[1] + '</strong></div>'
+      ).join("");
+    }
+
+    function baseChartOptions(yTitle) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom" },
+          tooltip: {
+            callbacks: {
+              title: items => items.length ? tickTime(items[0].parsed.x) + "Z" : ""
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            ticks: { callback: tickTime },
+            title: { display: true, text: "UTC" }
+          },
+          y: { title: { display: true, text: yTitle } }
+        }
+      };
+    }
+
+    function destroyCharts() {
+      [altitudeChart, mismatchChart, speedChart].forEach(chart => {
+        if (chart) chart.destroy();
+      });
+    }
+
+    function renderCharts(item) {
+      destroyCharts();
+      const telemetry = dashboardData.telemetry;
+      const telemetryAlt = telemetry.map(p => ({ x: chartX(p.time_utc), y: p.alt_m }));
+      const pointsBySite = {};
+      item.points.forEach(p => {
+        if (!pointsBySite[p.radar_site]) pointsBySite[p.radar_site] = [];
+        pointsBySite[p.radar_site].push(p);
+      });
+      const candidateAltSets = Object.entries(pointsBySite).map(([site, pts]) => ({
+        label: site + " candidate altitude",
+        data: pts.map(p => ({ x: chartX(p.scan_time_utc), y: p.alt_m })),
+        showLine: true,
+        borderColor: siteColors[site] || "#555",
+        backgroundColor: siteColors[site] || "#555",
+        pointRadius: 5
+      }));
+      const band = delta => telemetry.map(p => ({ x: chartX(p.time_utc), y: p.alt_m + delta }));
+      altitudeChart = new Chart(document.getElementById("altitudeChart"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            { label: "Balloon altitude", data: telemetryAlt, type: "line", borderColor: "#111", pointRadius: 3 },
+            { label: "+/-250 m band", data: band(250), type: "line", borderColor: "#18864b", borderDash: [4, 4], pointRadius: 0 },
+            { label: "-250 m band", data: band(-250), type: "line", borderColor: "#18864b", borderDash: [4, 4], pointRadius: 0 },
+            { label: "+1000 m reference", data: band(1000), type: "line", borderColor: "#d29922", borderDash: [6, 6], pointRadius: 0 },
+            { label: "-1000 m reference", data: band(-1000), type: "line", borderColor: "#d29922", borderDash: [6, 6], pointRadius: 0 },
+            ...candidateAltSets
+          ]
+        },
+        options: baseChartOptions("Altitude (m)")
+      });
+
+      const mismatchSets = Object.entries(pointsBySite).map(([site, pts]) => ({
+        label: site + " mismatch",
+        data: pts.map(p => ({ x: chartX(p.scan_time_utc), y: p.vertical_mismatch_m })),
+        showLine: true,
+        borderColor: siteColors[site] || "#555",
+        backgroundColor: siteColors[site] || "#555",
+        pointRadius: 5
+      }));
+      mismatchChart = new Chart(document.getElementById("mismatchChart"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            { label: "0 m", data: telemetry.map(p => ({ x: chartX(p.time_utc), y: 0 })), type: "line", borderColor: "#111", pointRadius: 0 },
+            ...mismatchSets
+          ]
+        },
+        options: baseChartOptions("Vertical mismatch (m)")
+      });
+
+      const speedSets = Object.entries(pointsBySite).map(([site, pts]) => ({
+        label: site + " candidate speed",
+        data: pts.filter(p => p.candidate_segment_speed_kmh !== null).map(p => ({
+          x: chartX(p.scan_time_utc),
+          y: p.candidate_segment_speed_kmh
+        })),
+        showLine: true,
+        borderColor: siteColors[site] || "#555",
+        backgroundColor: siteColors[site] || "#555",
+        pointRadius: 5
+      }));
+      speedChart = new Chart(document.getElementById("speedChart"), {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              label: "Telemetry speed_kmh",
+              data: telemetry.filter(p => p.speed_kmh !== null).map(p => ({ x: chartX(p.time_utc), y: p.speed_kmh })),
+              type: "line",
+              borderColor: "#111",
+              pointRadius: 3
+            },
+            {
+              label: "Derived grid-center speed",
+              data: telemetry.filter(p => p.grid_center_speed_kmh !== null).map(p => ({ x: chartX(p.time_utc), y: p.grid_center_speed_kmh })),
+              type: "line",
+              borderColor: "#7b3294",
+              borderDash: [5, 5],
+              pointRadius: 3
+            },
+            ...speedSets
+          ]
+        },
+        options: baseChartOptions("Speed (km/h)")
+      });
+    }
+
+    function renderPointTable(item) {
+      const rows = item.points.map(p => `
+        <tr>
+          <td>${p.tracklet_id}</td>
+          <td><span class="badge ${p.radar_site === "KEMX" ? "site-kemx" : "site-kiwa"}">${p.radar_site}</span></td>
+          <td>${timeLabel(p.scan_time_utc)}Z</td>
+          <td>${fmt(p.alt_m, 0)}</td>
+          <td>${fmt(p.expected_alt_m, 0)}</td>
+          <td>${fmt(p.vertical_mismatch_m, 0)}</td>
+          <td>${fmt(p.candidate_segment_speed_kmh, 1)}</td>
+          <td>${fmt(p.expected_speed_kmh, 1)}</td>
+          <td>${p.is_low_confidence_speed ? "gap/low confidence" : "normal"}</td>
+        </tr>`).join("");
+      document.getElementById("tablePanel").innerHTML = `
+        <table>
+          <thead><tr>
+            <th>Tracklet</th><th>Radar</th><th>UTC</th><th>Candidate alt m</th>
+            <th>Expected alt m</th><th>Mismatch m</th><th>Radar speed km/h</th>
+            <th>Telemetry speed km/h</th><th>Speed confidence</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function updateSelection() {
+      const item = selectedItem();
+      renderRankButtons();
+      renderDetails(item);
+      updateMap(item);
+      renderCharts(item);
+      renderPointTable(item);
+    }
+
+    document.querySelectorAll(".tab-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(panel => panel.style.display = "none");
+        button.classList.add("active");
+        document.getElementById(button.dataset.tab + "Panel").style.display = "block";
+        setTimeout(() => {
+          if (altitudeChart) altitudeChart.resize();
+          if (mismatchChart) mismatchChart.resize();
+          if (speedChart) speedChart.resize();
+        }, 50);
+      });
+    });
+
+    initSummary();
+    initMap();
+    updateSelection();
+  </script>
+</body>
+</html>

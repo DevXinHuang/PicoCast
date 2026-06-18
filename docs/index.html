@@ -1,721 +1,921 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PicoCAST — Interactive Maps & Altitude Validation</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0d1117;
-            color: #c9d1d9;
-            min-height: 100vh;
-        }
-        .hero {
-            background: linear-gradient(135deg, #161b22 0%, #1a2332 50%, #0d1117 100%);
-            border-bottom: 1px solid #21262d;
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 2.4rem;
-            color: #58a6ff;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-        .hero .subtitle {
-            font-size: 1.1rem;
-            color: #8b949e;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        .badge {
-            display: inline-block;
-            background: #1f6feb33;
-            border: 1px solid #1f6feb;
-            color: #58a6ff;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .warning-banner {
-            background: #3d1d00;
-            border: 1px solid #9e6a03;
-            border-radius: 8px;
-            padding: 1rem 1.5rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            font-size: 0.9rem;
-            color: #e3b341;
-            line-height: 1.5;
-        }
-        .warning-banner::before {
-            content: "⚠️ ";
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .card {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .card:hover {
-            border-color: #58a6ff;
-            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.1);
-        }
-        .card h3 {
-            color: #58a6ff;
-            font-size: 1.15rem;
-            margin-bottom: 0.5rem;
-        }
-        .card p {
-            color: #8b949e;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        .card .tag {
-            display: inline-block;
-            background: #21262d;
-            color: #7ee787;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.75rem;
-        }
-        .section-title {
-            font-size: 1.3rem;
-            color: #f0f6fc;
-            margin-top: 2.5rem;
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #21262d;
-        }
-        .layers-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-        }
-        .layers-table th {
-            text-align: left;
-            padding: 0.6rem 0.75rem;
-            background: #161b22;
-            color: #f0f6fc;
-            border-bottom: 2px solid #21262d;
-        }
-        .layers-table td {
-            padding: 0.5rem 0.75rem;
-            border-bottom: 1px solid #21262d;
-            color: #c9d1d9;
-        }
-        .layers-table tr:hover td {
-            background: #161b2288;
-        }
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: #484f58;
-            font-size: 0.8rem;
-            border-top: 1px solid #21262d;
-            margin-top: 3rem;
-        }
-        .footer a { color: #58a6ff; text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PicoCAST K7UAZ Review</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        /* Altitude validation section */
-        .plot-section {
-            background: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .plot-section h3 {
-            color: #58a6ff;
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-        }
-        .plot-section .plot-img {
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid #30363d;
-            margin-bottom: 1rem;
-        }
-        .plot-section .explanation {
-            color: #8b949e;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        .plot-section .explanation strong {
-            color: #c9d1d9;
-        }
-        .plot-section .key-finding {
-            background: #0d1117;
-            border-left: 3px solid #3fb950;
-            padding: 0.75rem 1rem;
-            margin-top: 0.75rem;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.85rem;
-            color: #7ee787;
-        }
-        .plot-section .caveat {
-            background: #0d1117;
-            border-left: 3px solid #9e6a03;
-            padding: 0.75rem 1rem;
-            margin-top: 0.75rem;
-            border-radius: 0 6px 6px 0;
-            font-size: 0.85rem;
-            color: #e3b341;
-        }
-        .results-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            font-size: 0.85rem;
-        }
-        .results-table th {
-            text-align: left;
-            padding: 0.5rem 0.6rem;
-            background: #0d1117;
-            color: #f0f6fc;
-            border-bottom: 2px solid #21262d;
-            font-size: 0.8rem;
-        }
-        .results-table td {
-            padding: 0.45rem 0.6rem;
-            border-bottom: 1px solid #21262d;
-        }
-        .results-table .excellent { color: #3fb950; font-weight: 600; }
-        .results-table .strong { color: #58a6ff; font-weight: 600; }
-        .results-table .moderate { color: #e3b341; }
-        .nav-pills {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-        .nav-pills a {
-            background: #21262d;
-            color: #58a6ff;
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .nav-pills a:hover {
-            background: #30363d;
-        }
-    </style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #17202a;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .site-hero {
+      color: #ffffff;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 32, 0.97), rgba(31, 44, 57, 0.95)),
+        radial-gradient(circle at 80% 20%, rgba(215, 48, 39, 0.24), transparent 32%),
+        radial-gradient(circle at 76% 82%, rgba(31, 120, 180, 0.28), transparent 36%);
+      border-bottom: 4px solid #d29922;
+    }
+
+    .hero-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 24px 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #f3c969;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 52px;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      margin: 0;
+      max-width: 840px;
+      color: #d7e0ea;
+      font-size: 17px;
+    }
+
+    .hero-card {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+    }
+
+    .hero-card span {
+      display: block;
+      color: #c8d4df;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .hero-card strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid #1f78b4;
+      background: #1f78b4;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-wrap {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 16, 23, 0.5);
+      overflow: hidden;
+    }
+
+    .nav {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .nav a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: #d7e0ea;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 18px;
+    }
+
+    .metric {
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+    }
+
+    .metric span {
+      display: block;
+      color: #637083;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 4px;
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+
+    .section-header p {
+      margin: 0;
+      max-width: 760px;
+      color: #637083;
+      font-size: 15px;
+    }
+
+    .pill {
+      display: inline-flex;
+      white-space: nowrap;
+      border: 1px solid #d29922;
+      background: #fff8e5;
+      color: #614500;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.06);
+      overflow: hidden;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .lead-panel h2,
+    .lead-panel h3 {
+      margin: 0 0 10px;
+    }
+
+    .lead-panel p {
+      margin: 0 0 12px;
+      color: #4d5b6c;
+    }
+
+    .story-list {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 0;
+    }
+
+    .story-item {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .story-num {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #17202a;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .story-item strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .story-item span {
+      color: #637083;
+      font-size: 14px;
+    }
+
+    .preview-frame {
+      display: block;
+      width: 100%;
+      height: 620px;
+      border: 0;
+      background: #ffffff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+      text-decoration: none;
+      color: #17202a;
+      min-height: 176px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      border-color: #1f78b4;
+      box-shadow: 0 10px 28px rgba(31, 120, 180, 0.12);
+    }
+
+    .card .label {
+      color: #1f78b4;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: #637083;
+      font-size: 14px;
+    }
+
+    .card .open {
+      margin-top: auto;
+      padding-top: 14px;
+      color: #1f78b4;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .media-card {
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+    }
+
+    .media-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #e8edf3;
+      border-bottom: 1px solid #d7dce3;
+    }
+
+    .media-card div {
+      padding: 14px;
+    }
+
+    .media-card h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .media-card p {
+      margin: 0;
+      color: #637083;
+      font-size: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .timeline-row time {
+      color: #637083;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .timeline-row strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .timeline-row span {
+      color: #637083;
+      font-size: 14px;
+    }
+
+    .timeline-row a {
+      color: #1f78b4;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border: 1px solid #d7dce3;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+      font-size: 14px;
+    }
+
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e3e7ed;
+    }
+
+    .data-table th {
+      color: #344054;
+      background: #f8fafc;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .data-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .data-table a {
+      color: #1f78b4;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .notice {
+      border-left: 4px solid #d29922;
+      background: #fff8e5;
+      color: #604100;
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+
+    .footer {
+      max-width: 1240px;
+      margin: 28px auto 0;
+      padding: 22px 24px 34px;
+      color: #637083;
+      font-size: 14px;
+    }
+
+    .footer a {
+      color: #1f78b4;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner,
+      .feature,
+      .grid,
+      .media-grid,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 40px;
+      }
+
+      .preview-frame {
+        height: 520px;
+      }
+
+      .timeline-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      .hero-inner {
+        padding: 26px 18px 24px;
+      }
+
+      .page {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 30px;
+        line-height: 1.08;
+      }
+
+      .hero-copy {
+        font-size: 15px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .nav {
+        padding: 10px 18px;
+        flex-wrap: wrap;
+        overflow: visible;
+      }
+
+      .section-header {
+        display: block;
+      }
+
+      .pill {
+        margin-top: 10px;
+      }
+
+      .data-table,
+      .data-table thead,
+      .data-table tbody,
+      .data-table tr,
+      .data-table th,
+      .data-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .data-table thead {
+        display: none;
+      }
+
+      .data-table tr {
+        border-bottom: 1px solid #d7dce3;
+        padding: 10px 0;
+      }
+
+      .data-table tr:last-child {
+        border-bottom: 0;
+      }
+
+      .data-table td {
+        border-bottom: 0;
+        padding: 5px 12px;
+        word-break: break-word;
+      }
+
+      .data-table td:nth-child(2) {
+        color: #637083;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>🎈 PicoCAST</h1>
-        <p class="subtitle">
-            Interactive geospatial maps and altitude-first validation for the K7UAZ
-            pico-balloon case. Uses radar gate altitude — not just horizontal distance —
-            as the primary discriminator for candidate quality.
+  <header class="site-hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">PicoCAST K7UAZ research case</p>
+        <h1>Candidate Radar Feature Review</h1>
+        <p class="hero-copy">
+          A presentation-ready review of telemetry-consistent KEMX and KIWA radar features
+          for the K7UAZ pico-balloon launch day. Start with the review packet, then inspect
+          the earlier maps, altitude checks, trajectory work, and regional discovery outputs.
         </p>
-        <span class="badge">K7UAZ · 2026-03-22 · KEMX Radar</span>
-        <div class="nav-pills" style="justify-content: center; margin-top: 1.2rem;">
-            <a href="#about">About PicoCAST</a>
-            <a href="#maps">Interactive Maps</a>
-            <a href="#altitude">Altitude Validation</a>
-            <a href="#pathfit">Path Fitting</a>
-            <a href="#discovery">Regional Discovery</a>
-            <a href="#geojson">GeoJSON Layers</a>
-            <a href="#guide">Layers Guide</a>
+        <div class="button-row">
+          <a class="button" href="review_packet/index.html">Open main review packet</a>
+          <a class="button secondary" href="#research-trail">Follow the research trail</a>
         </div>
+      </div>
+      <aside class="hero-card">
+        <span>Scientific status</span>
+        <strong>Candidate evidence for visual inspection</strong>
+        <p style="margin: 0; color: #d7e0ea; font-size: 14px;">
+          No confirmed balloon association is claimed. The goal is to compare known telemetry
+          against near-track radar features in a reproducible way.
+        </p>
+      </aside>
     </div>
+    <nav class="nav-wrap" aria-label="Page sections">
+      <div class="nav">
+        <a href="#main-review">Main review</a>
+        <a href="#research-trail">Research trail</a>
+        <a href="#evidence-gallery">Evidence gallery</a>
+        <a href="#maps">Interactive maps</a>
+        <a href="#data">Data and reports</a>
+      </div>
+    </nav>
+  </header>
 
-    <div class="container">
-        <!-- ============================================================ -->
-        <!-- ABOUT PICOCAST -->
-        <!-- ============================================================ -->
-        
-        <h2 class="section-title" id="about">About PicoCAST</h2>
-        <div class="explanation" style="margin-bottom: 2rem;">
-            <p style="margin-bottom: 1rem;">
-                <strong>PicoCAST</strong> is an experimental research pipeline designed to detect and track weak, non-stationary targets (like amateur high-altitude pico-balloons) within archived NOAA NEXRAD Level II weather radar data.
-            </p>
-            <p style="margin-bottom: 1rem;">
-                Detecting objects with a radar cross-section of mere centimeters at ranges up to 200 km is a classic "needle in a haystack" problem. Traditional weather algorithms filter these out as noise or biological clutter. PicoCAST takes a different approach:
-            </p>
-            <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
-                <li><strong>Interpretability First:</strong> We use explicit, tunable heuristics rather than opaque machine learning models to extract point-target features (reflectivity, velocity, dual-pol texture).</li>
-                <li><strong>Telemetry-Guided Validation:</strong> We use known pico-balloon flight telemetry (horizontal Maidenhead grid squares + highly accurate GPS altitude) to validate our detections against ground truth.</li>
-                <li><strong>Altitude-Constrained Tracking:</strong> Because horizontal grid squares are large (~5km wide), we heavily weight the vertical correlation between the radar beam's gate altitude and the balloon's reported altitude.</li>
-            </ul>
+  <main class="page">
+    <section class="metrics" aria-label="Case summary">
+      <div class="metric">
+        <span>Case</span>
+        <strong>K7UAZ 2026-03-22</strong>
+      </div>
+      <div class="metric">
+        <span>Main candidate</span>
+        <strong>A001</strong>
+      </div>
+      <div class="metric">
+        <span>Primary radars</span>
+        <strong>KEMX + KIWA</strong>
+      </div>
+      <div class="metric">
+        <span>Major telemetry gap</span>
+        <strong>19:48Z to 21:18Z</strong>
+      </div>
+    </section>
+
+    <section class="section" id="main-review">
+      <div class="section-header">
+        <div>
+          <h2>Main Review Packet</h2>
+          <p>
+            This is the new front-door artifact. It combines GIS context, ranked review
+            items, altitude comparisons, speed context, and raw point tables in one place.
+          </p>
+        </div>
+        <span class="pill">Open this first</span>
+      </div>
+
+      <div class="feature">
+        <article class="panel lead-panel">
+          <div class="panel-body">
+            <h3>K7UAZ Candidate Radar Feature Review</h3>
             <p>
-                The validation case presented below focuses on the <strong>K7UAZ</strong> balloon launch on March 22, 2026, tracked by the <strong>KEMX</strong> radar station in Tucson, Arizona.
+              The review packet starts with known telemetry and then compares candidate
+              radar features against expected balloon position, altitude, and timing.
+              The strongest review item is the cross-radar association
+              <strong>A001: KEMX_T004 + KIWA_T001</strong>.
             </p>
+            <div class="notice">
+              Horizontal position comes from Maidenhead grid centers, not exact GPS.
+              Telemetry speed and derived grid-center speed should be treated as approximate,
+              especially across the 90-minute reporting gap.
+            </div>
+            <div class="story-list">
+              <div class="story-item">
+                <span class="story-num">1</span>
+                <div>
+                  <strong>Telemetry anchors the case</strong>
+                  <span>Known launch-day balloon telemetry sets the time, altitude, and grid context.</span>
+                </div>
+              </div>
+              <div class="story-item">
+                <span class="story-num">2</span>
+                <div>
+                  <strong>Radar features are compared near the expected track</strong>
+                  <span>KEMX and KIWA candidate tracklets are ranked for review, not declared as detections.</span>
+                </div>
+              </div>
+              <div class="story-item">
+                <span class="story-num">3</span>
+                <div>
+                  <strong>Altitude and speed make the evidence inspectable</strong>
+                  <span>Charts expose vertical mismatch, candidate speeds, reflectivity, and caveats.</span>
+                </div>
+              </div>
+            </div>
+            <div class="button-row">
+              <a class="button" href="review_packet/index.html">Open full review packet</a>
+              <a class="button secondary" href="review_packet/archive/review_packet_gis_overlay.html">Archived GIS overlay</a>
+            </div>
+          </div>
+        </article>
+
+        <section class="panel" aria-label="Embedded review packet preview">
+          <iframe class="preview-frame" title="PicoCAST review packet preview" src="review_packet/index.html"></iframe>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="research-trail">
+      <div class="section-header">
+        <div>
+          <h2>Chronological Research Trail</h2>
+          <p>
+            The older outputs are still valuable. They are now organized as the path that
+            led to the final review packet.
+          </p>
         </div>
-        <div class="warning-banner">
-            Balloon horizontal position is estimated from 6-character Maidenhead grid squares
-            (~4.6 × 7.1 km at this latitude). Altitude from telemetry is much more reliable.
-            Candidate offsets are relative to the grid-center estimate, not exact GPS.
+        <span class="pill">Provenance preserved</span>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-row">
+          <time>Step 1</time>
+          <div>
+            <strong>Case setup and map context</strong>
+            <span>Expected track, grid squares, KEMX range rings, and top candidate GIS layers.</span>
+          </div>
+          <a href="maps/interactive_candidate_map.html">Open map</a>
         </div>
-
-        <!-- ============================================================ -->
-        <!-- INTERACTIVE MAPS -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="maps">Interactive Maps</h2>
-        <div class="cards">
-            <a class="card" href="maps/interactive_candidate_map.html">
-                <h3>🗺️ Interactive Candidate Map</h3>
-                <p>
-                    Full overview with all 10 top candidates, expected balloon track,
-                    Maidenhead grid squares, KEMX radar site, range rings, and optional
-                    gate-level data. Switch between OpenStreetMap, topo, and satellite basemaps.
-                </p>
-                <span class="tag">Primary Map</span>
-            </a>
-            <a class="card" href="maps/rank_01_validation_map.html">
-                <h3>🎯 Rank #1 Validation Map</h3>
-                <p>
-                    Focused view on the best candidate. Shows the matching grid square,
-                    distance line from grid center to candidate, nearby radar gates
-                    colored by reflectivity, and altitude consistency details.
-                </p>
-                <span class="tag">Candidate Detail</span>
-            </a>
-            <a class="card" href="maps/sequence_2000_2028_map.html">
-                <h3>📈 Temporal Sequence Map</h3>
-                <p>
-                    Candidates ranked 1, 3, 6, 7, 9 shown in time order from 20:00–20:28 UTC.
-                    Connecting lines trace the temporal progression with grid-square boxes
-                    for each candidate's scan time.
-                </p>
-                <span class="tag">Time Series</span>
-            </a>
-            <a class="card" href="path_fit/interactive_path_dashboard.html" style="border-color: #f0883e;">
-                <h3>🚀 Candidate Trajectory Dashboard</h3>
-                <p>
-                    Interactive dashboard mapping the altitude-constrained radar candidate trajectory from 20:00–20:30 UTC. Features a dual-panel view with a GIS map on top and a dynamic altitude vs. time chart below.
-                </p>
-                <span class="tag" style="background: #f0883e33; color: #f0883e;">New Analysis</span>
-            </a>
-            <a class="card" href="discovery/regional_discovery_dashboard.html" style="border-color: #79c0ff;">
-                <h3>📡 Regional Multi-Radar Discovery Dashboard</h3>
-                <p>
-                    Interactive dual-panel dashboard showing candidate tracklets and cross-radar associations for both KEMX and KIWA radars. Compares candidates against the expected altitude profile.
-                </p>
-                <span class="tag" style="background: #79c0ff33; color: #79c0ff;">Multi-Radar</span>
-            </a>
+        <div class="timeline-row">
+          <time>Step 2</time>
+          <div>
+            <strong>Altitude-first validation</strong>
+            <span>Radar gate altitude is compared against the balloon altitude-time profile.</span>
+          </div>
+          <a href="#evidence-gallery">View plots</a>
         </div>
-
-        <!-- ============================================================ -->
-        <!-- ALTITUDE-FIRST VALIDATION -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="altitude">Altitude-First Validation</h2>
-
-        <div style="color: #8b949e; font-size: 0.95rem; line-height: 1.6; margin-top: 0.5rem; margin-bottom: 1rem;">
-            The balloon's horizontal position comes from Maidenhead grid squares — each square is several km across.
-            But the <strong style="color: #c9d1d9;">altitude from telemetry is much more precise</strong>.
-            This section asks: <em>do the candidate radar returns follow the balloon altitude-time profile?</em>
-            <br><br>
-            We use the term <strong style="color: #c9d1d9;">"altitude-consistent near-track candidate"</strong>
-            — not "detection." Altitude consistency is necessary but not sufficient evidence.
+        <div class="timeline-row">
+          <time>Step 3</time>
+          <div>
+            <strong>Trajectory fitting</strong>
+            <span>Altitude-consistent candidates are connected into a possible radar-assisted sequence.</span>
+          </div>
+          <a href="path_fit/interactive_path_dashboard.html">Open dashboard</a>
         </div>
-
-        <!-- Plot 1: Altitude vs Time -->
-        <div class="plot-section">
-            <h3>📊 Plot 1 — Candidate Altitude vs. Expected Balloon Altitude</h3>
-            <img class="plot-img" src="altitude_validation/altitude_time_candidate_overlay.png"
-                 alt="Candidate altitude vs expected balloon altitude over time">
-            <div class="explanation">
-                <strong>What this shows:</strong> The blue line is the expected balloon altitude from telemetry
-                (linearly interpolated between reporting points). The shaded band is ±500 m. Each dot is a radar
-                candidate cluster, colored by its composite candidate score (green = high, red = low).
-                Pink-circled dots are the focus candidates (ranks 1, 3, 6, 7, 9).
-                <br><br>
-                <strong>What to look for:</strong> Candidates that fall on or near the blue altitude curve —
-                especially within the ±500 m band — are altitude-consistent. Candidates far above or below
-                the curve are likely weather clutter, terrain, or other non-balloon targets.
-            </div>
-            <div class="key-finding">
-                <strong>Key finding:</strong> Several candidates closely track the ascending balloon altitude,
-                particularly R3 (−133 m), R6 (+25 m), and R7 (−118 m) during the 20:00–20:14 UTC period.
-                These are classified as "excellent altitude match."
-            </div>
+        <div class="timeline-row">
+          <time>Step 4</time>
+          <div>
+            <strong>Regional multi-radar discovery</strong>
+            <span>KEMX and KIWA tracklets are compared for cross-radar candidate associations.</span>
+          </div>
+          <a href="discovery/regional_discovery_dashboard.html">Open dashboard</a>
         </div>
-
-        <!-- Plot 2: Vertical Mismatch -->
-        <div class="plot-section">
-            <h3>📊 Plot 2 — Signed Vertical Mismatch vs. Time</h3>
-            <img class="plot-img" src="altitude_validation/vertical_mismatch_vs_time.png"
-                 alt="Signed vertical mismatch (candidate minus expected altitude) over time">
-            <div class="explanation">
-                <strong>What this shows:</strong> For each candidate, the signed vertical mismatch
-                (candidate altitude − expected balloon altitude) is plotted against scan time.
-                The black line is 0 m (perfect altitude match). Dashed guide lines are drawn at
-                ±250 m, ±500 m, and ±1,000 m.
-                <br><br>
-                <strong>What to look for:</strong> Good candidates cluster near 0.
-                A negative value means the candidate is below the expected altitude;
-                positive means above. Focus candidates (pink dots) are labeled by rank.
-            </div>
-            <div class="key-finding">
-                <strong>Key finding:</strong> R6 has only +25 m mismatch. R3 and R7 are within ±150 m.
-                R1 and R9 (both at 20:28 UTC) have −389 m mismatch — still within the "strong" band
-                but not excellent.
-            </div>
-            <div class="caveat">
-                <strong>Caveat:</strong> Radar gate altitude is the beam-center altitude. The physical beam
-                has width that increases with range from KEMX. At ~100 km range, the beam may span several
-                hundred meters vertically, so a mismatch of a few hundred meters doesn't necessarily
-                mean the balloon was outside the beam.
-            </div>
+        <div class="timeline-row">
+          <time>Step 5</time>
+          <div>
+            <strong>Final review packet</strong>
+            <span>Deduplicated review queue, candidate charts, GIS context, and caution language.</span>
+          </div>
+          <a href="review_packet/index.html">Open packet</a>
         </div>
+      </div>
+    </section>
 
-        <!-- Plot 3: Gate Altitude Distribution -->
-        <div class="plot-section">
-            <h3>📊 Plot 3 — Nearby Gate Altitude Distributions</h3>
-            <img class="plot-img" src="altitude_validation/nearby_gate_altitude_distribution.png"
-                 alt="Histogram of nearby radar gate altitudes at key scan times">
-            <div class="explanation">
-                <strong>What this shows:</strong> For 6 key scan times spread across the flight, the histogram
-                shows the altitude distribution of <em>all</em> nearby radar gates (from the 2.18M-row
-                near_track_gates.csv). The blue dashed line is the expected balloon altitude.
-                The pink line is the best candidate's altitude at that scan time.
-                <br><br>
-                <strong>What to look for:</strong> If the candidate altitude is at a "special" position in
-                the distribution — away from the bulk of the gates — that supports it being a distinct target
-                (like a balloon) rather than part of a large weather feature. If the candidate altitude falls
-                in the middle of a dense cluster of gates at similar altitude, it could be weather.
-            </div>
+    <section class="section" id="evidence-gallery">
+      <div class="section-header">
+        <div>
+          <h2>Evidence Gallery</h2>
+          <p>
+            Static plots from the earlier altitude-first pass remain available here as
+            supporting material for the new interactive review packet.
+          </p>
         </div>
+      </div>
 
-        <!-- Plot 4: Rank Comparison -->
-        <div class="plot-section">
-            <h3>📊 Plot 4 — Altitude-First Rank vs. Original Rank</h3>
-            <img class="plot-img" src="altitude_validation/altitude_priority_rank_vs_original_rank.png"
-                 alt="Scatter plot comparing altitude-first rank to original composite rank">
-            <div class="explanation">
-                <strong>What this shows:</strong> Each dot is one of the top 30 candidates. The X-axis is the
-                original composite rank (which weighted horizontal distance, reflectivity, compactness, etc.).
-                The Y-axis is the new altitude-priority rank (which puts altitude consistency first).
-                <br><br>
-                <strong>How to read it:</strong>
-                Points <em>below</em> the diagonal were <strong>promoted</strong> by altitude-first scoring
-                (altitude match is better than the original score suggested).
-                Points <em>above</em> the diagonal were <strong>demoted</strong>
-                (original score was high but altitude match is poor).
-                Points near the diagonal didn't change much.
-            </div>
-            <div class="key-finding">
-                <strong>Key finding:</strong> Original Rank 6 moves to altitude-priority Rank 4 (+25 m mismatch).
-                Original Rank 3 moves to altitude-priority Rank 7 (−133 m).
-                Original Rank 1 drops to altitude-priority Rank 38 (−389 m mismatch, demoted by the altitude-first method).
-            </div>
+      <div class="media-grid">
+        <article class="media-card">
+          <img src="altitude_validation/altitude_time_candidate_overlay.png" alt="Candidate altitude compared with expected balloon altitude over time">
+          <div>
+            <h3>Candidate Altitude vs. Telemetry Altitude</h3>
+            <p>Shows whether candidate radar altitudes follow the expected balloon altitude curve.</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="altitude_validation/vertical_mismatch_vs_time.png" alt="Vertical mismatch between candidate and expected altitude over time">
+          <div>
+            <h3>Vertical Mismatch Over Time</h3>
+            <p>Highlights where candidates are above or below the expected balloon altitude.</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="altitude_validation/nearby_gate_altitude_distribution.png" alt="Nearby gate altitude distributions around key scan times">
+          <div>
+            <h3>Nearby Gate Altitude Distributions</h3>
+            <p>Places candidate altitude inside the broader local radar-gate context.</p>
+          </div>
+        </article>
+        <article class="media-card">
+          <img src="altitude_validation/altitude_priority_rank_vs_original_rank.png" alt="Altitude-first ranking compared with original candidate ranking">
+          <div>
+            <h3>Altitude-First Rank Comparison</h3>
+            <p>Shows which candidates were promoted or demoted when altitude consistency was emphasized.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="maps">
+      <div class="section-header">
+        <div>
+          <h2>Interactive Maps and Dashboards</h2>
+          <p>
+            These older pages now sit underneath the main review packet as supporting views.
+            Use them to inspect the same case from different angles.
+          </p>
         </div>
+      </div>
 
-        <!-- Altitude-Prioritized Results Table -->
-        <div class="plot-section">
-            <h3>📋 Focus Candidates: Original Rank vs. Altitude Rank</h3>
-            <table class="results-table">
-                <thead>
-                    <tr>
-                        <th>Orig Rank</th>
-                        <th>Alt Rank</th>
-                        <th>Scan Time</th>
-                        <th>Signed Mismatch</th>
-                        <th>Altitude Label</th>
-                        <th>Composite Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>R1</td>
-                        <td>→ 38</td>
-                        <td>20:28:40</td>
-                        <td>−389 m</td>
-                        <td class="strong">strong altitude match</td>
-                        <td>0.734</td>
-                    </tr>
-                    <tr>
-                        <td>R3</td>
-                        <td>→ 7</td>
-                        <td>20:00:31</td>
-                        <td>−133 m</td>
-                        <td class="excellent">excellent altitude match</td>
-                        <td>0.715</td>
-                    </tr>
-                    <tr>
-                        <td>R6</td>
-                        <td>→ 4</td>
-                        <td>20:14:42</td>
-                        <td>+25 m</td>
-                        <td class="excellent">excellent altitude match ✨</td>
-                        <td>0.674</td>
-                    </tr>
-                    <tr>
-                        <td>R7</td>
-                        <td>→ 13</td>
-                        <td>20:07:36</td>
-                        <td>−118 m</td>
-                        <td class="excellent">excellent altitude match</td>
-                        <td>0.674</td>
-                    </tr>
-                    <tr>
-                        <td>R9</td>
-                        <td>→ 39</td>
-                        <td>20:28:40</td>
-                        <td>−389 m</td>
-                        <td class="strong">strong altitude match</td>
-                        <td>0.666</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="explanation" style="margin-top: 1rem;">
-                <strong>Reading the table:</strong> "Orig Rank" is the original composite score ranking.
-                "Alt Rank" is the new altitude-priority ranking. R6 stands out with only +25 m altitude
-                mismatch at 20:14 UTC — the closest match in the entire dataset.
-                R3 and R7 are also excellent.
-                R1 and R9 are demoted because their −389 m mismatch, while still "strong," is not as
-                compelling as the excellent-match candidates.
-            </div>
-            <div class="caveat">
-                <strong>This is not a detection claim.</strong> These candidates are
-                "altitude-consistent near-track candidates." Many factors — weather, ground clutter,
-                biological targets — can produce radar returns at similar altitudes. Altitude consistency
-                raises the prior probability but is not proof.
-            </div>
+      <div class="grid">
+        <a class="card" href="review_packet/index.html">
+          <span class="label">Primary</span>
+          <h3>Review Packet Website</h3>
+          <p>Ranked KEMX/KIWA review items with map, altitude, speed, and raw point tables.</p>
+          <span class="open">Open artifact</span>
+        </a>
+        <a class="card" href="maps/rank_01_validation_map.html">
+          <span class="label">Focused GIS</span>
+          <h3>Rank #1 Validation Map</h3>
+          <p>Focused map for the best earlier KEMX candidate with grid and altitude context.</p>
+          <span class="open">Open artifact</span>
+        </a>
+        <a class="card" href="maps/interactive_candidate_map.html">
+          <span class="label">Map overview</span>
+          <h3>Interactive Candidate Map</h3>
+          <p>Expected track, grid squares, KEMX radar site, range rings, and top candidate layers.</p>
+          <span class="open">Open artifact</span>
+        </a>
+        <a class="card" href="maps/sequence_2000_2028_map.html">
+          <span class="label">Time sequence</span>
+          <h3>Temporal Sequence Map</h3>
+          <p>Candidate positions from 20:00 to 20:28 UTC with grid-square context.</p>
+          <span class="open">Open artifact</span>
+        </a>
+        <a class="card" href="path_fit/interactive_path_dashboard.html">
+          <span class="label">Trajectory</span>
+          <h3>Candidate Trajectory Dashboard</h3>
+          <p>Altitude-constrained candidate path with map and altitude-time chart.</p>
+          <span class="open">Open artifact</span>
+        </a>
+        <a class="card" href="discovery/regional_discovery_dashboard.html">
+          <span class="label">Multi-radar</span>
+          <h3>Regional Discovery Dashboard</h3>
+          <p>KEMX and KIWA tracklets plus cross-radar candidate associations.</p>
+          <span class="open">Open artifact</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="data">
+      <div class="section-header">
+        <div>
+          <h2>Data, Reports, and Archived Layers</h2>
+          <p>
+            Direct links for collaborators who want source tables, GeoJSON layers, and
+            older review exports.
+          </p>
         </div>
+      </div>
 
-        </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Artifact</th>
+            <th>Type</th>
+            <th>Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="review_packet/review_packet_dashboard_data.json">review_packet_dashboard_data.json</a></td>
+            <td>JSON</td>
+            <td>Data bundle behind the public review packet.</td>
+          </tr>
+          <tr>
+            <td><a href="review_packet/archive/review_packet_tracklets.geojson">review_packet_tracklets.geojson</a></td>
+            <td>GeoJSON</td>
+            <td>Archived review tracklet geospatial export.</td>
+          </tr>
+          <tr>
+            <td><a href="maps/expected_track.geojson">expected_track.geojson</a></td>
+            <td>GeoJSON</td>
+            <td>Telemetry positions represented as Maidenhead grid centers.</td>
+          </tr>
+          <tr>
+            <td><a href="maps/grid_squares.geojson">grid_squares.geojson</a></td>
+            <td>GeoJSON</td>
+            <td>Maidenhead grid-square polygons for the launch-day telemetry path.</td>
+          </tr>
+          <tr>
+            <td><a href="discovery/regional_discovery_report.md">regional_discovery_report.md</a></td>
+            <td>Report</td>
+            <td>Regional discovery narrative and cautious interpretation.</td>
+          </tr>
+          <tr>
+            <td><a href="altitude_validation/altitude_validation_report.md">altitude_validation_report.md</a></td>
+            <td>Report</td>
+            <td>Altitude-first validation write-up.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/DevXinHuang/PicoCast">GitHub repository</a></td>
+            <td>Source</td>
+            <td>Code, cases, tests, and reproducible research workflow.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
 
-        <!-- ============================================================ -->
-        <!-- PATH FITTING -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="pathfit">Altitude-Constrained Candidate Trajectory</h2>
-
-        <div class="plot-section">
-            <h3>🔗 Trajectory Analysis (20:00–20:30 UTC)</h3>
-            <div class="explanation" style="margin-bottom: 1rem;">
-                This analysis tests whether the top altitude-consistent candidates can be connected into a smooth, physically plausible trajectory. We focus on the period with the strongest altitude matches (20:00–20:30 UTC).
-            </div>
-            
-            <table class="results-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Time Window</strong></td>
-                        <td>20:00:31 → 20:28:40 UTC</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Path Points</strong></td>
-                        <td>5 points (from 5 unique scan times)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Median Vertical Mismatch</strong></td>
-                        <td><span class="excellent">118 m</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max Segment Speed</strong></td>
-                        <td><span class="excellent">73 km/h</span> (physically plausible)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="key-finding" style="margin-top: 1.5rem;">
-                <strong>Key finding:</strong> PicoCAST identified an altitude-consistent KEMX candidate sequence that can be connected into a smooth radar-assisted candidate trajectory. The path follows the expected altitude curve and progresses steadily without physically impossible jumps.
-            </div>
-            <div class="caveat" style="margin-top: 0.75rem;">
-                <strong>Caution:</strong> This constitutes a <em>possible balloon-associated sequence</em>. It is not a confirmed detection without independent verification.
-            </div>
-            
-            <div style="margin-top: 1.5rem;">
-                <a href="path_fit/interactive_path_dashboard.html" style="display: inline-block; background: #238636; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">
-                    View Interactive Dashboard
-                </a>
-                <a href="path_fit/path_fit_report.md" style="display: inline-block; margin-left: 1rem; color: #58a6ff; text-decoration: none;">
-                    Read Full Report
-                </a>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- REGIONAL MULTI-RADAR DISCOVERY -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="discovery">Regional Multi-Radar Discovery Mode</h2>
-
-        <div class="plot-section">
-            <h3>📡 Regional Multi-Radar Search & Association</h3>
-            <div class="explanation" style="margin-bottom: 1rem;">
-                Instead of searching near a strict track line, this mode searches multiple regional radars (scanning up to 250 km from the expected flight path) for balloon-like candidate clusters. It links clusters into tracklets using a branching forward search and performs spatial-temporal cross-radar association.
-            </div>
-            
-            <table class="results-table">
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Radars Evaluated</strong></td>
-                        <td>10 regional stations (primary + secondary)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Active Radars (Visible)</strong></td>
-                        <td>2 sites (<span class="excellent">KEMX</span>, <span class="excellent">KIWA</span>); 8 sites skipped as too far</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Discovered Clusters</strong></td>
-                        <td>9,371 compact candidate clusters (6,631 KEMX, 2,740 KIWA)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Linked Tracklets</strong></td>
-                        <td>20 candidate tracklets (10 per site, branching forward search)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cross-Radar Associations</strong></td>
-                        <td>100 associations (spatial/temporal overlap matches)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="key-finding" style="margin-top: 1.5rem;">
-                <strong>Key finding:</strong> PicoCAST discovered 20 altitude-consistent candidate tracklets across KEMX and KIWA. A total of 100 cross-radar candidate associations were linked, showing that both radars observed spatially and temporally compatible trajectory behavior, significantly increasing the probability of a physical balloon-like target.
-            </div>
-            <div class="caveat" style="margin-top: 0.75rem;">
-                <strong>Scientific terminology guardrails:</strong> All findings are presented as "balloon-like candidates," "candidate tracklets," and "cross-radar candidate associations." They represent telemetry-consistent candidates, not confirmed detections or exact GPS paths.
-            </div>
-            
-            <div style="margin-top: 1.5rem;">
-                <a href="discovery/regional_discovery_dashboard.html" style="display: inline-block; background: #238636; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">
-                    View Regional Discovery Dashboard
-                </a>
-                <a href="discovery/regional_discovery_report.md" style="display: inline-block; margin-left: 1rem; color: #58a6ff; text-decoration: none;">
-                    Read Regional Discovery Report
-                </a>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- GeoJSON Layers -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="geojson">GeoJSON Data Layers</h2>
-        <table class="layers-table">
-            <thead>
-                <tr>
-                    <th>File</th>
-                    <th>Geometry</th>
-                    <th>Features</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="maps/expected_track.geojson" style="color:#58a6ff">expected_track.geojson</a></td>
-                    <td>Point</td>
-                    <td>12</td>
-                    <td>Balloon telemetry positions (grid-square centers)</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/grid_squares.geojson" style="color:#58a6ff">grid_squares.geojson</a></td>
-                    <td>Polygon</td>
-                    <td>12</td>
-                    <td>Maidenhead 6-char subsquare bounds (~4.6 × 7.1 km)</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/top_candidates.geojson" style="color:#58a6ff">top_candidates.geojson</a></td>
-                    <td>Point</td>
-                    <td>10</td>
-                    <td>Top-ranked radar candidate centers</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/candidate_clusters.geojson" style="color:#58a6ff">candidate_clusters.geojson</a></td>
-                    <td>Point</td>
-                    <td>254</td>
-                    <td>All scored gate clusters</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/candidate_path.geojson" style="color:#58a6ff">candidate_path.geojson</a></td>
-                    <td>Point / LineString</td>
-                    <td>5</td>
-                    <td>Altitude-constrained path connecting top candidates</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/smoothed_candidate_path.geojson" style="color:#58a6ff">smoothed_candidate_path.geojson</a></td>
-                    <td>Point / LineString</td>
-                    <td>5</td>
-                    <td>3-point rolling average smoothed trajectory</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/kemx_radar_site.geojson" style="color:#58a6ff">kemx_radar_site.geojson</a></td>
-                    <td>Point</td>
-                    <td>1</td>
-                    <td>KEMX radar at 31.894°N, 110.630°W</td>
-                </tr>
-                <tr>
-                    <td><a href="maps/kemx_range_rings.geojson" style="color:#58a6ff">kemx_range_rings.geojson</a></td>
-                    <td>LineString</td>
-                    <td>4</td>
-                    <td>Range rings at 50, 100, 150, 200 km</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- ============================================================ -->
-        <!-- Map Layers Guide -->
-        <!-- ============================================================ -->
-
-        <h2 class="section-title" id="guide">Map Layers Guide</h2>
-        <table class="layers-table">
-            <thead>
-                <tr><th>Layer</th><th>Default</th><th>What to Look For</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Expected Track</td><td>Visible</td><td>Green→red altitude gradient shows ascent profile</td></tr>
-                <tr><td>Grid Squares</td><td>Visible</td><td>Blue→red time gradient; candidate should be near/inside</td></tr>
-                <tr><td>Top Candidates</td><td>Visible</td><td>Numbered rank labels; click for score/distance/altitude details</td></tr>
-                <tr><td>All Candidates</td><td>Hidden</td><td>Toggle on to see full 254-cluster coverage</td></tr>
-                <tr><td>Candidate Gates</td><td>Hidden</td><td>Toggle on to see gate-level reflectivity (top 5 only)</td></tr>
-                <tr><td>KEMX Radar</td><td>Visible</td><td>Tower icon; check candidate range is plausible</td></tr>
-                <tr><td>Range Rings</td><td>Visible</td><td>50/100/150/200 km; most returns expected within 150 km</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="footer">
-        <p>PicoCAST — Picoballoon Candidate Search Tool</p>
-        <p><a href="https://github.com/DevXinHuang/PicoCast">GitHub Repository</a> ·
-           <a href="altitude_validation/altitude_validation_report.md">Full Altitude Validation Report</a></p>
-    </div>
+  <footer class="footer">
+    <p>
+      PicoCAST is an experimental research workflow for archived NEXRAD Level II review.
+      All public artifacts describe candidate radar features requiring visual inspection
+      and multi-radar confirmation.
+    </p>
+    <p>
+      <a href="review_packet/index.html">Open the main review packet</a> ·
+      <a href="https://github.com/DevXinHuang/PicoCast">View source on GitHub</a>
+    </p>
+  </footer>
 </body>
 </html>
