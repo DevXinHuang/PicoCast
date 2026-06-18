@@ -55,13 +55,26 @@ def add_expected_track(map_obj: folium.Map, track: pd.DataFrame) -> list[list[fl
     track = track.sort_values("time_utc")
     coords = list(zip(track["lat_deg"], track["lon_deg"], strict=True))
 
-    folium.PolyLine(
-        coords,
-        color="#222222",
-        weight=4,
-        opacity=0.65,
-        tooltip="Expected K7UAZ track from telemetry grid centers",
-    ).add_to(layer)
+    times = pd.to_datetime(track["time_utc"], utc=True)
+    for idx in range(len(track) - 1):
+        gap_min = (times.iloc[idx + 1] - times.iloc[idx]).total_seconds() / 60.0
+        segment = [
+            [track["lat_deg"].iloc[idx], track["lon_deg"].iloc[idx]],
+            [track["lat_deg"].iloc[idx + 1], track["lon_deg"].iloc[idx + 1]],
+        ]
+        is_gap = gap_min > 20.0
+        folium.PolyLine(
+            segment,
+            color="#222222" if not is_gap else "#111111",
+            weight=4,
+            opacity=0.75 if not is_gap else 0.45,
+            dash_array=None if not is_gap else "10, 8",
+            tooltip=(
+                "Expected K7UAZ telemetry segment"
+                if not is_gap
+                else f"Interpolated telemetry gap segment ({gap_min:.0f} min)"
+            ),
+        ).add_to(layer)
 
     for _, row in track.iterrows():
         folium.CircleMarker(
@@ -122,10 +135,26 @@ def add_radar_context(
         color = site_color(site)
         bounds.append([lat, lon])
 
+        folium.CircleMarker(
+            location=[lat, lon],
+            radius=7,
+            color=color,
+            weight=2,
+            fill=True,
+            fill_color="#ffffff",
+            fill_opacity=0.95,
+            tooltip=f"{site} radar<br>Altitude: {alt_m:.0f} m",
+        ).add_to(layer)
         folium.Marker(
             location=[lat, lon],
-            icon=folium.Icon(color="red" if site == "KEMX" else "blue", icon="signal"),
-            tooltip=f"{site} radar<br>Altitude: {alt_m:.0f} m",
+            icon=folium.DivIcon(
+                html=(
+                    '<div style="font-size:12px;font-weight:700;color:#111;'
+                    'background:white;border:1px solid #555;border-radius:4px;'
+                    'padding:1px 4px;white-space:nowrap;">'
+                    f"{site}</div>"
+                )
+            ),
         ).add_to(layer)
 
         for radius_km in ring_distances:
@@ -287,6 +316,7 @@ def add_legend(map_obj: folium.Map, case_id: str) -> None:
       </div>
       <div style="margin-top:5px;color:#555;">
         Dashed purple lines connect cross-radar review candidates.
+        Dashed black expected-track segments indicate telemetry gaps bridged by interpolation.
         This is for visual inspection only.
       </div>
     </div>
@@ -364,10 +394,15 @@ def make_review_packet_gis_overlay(config_path: Path, top_n: int = 10) -> Path:
     if bounds:
         map_obj.fit_bounds(bounds, padding=(20, 20))
 
-    output_path = review_dir / "review_packet_gis_overlay.html"
+    if top_n == 10:
+        output_path = review_dir / "review_packet_gis_overlay.html"
+        geojson_path = review_dir / "review_packet_tracklets.geojson"
+    else:
+        output_path = review_dir / f"review_packet_gis_overlay_top_{top_n:02d}.html"
+        geojson_path = review_dir / f"review_packet_tracklets_top_{top_n:02d}.geojson"
     map_obj.save(output_path)
     write_review_geojson(
-        review_dir / "review_packet_tracklets.geojson",
+        geojson_path,
         review_queue,
         points,
         top_n,

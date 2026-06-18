@@ -1,0 +1,91 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -110.760378,
+            32.391056
+          ],
+          [
+            -110.708662,
+            32.339373
+          ],
+          [
+            -110.65124,
+            32.307385
+          ],
+          [
+            -110.528887,
+            32.353516
+          ],
+          [
+            -110.505281,
+            32.367675
+          ],
+          [
+            -110.482834,
+            32.373402
+          ],
+          [
+            -110.367497,
+            32.427367
+          ]
+        ]
+      },
+      "properties": {
+        "review_rank": 1,
+        "review_item_id": "A001",
+        "review_item_type": "cross_radar_association",
+        "tracklet_id": "KEMX_T004",
+        "radar_site": "KEMX",
+        "review_priority_score": 0.8597,
+        "review_reason": "strong_cross_radar_candidate with 8.8 min overlap, 9.8 km median horizontal separation, 144 m median altitude separation (16 raw association variants in this family pair)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -110.839702,
+            32.255364
+          ],
+          [
+            -110.856321,
+            32.256827
+          ],
+          [
+            -110.85654,
+            32.257
+          ],
+          [
+            -110.827107,
+            32.315397
+          ],
+          [
+            -110.800838,
+            32.338281
+          ],
+          [
+            -110.749812,
+            32.466688
+          ]
+        ]
+      },
+      "properties": {
+        "review_rank": 1,
+        "review_item_id": "A001",
+        "review_item_type": "cross_radar_association",
+        "tracklet_id": "KIWA_T001",
+        "radar_site": "KIWA",
+        "review_priority_score": 0.8597,
+        "review_reason": "strong_cross_radar_candidate with 8.8 min overlap, 9.8 km median horizontal separation, 144 m median altitude separation (16 raw association variants in this family pair)"
+      }
+    }
+  ]
+}

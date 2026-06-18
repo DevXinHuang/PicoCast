@@ -147,6 +147,7 @@ python scripts/associate_cross_radar_tracklets.py cases/k7uaz_20260322/config.ya
 python scripts/write_regional_discovery_report.py cases/k7uaz_20260322/config.yaml --primary-sites --overwrite
 python scripts/build_tracklet_review_packet.py cases/k7uaz_20260322/config.yaml --top-n 10
 python scripts/make_review_packet_gis_overlay.py cases/k7uaz_20260322/config.yaml --top-n 10
+python scripts/make_review_packet_dashboard.py cases/k7uaz_20260322/config.yaml --top-n 10
 ```
 
 The review packet deduplicates near-duplicate tracklet families, ranks
@@ -156,7 +157,9 @@ inspection artifacts under
 telemetry-consistent near-track radar features requiring visual inspection and
 multi-radar confirmation. The GIS overlay HTML places the review queue on top of
 the expected telemetry track, Maidenhead grid squares, radar sites, and range
-rings.
+rings. The review dashboard is the presentation-ready website view with summary
+metrics, rank selection, map context, altitude charts, speed comparison, and
+raw point tables.
 
 ### Geospatial Mapping
 
