@@ -165,6 +165,7 @@ def discover_radar_clusters(
     site: str,
     config_path: Path,
     overwrite: bool,
+    use_gate_cache: bool = False,
 ) -> None:
     config = load_config(config_path)
     case_dir = config_path.parent
@@ -215,68 +216,117 @@ def discover_radar_clusters(
         filename = str(match_row["scan_filename"])
         local_path = case_dir / "nexrad" / site / "raw" / filename
         
-        if not local_path.exists():
-            print(f"Warning: file {local_path} not found locally.")
-            continue
-            
-        try:
-            radar = pyart.io.read_nexrad_archive(str(local_path))
-        except Exception as e:
-            print(f"Error reading {filename}: {e}")
-            continue
-            
-        gate_lat = radar.gate_latitude["data"]
-        gate_lon = radar.gate_longitude["data"]
-        gate_alt = radar.gate_altitude["data"]
-        
         expected_alt_m = float(match_row["expected_alt_m"])
         expected_lat = float(match_row["expected_lat_deg"])
         expected_lon = float(match_row["expected_lon_deg"])
         
-        # 1. Broad Altitude filter (±1500m)
-        alt_diff = np.abs(gate_alt - expected_alt_m)
-        alt_mask = alt_diff <= alt_padding
-        
-        ray_idx, gate_idx = np.where(alt_mask)
-        if len(ray_idx) == 0:
-            continue
+        loaded_from_cache = False
+        if use_gate_cache:
+            stamp = scan_time_str.replace("-", "").replace(":", "").replace("T", "_").replace("Z", "")
+            parquet_path = case_dir / "cache" / "gates" / site / f"{site}_{stamp}.parquet"
+            if parquet_path.exists():
+                try:
+                    cache_df = pd.read_parquet(parquet_path)
+                    
+                    # Apply thresholds
+                    # 1. Broad Altitude filter
+                    alt_mask = cache_df["abs_vertical_distance_m"] <= alt_padding
+                    
+                    # 2. Broad corridor filter
+                    corridor_mask = cache_df["distance_to_track_corridor_km"] <= horiz_padding
+                    
+                    # 3. Reflectivity filter
+                    refl_val = cache_df["reflectivity_dbz"].to_numpy()
+                    refl_max = discovery.get("reflectivity_max_dbz", 20.0)
+                    if refl_max is None:
+                        refl_max = 20.0
+                    valid_refl_mask = (~np.isnan(refl_val)) & (refl_val <= refl_max)
+                    
+                    combined_mask = alt_mask & corridor_mask & valid_refl_mask
+                    filtered_df = cache_df[combined_mask].copy()
+                    
+                    if filtered_df.empty:
+                        continue
+                        
+                    # Extract fields needed for clustering and metadata
+                    lats = filtered_df["gate_lat_deg"].to_numpy()
+                    lons = filtered_df["gate_lon_deg"].to_numpy()
+                    alts = filtered_df["gate_alt_m"].to_numpy()
+                    refl = filtered_df["reflectivity_dbz"].to_numpy()
+                    vel = filtered_df["velocity_ms"].to_numpy()
+                    sw = filtered_df["spectrum_width_ms"].to_numpy()
+                    rhohv = filtered_df["rhohv"].to_numpy()
+                    
+                    azimuths = filtered_df["azimuth_deg"].to_numpy()
+                    elevations = filtered_df["elevation_deg"].to_numpy()
+                    ranges = filtered_df["range_km"].to_numpy()
+                    
+                    loaded_from_cache = True
+                except Exception as e:
+                    print(f"Warning: Failed to load gate cache from {parquet_path}: {e}. Falling back to raw file.")
+                    
+        if not loaded_from_cache:
+            if not local_path.exists():
+                print(f"Warning: file {local_path} not found locally.")
+                continue
+                
+            try:
+                radar = pyart.io.read_nexrad_archive(str(local_path))
+            except Exception as e:
+                print(f"Error reading {filename}: {e}")
+                continue
+                
+            gate_lat = radar.gate_latitude["data"]
+            gate_lon = radar.gate_longitude["data"]
+            gate_alt = radar.gate_altitude["data"]
             
-        # Extract lats/lons for the altitude-matched gates
-        subset_lats = gate_lat[ray_idx, gate_idx]
-        subset_lons = gate_lon[ray_idx, gate_idx]
-        
-        # 2. Broad corridor filter (shortest distance to piecewise track polyline <= 40 km)
-        subset_track_dist = distance_to_polyline_km(subset_lats, subset_lons, track_lats, track_lons)
-        corridor_mask = subset_track_dist <= horiz_padding
-        
-        ray_idx = ray_idx[corridor_mask]
-        gate_idx = gate_idx[corridor_mask]
-        if len(ray_idx) == 0:
-            continue
+            # 1. Broad Altitude filter (±1500m)
+            alt_diff = np.abs(gate_alt - expected_alt_m)
+            alt_mask = alt_diff <= alt_padding
             
-        # 3. Reflectivity filter (<= 20 dBZ, and not NaN)
-        refl = get_field_values(radar, "reflectivity", ray_idx, gate_idx)
-        valid_refl_mask = (~np.isnan(refl)) & (refl <= 20.0)
-        
-        ray_idx = ray_idx[valid_refl_mask]
-        gate_idx = gate_idx[valid_refl_mask]
-        if len(ray_idx) == 0:
-            continue
+            ray_idx, gate_idx = np.where(alt_mask)
+            if len(ray_idx) == 0:
+                continue
+                
+            # Extract lats/lons for the altitude-matched gates
+            subset_lats = gate_lat[ray_idx, gate_idx]
+            subset_lons = gate_lon[ray_idx, gate_idx]
             
-        # Extract metadata
-        lats = gate_lat[ray_idx, gate_idx]
-        lons = gate_lon[ray_idx, gate_idx]
-        alts = gate_alt[ray_idx, gate_idx]
-        refl = refl[valid_refl_mask]
-        
-        vel = get_field_values(radar, "velocity", ray_idx, gate_idx)
-        sw = get_field_values(radar, "spectrum_width", ray_idx, gate_idx)
-        rhohv = get_field_values(radar, "cross_correlation_ratio", ray_idx, gate_idx)
-        
-        # Extract polar coordinates
-        azimuths = radar.azimuth["data"][ray_idx]
-        elevations = radar.elevation["data"][ray_idx]
-        ranges = radar.range["data"][gate_idx] / 1000.0
+            # 2. Broad corridor filter (shortest distance to piecewise track polyline <= 40 km)
+            subset_track_dist = distance_to_polyline_km(subset_lats, subset_lons, track_lats, track_lons)
+            corridor_mask = subset_track_dist <= horiz_padding
+            
+            ray_idx = ray_idx[corridor_mask]
+            gate_idx = gate_idx[corridor_mask]
+            if len(ray_idx) == 0:
+                continue
+                
+            # 3. Reflectivity filter (<= reflectivity_max_dbz, and not NaN)
+            refl_max = discovery.get("reflectivity_max_dbz", 20.0)
+            if refl_max is None:
+                refl_max = 20.0
+            refl = get_field_values(radar, "reflectivity", ray_idx, gate_idx)
+            valid_refl_mask = (~np.isnan(refl)) & (refl <= refl_max)
+            
+            ray_idx = ray_idx[valid_refl_mask]
+            gate_idx = gate_idx[valid_refl_mask]
+            if len(ray_idx) == 0:
+                continue
+                
+            # Extract metadata
+            lats = gate_lat[ray_idx, gate_idx]
+            lons = gate_lon[ray_idx, gate_idx]
+            alts = gate_alt[ray_idx, gate_idx]
+            refl = refl[valid_refl_mask]
+            
+            vel = get_field_values(radar, "velocity", ray_idx, gate_idx)
+            sw = get_field_values(radar, "spectrum_width", ray_idx, gate_idx)
+            rhohv = get_field_values(radar, "cross_correlation_ratio", ray_idx, gate_idx)
+            
+            # Extract polar coordinates
+            azimuths = radar.azimuth["data"][ray_idx]
+            elevations = radar.elevation["data"][ray_idx]
+            ranges = radar.range["data"][gate_idx] / 1000.0
         
         # Guard against too many gates to prevent memory blowup during DBSCAN
         if len(lats) > max_gates_to_cluster:
@@ -397,6 +447,7 @@ def main():
     parser.add_argument("--all-sites", action="store_true", help="Process all sites (primary + secondary)")
     parser.add_argument("--radar-site", type=str, help="Process a single specific radar site")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite already computed clusters")
+    parser.add_argument("--use-gate-cache", action="store_true", help="Load cached gates instead of reading raw scans")
     
     args = parser.parse_args()
     config = load_config(args.config)
@@ -431,7 +482,7 @@ def main():
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {
-            executor.submit(discover_radar_clusters, site, args.config, args.overwrite): site
+            executor.submit(discover_radar_clusters, site, args.config, args.overwrite, args.use_gate_cache): site
             for site in active_sites
         }
         for future in futures:
