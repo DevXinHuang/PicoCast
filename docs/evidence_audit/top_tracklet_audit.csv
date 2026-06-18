@@ -1,0 +1,11 @@
+review_rank,item_id,radar_sites,type_label,time_range,n_scans,altitude_agreement_m,horizontal_offset_km,motion_consistency_ms,reflectivity_mean_dbz,reflectivity_max_dbz,velocity_mean_ms,velocity_max_ms,spectrum_width_mean_ms,spectrum_width_max_ms,weather_contamination,ground_clutter,biological_echo,anomalous_propagation,isolated_artifact,impossible_jump,final_verdict
+1,A001,KEMX;KIWA,cross-radar,19:26 - 20:49 UTC,13,69.7,3.23,1.8400452892977028,-1.6976923076923076,4.1,0.355,2.0,5.5825,9.5,False,True,True,False,False,True,strong candidate
+2,A007,KEMX;KIWA,cross-radar,19:26 - 20:28 UTC,12,53.400000000000006,3.2199999999999998,1.644921477355885,-1.4708333333333332,4.1,0.10499999999999998,2.0,3.4159999999999995,7.0,False,True,True,False,False,True,strong candidate
+3,A012,KEMX;KIWA,cross-radar,19:26 - 20:49 UTC,14,89.45,3.76,1.7859255303623387,-0.8871428571428571,9.0,0.284,2.5,5.4575,9.5,False,True,True,False,False,True,strong candidate
+4,A051,KEMX;KIWA,cross-radar,19:26 - 20:28 UTC,13,94.2,3.42,1.6001656164284996,-0.6153846153846154,9.0,0.184,2.5,2.066,4.33,False,True,True,False,False,True,plausible but weak
+5,A078,KEMX;KIWA,cross-radar,19:26 - 20:28 UTC,12,106.85,3.665,2.708218971944477,-1.485,4.1,0.08499999999999996,2.0,2.915,4.33,False,True,True,False,False,True,plausible but weak
+6,A098,KEMX;KIWA,cross-radar,19:26 - 20:28 UTC,13,144.0,4.1,2.2180246466920366,-0.6284615384615384,9.0,0.05666666666666664,2.5,2.665,4.33,False,True,True,False,False,True,plausible but weak
+7,KIWA_F001,KIWA,single-radar,19:26 - 20:23 UTC,7,78.2,6.92,2.5518881898181456,2.1014285714285714,5.38,-1.2233333333333334,0.25,1.6500000000000001,4.83,False,True,True,False,False,False,plausible but weak
+8,KEMX_F001,KEMX,single-radar,19:53 - 20:57 UTC,8,38.7,4.105,,-4.75,0.0,0.5,0.5,1.375,2.75,False,False,False,False,False,False,plausible but weak
+9,KEMX_F002,KEMX,single-radar,19:53 - 20:28 UTC,6,63.8,4.154999999999999,,-4.25,-1.5,-0.5,-0.5,4.0,7.0,False,False,False,False,False,False,plausible but weak
+10,KEMX_F003,KEMX,single-radar,19:53 - 20:28 UTC,6,88.5,7.7,,-5.416666666666667,-2.5,,,,,False,False,False,False,False,False,plausible but weak

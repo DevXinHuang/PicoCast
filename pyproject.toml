@@ -28,6 +28,8 @@ dependencies = [
   "maidenhead>=1.5",
   "geopy>=2.4",
   "tqdm>=4.66",
+  "herbie-data>=2024.3",
+  "cfgrib>=0.9.14",
 ]
 
 [project.optional-dependencies]

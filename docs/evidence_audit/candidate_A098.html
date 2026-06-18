@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidate A098 - Evidence Audit</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 2rem; background: #f9fafb; color: #111827; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        h1 { color: #1f2937; margin-top: 0; }
+        h2 { border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+        th { background: #f3f4f6; width: 30%; }
+        .plot-container { text-align: center; margin-top: 2rem; background: #f3f4f6; padding: 1rem; border-radius: 8px; }
+        .plot-container img { max-width: 100%; height: auto; border-radius: 4px; }
+        .back-link { display: inline-block; margin-bottom: 1rem; color: #2563eb; text-decoration: none; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+        .tag { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 0.25rem; margin-right: 0.5rem; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
+        .tag-green { background: #dcfce7; color: #166534; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">&larr; Back to Audit Index</a>
+        <h1>Evidence Audit: Candidate A098</h1>
+        <h2>Summary</h2>
+        <table>
+            <tbody>
+                <tr><th>Verdict</th><td><strong>plausible but weak</strong></td></tr>
+                <tr><th>Rank</th><td>6</td></tr>
+                <tr><th>Radar Site(s)</th><td>KEMX;KIWA</td></tr>
+                <tr><th>Type</th><td>cross-radar</td></tr>
+                <tr><th>Time Range</th><td>19:26 - 20:28 UTC</td></tr>
+                <tr><th>Number of Scans</th><td>13</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Radar & Telemetry Evidence</h2>
+        <table>
+            <tbody>
+                <tr><th>Altitude Agreement (Median)</th><td>144.0 m</td></tr>
+                <tr><th>Horizontal Offset (Median)</th><td>4.10 km</td></tr>
+                <tr><th>Motion Consistency (Std Dev Velocity)</th><td>2.22 m/s</td></tr>
+                <tr><th>Reflectivity (Mean / Max)</th><td>-0.6 / 9.0 dBZ</td></tr>
+                <tr><th>Velocity (Mean / Max)</th><td>0.1 / 2.5 m/s</td></tr>
+                <tr><th>Spectrum Width (Mean / Max)</th><td>2.7 / 4.3 m/s</td></tr>
+            </tbody>
+        </table>
+
+        <h2>False Positive Flags</h2>
+        <div>
+            <span class="tag tag-green">&#10004; Weather Contamination</span>
+            <span class="tag tag-red">&#10008; Ground Clutter / Low Elevation</span>
+            <span class="tag tag-red">&#10008; Biological Echo Risk</span>
+            <span class="tag tag-green">&#10004; Anomalous Propagation Risk</span>
+            <span class="tag tag-green">&#10004; Isolated Artifact</span>
+            <span class="tag tag-red">&#10008; Impossible Jump</span>
+        </div>
+
+        <h2>Visual Evidence</h2>
+        <div class="plot-container">
+            <img src="../review_packet/plots/review_rank_06_A098.png" alt="Candidate Plot" />
+        </div>
+    </div>
+</body>
+</html>
