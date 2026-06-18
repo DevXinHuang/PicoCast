@@ -5,7 +5,7 @@
 This report summarizes the multi-radar balloon-like object discovery mode run. Instead of validation along a strict known-track line, we evaluated all visible regional NEXRAD sites for compact, altitude-plausible, weak point targets, connected them into candidate tracklets, and compared the results against balloon telemetry.
 
 **Key Findings:**
-- **Radars analyzed:** 2 sites included out of 10 total regional stations.
+- **Radars analyzed:** 2 sites included out of 5 total regional stations.
 - **Discovered clusters:** 9371 compact radar returns within the corridor.
 - **Linked tracklets:** 20 candidate tracklets linked across multiple scans.
 - **Telemetry-consistent tracklets:** 20 candidate tracklets show close altitude-time agreement.
@@ -23,11 +23,6 @@ This report summarizes the multi-radar balloon-like object discovery mode run. I
 | **KFSX** | Lat: 34.574, Lon: -111.198 | 251.8 | 288.9 | 0 | 29 | `skip` | Radar is too far (min distance 251.8 km > 250 km) |
 | **KYUX** | Lat: 32.495, Lon: -114.657 | 352.5 | 456.6 | 0 | 29 | `skip` | Radar is too far (min distance 352.5 km > 250 km) |
 | **KEPZ** | Lat: 31.873, Lon: -106.698 | 295.1 | 400.3 | 0 | 36 | `skip` | Radar is too far (min distance 295.1 km > 250 km) |
-| **KABX** | Lat: 35.150, Lon: -106.824 | 426.4 | 495.6 | 0 | 37 | `skip` | Radar is too far (min distance 426.4 km > 250 km) |
-| **KHDX** | Lat: 33.076, Lon: -106.120 | 358.5 | 459.7 | 0 | 36 | `skip` | Radar is too far (min distance 358.5 km > 250 km) |
-| **KFDX** | Lat: 34.634, Lon: -103.619 | 635.2 | 727.8 | 0 | 37 | `skip` | Radar is too far (min distance 635.2 km > 250 km) |
-| **KESX** | Lat: 35.701, Lon: -114.892 | 529.6 | 605.0 | 0 | 36 | `skip` | Radar is too far (min distance 529.6 km > 250 km) |
-| **KNKX** | Lat: 32.919, Lon: -117.042 | 578.5 | 680.9 | 0 | 37 | `skip` | Radar is too far (min distance 578.5 km > 250 km) |
 
 ## NEXRAD Level II Ingest & Download Inventory
 
@@ -38,11 +33,6 @@ This report summarizes the multi-radar balloon-like object discovery mode run. I
 | **KFSX** | 29 | 0 | 2026-03-22T18:49:18Z | 2026-03-22T22:55:46Z | 212.8 MB | `skipped` |
 | **KYUX** | 29 | 0 | 2026-03-22T18:49:18Z | 2026-03-22T22:52:20Z | 282.1 MB | `skipped` |
 | **KEPZ** | 36 | 0 | 2026-03-22T18:47:33Z | 2026-03-22T22:55:10Z | 223.8 MB | `skipped` |
-| **KABX** | 37 | 0 | 2026-03-22T18:48:44Z | 2026-03-22T22:59:43Z | 231.8 MB | `skipped` |
-| **KHDX** | 36 | 0 | 2026-03-22T18:45:13Z | 2026-03-22T22:53:36Z | 195.7 MB | `skipped` |
-| **KFDX** | 37 | 0 | 2026-03-22T18:45:23Z | 2026-03-22T22:57:25Z | 212.5 MB | `skipped` |
-| **KESX** | 36 | 0 | 2026-03-22T18:49:02Z | 2026-03-22T22:59:38Z | 258.0 MB | `skipped` |
-| **KNKX** | 37 | 0 | 2026-03-22T18:48:59Z | 2026-03-22T22:59:30Z | 170.6 MB | `skipped` |
 
 ## Cluster Extraction Statistics
 

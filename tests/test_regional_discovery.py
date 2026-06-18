@@ -128,3 +128,440 @@ def test_cross_radar_association_mock(tmp_path):
     assert res["association_label"] == "strong_cross_radar_candidate"
     assert res["median_horizontal_difference_km"] < 5.0
     assert res["median_altitude_difference_m"] == 100.0
+
+
+def test_tracklet_plausibility_filtering():
+    import pandas as pd
+
+    from scripts.filter_plausible_tracklets import evaluate_tracklet_quality
+    
+    # 1. Test rejected_too_short (n_points < 4 or duration < 15)
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 3,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    t_pts = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z", "2026-03-22T20:20:00Z"],
+        "cluster_lat_deg": [32.0, 32.05, 32.1],
+        "cluster_lon_deg": [-110.0, -109.95, -109.9],
+        "distance_to_track_corridor_km": [5.0, 5.0, 5.0],
+        "inside_or_near_grid_corridor": [True, True, True],
+        "tracklet_id": ["KEMX_T001"] * 3,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_too_short"
+    assert res["status"] == "rejected"
+
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 10.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    t_pts = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:02:00Z", "2026-03-22T20:04:00Z", "2026-03-22T20:06:00Z", "2026-03-22T20:10:00Z"],
+        "cluster_lat_deg": [32.0, 32.01, 32.02, 32.03, 32.05],
+        "cluster_lon_deg": [-110.0, -109.99, -109.98, -109.97, -109.95],
+        "distance_to_track_corridor_km": [5.0, 5.0, 5.0, 5.0, 5.0],
+        "inside_or_near_grid_corridor": [True, True, True, True, True],
+        "tracklet_id": ["KEMX_T001"] * 5,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_too_short"
+    assert res["status"] == "rejected"
+
+    # 2. Test rejected_altitude_mismatch (median > 750 or max > 2000)
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 800.0,
+        "max_abs_vertical_mismatch_m": 1200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_altitude_mismatch"
+    assert res["status"] == "rejected"
+
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 2100.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_altitude_mismatch"
+    assert res["status"] == "rejected"
+
+    # 3. Test rejected_speed_jump / limits
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 3.0,
+        "max_segment_speed_kmh": 5.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_speed_jump"
+
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 110.0,
+        "max_segment_speed_kmh": 120.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_speed_jump"
+
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 160.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_speed_jump"
+
+    # Single segment speed dominance
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 4,
+        "duration_min": 30.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 20.0,
+        "max_segment_speed_kmh": 120.0,
+        "path_smoothness_score": 0.8,
+    })
+    t_pts_dom = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z", "2026-03-22T20:20:00Z", "2026-03-22T20:30:00Z"],
+        "cluster_lat_deg": [32.0, 32.01, 32.02, 32.72],
+        "cluster_lon_deg": [-110.0, -110.0, -110.0, -110.0],
+        "distance_to_track_corridor_km": [5.0, 5.0, 5.0, 5.0],
+        "inside_or_near_grid_corridor": [True, True, True, True],
+        "tracklet_id": ["KEMX_T001"] * 4,
+    })
+    res = evaluate_tracklet_quality(row, t_pts_dom, t_pts_dom)
+    assert res["quality_label"] == "rejected_speed_jump"
+    assert "dominates" in res["reject_reason"]
+
+    # 4. Test rejected_not_near_telemetry_corridor (corridor_fraction < 0.5)
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    t_pts_off = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:02:00Z", "2026-03-22T20:04:00Z", "2026-03-22T20:06:00Z", "2026-03-22T20:10:00Z"],
+        "cluster_lat_deg": [32.0, 32.01, 32.02, 32.03, 32.05],
+        "cluster_lon_deg": [-110.0, -109.99, -109.98, -109.97, -109.95],
+        "distance_to_track_corridor_km": [5.0, 50.0, 60.0, 70.0, 5.0],
+        "inside_or_near_grid_corridor": [True, False, False, False, True],
+        "tracklet_id": ["KEMX_T001"] * 5,
+    })
+    res = evaluate_tracklet_quality(row, t_pts_off, t_pts_off)
+    assert res["quality_label"] == "rejected_not_near_telemetry_corridor"
+
+    # 5. Test rejected_spaghetti_tracklet (path_smoothness_score < 0.4)
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.3,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "rejected_spaghetti_tracklet"
+
+    # 6. Test excellent_plausible_tracklet
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "radar_site": "KEMX",
+        "n_points": 5,
+        "duration_min": 20.0,
+        "median_abs_vertical_mismatch_m": 100.0,
+        "max_abs_vertical_mismatch_m": 200.0,
+        "median_segment_speed_kmh": 40.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.8,
+    })
+    res = evaluate_tracklet_quality(row, t_pts, t_pts)
+    assert res["quality_label"] == "excellent_plausible_tracklet"
+    assert res["status"] == "plausible"
+
+
+def test_spaghetti_score_calculation():
+    import pandas as pd
+
+    from scripts.filter_plausible_tracklets import compute_spaghetti_score
+    
+    # Base case: perfect smoothness, no speed jump, no reversals, no overlaps, zero distance
+    row = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "median_segment_speed_kmh": 30.0,
+        "max_segment_speed_kmh": 30.0,
+        "path_smoothness_score": 1.0,
+    })
+    t_pts = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z"],
+        "cluster_lat_deg": [32.0, 32.01],
+        "cluster_lon_deg": [-110.0, -110.0],
+        "distance_to_track_corridor_km": [0.0, 0.0],
+        "tracklet_id": ["KEMX_T001", "KEMX_T001"],
+    })
+    score = compute_spaghetti_score(row, t_pts, t_pts)
+    assert abs(score - 9.677) < 1e-2
+
+    # Case with penalties
+    row2 = pd.Series({
+        "tracklet_id": "KEMX_T001",
+        "median_segment_speed_kmh": 10.0,
+        "max_segment_speed_kmh": 50.0,
+        "path_smoothness_score": 0.6,
+    })
+    # Reversal: North then South
+    t_pts2 = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z", "2026-03-22T20:20:00Z"],
+        "cluster_lat_deg": [32.0, 32.1, 32.0],
+        "cluster_lon_deg": [-110.0, -110.0, -110.0],
+        "distance_to_track_corridor_km": [10.0, 20.0, 10.0],
+        "tracklet_id": ["KEMX_T001"] * 3,
+    })
+    other_pts = pd.DataFrame({
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:50:00Z"],
+        "cluster_lat_deg": [32.0, 32.5],
+        "cluster_lon_deg": [-110.0, -110.0],
+        "distance_to_track_corridor_km": [10.0, 10.0],
+        "tracklet_id": ["KEMX_T002"] * 2,
+    })
+    all_pts = pd.concat([t_pts2, other_pts], ignore_index=True)
+    
+    score2 = compute_spaghetti_score(row2, t_pts2, all_pts)
+    assert abs(score2 - 182.1212) < 1e-2
+
+
+def test_filter_script_smoketest(tmp_path):
+    import sys
+    from unittest.mock import patch
+
+    import yaml
+    
+    case_dir = tmp_path / "cases" / "k7uaz_20260322"
+    case_dir.mkdir(parents=True)
+    
+    config_data = {
+        "discovery": {
+            "radar_sites_primary": ["KEMX"],
+            "radar_sites_secondary": [],
+        },
+        "radar_sites": {
+            "KEMX": {"lat": 32.0, "lon": -110.0, "alt_m": 1000.0},
+        }
+    }
+    
+    config_file = case_dir / "config.yaml"
+    with open(config_file, "w") as f:
+        yaml.safe_dump(config_data, f)
+        
+    nexrad_dir = case_dir / "nexrad"
+    nexrad_dir.mkdir()
+    geom_df = pd.DataFrame({
+        "radar_site": ["KEMX"],
+        "geometry_status": ["include"],
+    })
+    geom_df.to_csv(nexrad_dir / "regional_radar_geometry.csv", index=False)
+    
+    out_dir = case_dir / "outputs" / "discovery"
+    kemx_out_dir = out_dir / "KEMX"
+    kemx_out_dir.mkdir(parents=True)
+    
+    raw_tracklets_df = pd.DataFrame({
+        "tracklet_id": ["KEMX_T001"],
+        "radar_site": ["KEMX"],
+        "n_points": [5],
+        "duration_min": [20.0],
+        "median_abs_vertical_mismatch_m": [100.0],
+        "max_abs_vertical_mismatch_m": [200.0],
+        "median_segment_speed_kmh": [40.0],
+        "max_segment_speed_kmh": [50.0],
+        "path_smoothness_score": [0.8],
+    })
+    raw_tracklets_df.to_csv(kemx_out_dir / "candidate_tracklets.csv", index=False)
+    
+    points_df = pd.DataFrame({
+        "tracklet_id": ["KEMX_T001"] * 5,
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:05:00Z", "2026-03-22T20:10:00Z", "2026-03-22T20:15:00Z", "2026-03-22T20:20:00Z"],
+        "cluster_lat_deg": [32.0, 32.01, 32.02, 32.03, 32.04],
+        "cluster_lon_deg": [-110.0, -109.99, -109.98, -109.97, -109.96],
+        "distance_to_track_corridor_km": [5.0] * 5,
+        "inside_or_near_grid_corridor": [True] * 5,
+    })
+    points_df.to_csv(kemx_out_dir / "tracklet_points.csv", index=False)
+    
+    assoc_df = pd.DataFrame({
+        "association_id": ["A001"],
+        "radar_sites": ["KEMX;KEMX"],
+        "tracklet_ids": ["KEMX_T001;KEMX_T001"],
+        "n_radars": [1],
+        "time_overlap_min": [10.0],
+        "n_overlap_samples": [2],
+        "median_altitude_difference_m": [100.0],
+        "median_horizontal_difference_km": [2.5],
+        "mean_telemetry_consistency_score": [0.8],
+        "cross_radar_score": [0.85],
+        "association_label": ["strong_cross_radar_candidate"],
+        "notes": ["mock association"],
+    })
+    assoc_df.to_csv(out_dir / "cross_radar_tracklet_associations.csv", index=False)
+    
+    from scripts.filter_plausible_tracklets import main as filter_main
+    
+    test_args = ["filter_plausible_tracklets.py", str(config_file), "--primary-sites"]
+    
+    with patch("shutil.copy"):
+        with patch.object(sys, "argv", test_args):
+            filter_main()
+            
+    assert (out_dir / "plausible_tracklets.csv").exists()
+    assert (out_dir / "plausible_tracklet_points.csv").exists()
+    assert (out_dir / "tracklet_quality_diagnostics.csv").exists()
+    assert (out_dir / "plausible_cross_radar_associations.csv").exists()
+
+
+def test_dashboard_creation_smoketest(tmp_path):
+    import sys
+    from unittest.mock import patch
+
+    import yaml
+    
+    case_dir = tmp_path / "cases" / "k7uaz_20260322"
+    case_dir.mkdir(parents=True)
+    
+    config_data = {
+        "discovery": {
+            "radar_sites_primary": ["KEMX"],
+            "radar_sites_secondary": [],
+        },
+        "radar_sites": {
+            "KEMX": {"lat": 32.0, "lon": -110.0, "alt_m": 1000.0},
+        }
+    }
+    
+    config_file = case_dir / "config.yaml"
+    with open(config_file, "w") as f:
+        yaml.safe_dump(config_data, f)
+        
+    nexrad_dir = case_dir / "nexrad"
+    nexrad_dir.mkdir()
+    geom_df = pd.DataFrame({
+        "radar_site": ["KEMX"],
+        "geometry_status": ["include"],
+    })
+    geom_df.to_csv(nexrad_dir / "regional_radar_geometry.csv", index=False)
+    
+    expected_track_df = pd.DataFrame({
+        "lat_deg": [32.0, 32.1],
+        "lon_deg": [-110.0, -109.9],
+        "maidenhead_grid": ["DM42", "DM42"],
+        "time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z"],
+        "alt_m": [5000.0, 5100.0],
+    })
+    expected_track_df.to_csv(case_dir / "expected_track.csv", index=False)
+    
+    out_dir = case_dir / "outputs" / "discovery"
+    kemx_out_dir = out_dir / "KEMX"
+    kemx_out_dir.mkdir(parents=True)
+    
+    diag_df = pd.DataFrame({
+        "tracklet_id": ["KEMX_T001"],
+        "radar_site": ["KEMX"],
+        "status": ["plausible"],
+        "quality_label": ["excellent_plausible_tracklet"],
+        "spaghetti_score": [12.5],
+        "reject_reason": [""],
+    })
+    diag_df.to_csv(out_dir / "tracklet_quality_diagnostics.csv", index=False)
+    
+    points_df = pd.DataFrame({
+        "tracklet_id": ["KEMX_T001", "KEMX_T001"],
+        "scan_time_utc": ["2026-03-22T20:00:00Z", "2026-03-22T20:10:00Z"],
+        "cluster_lat_deg": [32.0, 32.05],
+        "cluster_lon_deg": [-110.0, -109.95],
+        "cluster_alt_m": [5000.0, 5200.0],
+        "expected_alt_m": [5100.0, 5100.0],
+        "signed_vertical_m": [-100.0, 100.0],
+        "max_reflectivity_dbz": [15.0, 18.0],
+        "balloon_like_cluster_score": [0.8, 0.85],
+    })
+    points_df.to_csv(kemx_out_dir / "tracklet_points.csv", index=False)
+    
+    assoc_df = pd.DataFrame({
+        "association_id": ["A001"],
+        "radar_sites": ["KEMX;KEMX"],
+        "tracklet_ids": ["KEMX_T001;KEMX_T001"],
+        "n_radars": [1],
+        "time_overlap_min": [10.0],
+        "n_overlap_samples": [2],
+        "median_altitude_difference_m": [100.0],
+        "median_horizontal_difference_km": [2.5],
+        "mean_telemetry_consistency_score": [0.8],
+        "cross_radar_score": [0.85],
+        "association_label": ["strong_cross_radar_candidate"],
+        "notes": ["mock association"],
+    })
+    assoc_df.to_csv(out_dir / "cross_radar_tracklet_associations.csv", index=False)
+    
+    from scripts.make_plausible_tracklet_dashboard import main as make_dashboard_main
+    
+    test_args = ["make_plausible_tracklet_dashboard.py", str(config_file), "--primary-sites", "--overwrite"]
+    
+    with patch("shutil.copy"):
+        with patch.object(sys, "argv", test_args):
+            make_dashboard_main()
+            
+    assert (out_dir / "plausible_tracklet_dashboard.html").exists()
