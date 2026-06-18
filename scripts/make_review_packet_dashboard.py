@@ -414,29 +414,62 @@ def render_dashboard_html(data: dict) -> str:
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
-      background: var(--bg);
+      background: linear-gradient(180deg, #f3f6f9 0%, #eef2f6 42%, #f8fafc 100%);
       color: var(--ink);
       font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }}
-    header {{
-      padding: 18px 24px 14px;
-      background: #101820;
+    .hero {{
+      padding: 28px 32px 26px;
+      background:
+        linear-gradient(135deg, rgba(16, 24, 32, 0.96), rgba(32, 45, 56, 0.94)),
+        radial-gradient(circle at 82% 24%, rgba(215, 48, 39, 0.28), transparent 30%),
+        radial-gradient(circle at 70% 86%, rgba(31, 120, 180, 0.28), transparent 34%);
       color: white;
-      border-bottom: 4px solid #2f80ed;
+      border-bottom: 4px solid #d29922;
     }}
-    header h1 {{
-      margin: 0 0 6px;
-      font-size: 24px;
+    .hero-inner {{
+      max-width: 1380px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+    }}
+    .eyebrow {{
+      margin: 0 0 8px;
+      color: #f3c969;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }}
+    .hero h1 {{
+      margin: 0 0 8px;
+      font-size: 52px;
+      line-height: 1.02;
       letter-spacing: 0;
     }}
-    header p {{ margin: 0; color: #c8d1dc; max-width: 980px; line-height: 1.45; }}
+    .hero p {{ margin: 0; color: #d7e0ea; max-width: 920px; line-height: 1.5; font-size: 16px; }}
+    .hero-card {{
+      min-width: 260px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 14px;
+      backdrop-filter: blur(10px);
+    }}
+    .hero-card span {{ display: block; color: #ccd6e0; font-size: 12px; margin-bottom: 4px; }}
+    .hero-card strong {{ font-size: 22px; }}
+    .shell {{
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 18px 24px 28px;
+    }}
     .summary {{
       display: grid;
       grid-template-columns: repeat(4, minmax(150px, 1fr));
       gap: 12px;
-      padding: 14px 24px;
-      background: #e8edf3;
-      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
     }}
     .metric {{
       background: var(--panel);
@@ -451,11 +484,65 @@ def render_dashboard_html(data: dict) -> str:
       margin-bottom: 5px;
     }}
     .metric strong {{ font-size: 20px; }}
+    .story {{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0 0 16px;
+    }}
+    .story-step {{
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 14px 13px;
+      min-height: 132px;
+      box-shadow: 0 2px 12px rgba(16, 24, 32, 0.05);
+    }}
+    .story-step::before {{
+      content: attr(data-step);
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #17202a;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }}
+    .story-step h2 {{ margin: 0 0 6px; font-size: 15px; }}
+    .story-step p {{ margin: 0; color: var(--muted); font-size: 13px; line-height: 1.42; }}
+    .story-step.final {{ border-color: #d29922; box-shadow: 0 6px 18px rgba(210, 153, 34, 0.13); }}
+    .section-heading {{
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+    }}
+    .section-heading h2 {{ margin: 0 0 4px; font-size: 16px; }}
+    .section-heading p {{ margin: 0; color: var(--muted); font-size: 13px; }}
+    .status-pill {{
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      border: 1px solid #e0b33c;
+      background: #fff8e5;
+      color: #614500;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }}
     .layout {{
       display: grid;
       grid-template-columns: minmax(520px, 1.6fr) minmax(340px, 0.8fr);
       gap: 16px;
-      padding: 16px 24px;
+      margin-bottom: 16px;
     }}
     .panel {{
       background: var(--panel);
@@ -467,6 +554,7 @@ def render_dashboard_html(data: dict) -> str:
     #map {{ height: 610px; width: 100%; }}
     .side {{ padding: 16px; }}
     .side h2 {{ margin: 0 0 8px; font-size: 18px; }}
+    .side p {{ color: var(--muted); line-height: 1.45; }}
     .rank-list {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -510,6 +598,20 @@ def render_dashboard_html(data: dict) -> str:
       border-radius: 4px;
       margin-top: 12px;
     }}
+    .evidence-strip {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }}
+    .evidence-strip div {{
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #fbfcfe;
+    }}
+    .evidence-strip span {{ display: block; color: var(--muted); font-size: 11px; }}
+    .evidence-strip strong {{ font-size: 14px; }}
     .tabs {{
       display: flex;
       gap: 8px;
@@ -543,55 +645,115 @@ def render_dashboard_html(data: dict) -> str:
     .site-kemx {{ color: var(--red); }}
     .site-kiwa {{ color: var(--blue); }}
     footer {{
-      padding: 16px 24px 28px;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 24px 28px;
       color: var(--muted);
       font-size: 13px;
     }}
     @media (max-width: 980px) {{
-      .layout, .summary {{ grid-template-columns: 1fr; }}
+      .layout, .summary, .story, .hero-inner, .evidence-strip {{ grid-template-columns: 1fr; }}
+      .hero {{ padding: 24px 24px 26px; }}
+      .hero h1 {{ font-size: 40px; }}
       #map {{ height: 520px; }}
+    }}
+    @media (max-width: 520px) {{
+      .hero h1 {{ font-size: 34px; }}
+      .hero p {{ font-size: 15px; }}
+      .shell {{ padding: 16px 16px 24px; }}
     }}
   </style>
 </head>
 <body>
-  <header>
-    <h1>PicoCAST K7UAZ Review Dashboard</h1>
-    <p>
-      Presentation view for research collaborators. This page compares candidate radar
-      features against launch-day balloon telemetry while preserving uncertainty.
-    </p>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">PicoCAST review packet</p>
+        <h1>K7UAZ Candidate Radar Feature Review</h1>
+        <p>
+          A chronological research view: start with the known balloon telemetry,
+          compare the strongest KEMX/KIWA near-track features, then inspect altitude
+          and speed consistency before making any science claim.
+        </p>
+      </div>
+      <div class="hero-card">
+        <span>Primary artifact</span>
+        <strong>Open this page first</strong>
+      </div>
+    </div>
   </header>
-  <section class="summary">
-    <div class="metric"><span>Case</span><strong id="caseMetric"></strong></div>
-    <div class="metric"><span>Top candidate</span><strong id="topMetric"></strong></div>
-    <div class="metric"><span>Review items shown</span><strong id="countMetric"></strong></div>
-    <div class="metric"><span>Major telemetry gap</span><strong id="gapMetric"></strong></div>
-  </section>
-  <main class="layout">
-    <section class="panel"><div id="map"></div></section>
+  <div class="shell">
+    <section class="summary">
+      <div class="metric"><span>Case</span><strong id="caseMetric"></strong></div>
+      <div class="metric"><span>Top candidate</span><strong id="topMetric"></strong></div>
+      <div class="metric"><span>Review items shown</span><strong id="countMetric"></strong></div>
+      <div class="metric"><span>Major telemetry gap</span><strong id="gapMetric"></strong></div>
+    </section>
+    <section class="story" aria-label="Research path">
+      <article class="story-step" data-step="1">
+        <h2>Telemetry anchored the search</h2>
+        <p>K7UAZ launch-day records provide time, grid-center position, altitude, climb rate, and speed context.</p>
+      </article>
+      <article class="story-step" data-step="2">
+        <h2>KEMX/KIWA scans were matched</h2>
+        <p>Radar scans were compared against the expected track, using the known flight window before any blind search.</p>
+      </article>
+      <article class="story-step" data-step="3">
+        <h2>Tracklets were deduplicated</h2>
+        <p>Near-duplicate families were collapsed so the review queue favors inspectable evidence over repeated variants.</p>
+      </article>
+      <article class="story-step final" data-step="4">
+        <h2>This page is the review packet</h2>
+        <p>Ranked candidates, GIS context, altitude mismatch, speed comparison, and caveats are combined here.</p>
+      </article>
+    </section>
+    <main class="layout">
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <h2>Geospatial Review</h2>
+            <p>Telemetry grid centers, radar sites, range rings, top tracklets, and cross-radar association links.</p>
+          </div>
+          <span class="status-pill">Visual inspection only</span>
+        </div>
+        <div id="map"></div>
+      </section>
     <aside class="panel side">
       <h2>Candidate Review</h2>
       <p id="selectedReason"></p>
       <div class="rank-list" id="rankList"></div>
       <div class="detail-grid" id="detailGrid"></div>
+      <div class="evidence-strip">
+        <div><span>Default focus</span><strong>A001</strong></div>
+        <div><span>Radars</span><strong>KEMX + KIWA</strong></div>
+        <div><span>Status</span><strong>Needs inspection</strong></div>
+      </div>
       <div class="caveat">
         Candidate radar feature, not a detection claim. Horizontal balloon position comes from
         Maidenhead grid centers, not GPS. Speed comparison is approximate during telemetry gaps.
       </div>
     </aside>
-  </main>
-  <section class="panel" style="margin: 0 24px 16px;">
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="altitude">Altitude</button>
-      <button class="tab-btn" data-tab="mismatch">Vertical mismatch</button>
-      <button class="tab-btn" data-tab="speed">Speed</button>
-      <button class="tab-btn" data-tab="table">Point table</button>
-    </div>
-    <div class="chart-wrap tab-panel" id="altitudePanel"><canvas id="altitudeChart"></canvas></div>
-    <div class="chart-wrap tab-panel" id="mismatchPanel" style="display:none;"><canvas id="mismatchChart"></canvas></div>
-    <div class="chart-wrap tab-panel" id="speedPanel" style="display:none;"><canvas id="speedChart"></canvas></div>
-    <div class="table-wrap tab-panel" id="tablePanel" style="display:none;"></div>
-  </section>
+    </main>
+    <section class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Telemetry Consistency Checks</h2>
+          <p>Altitude is the strongest comparison. Speed is approximate because balloon positions are grid-center estimates.</p>
+        </div>
+        <span class="status-pill">No confirmed association</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="altitude">Altitude</button>
+        <button class="tab-btn" data-tab="mismatch">Vertical mismatch</button>
+        <button class="tab-btn" data-tab="speed">Speed</button>
+        <button class="tab-btn" data-tab="table">Point table</button>
+      </div>
+      <div class="chart-wrap tab-panel" id="altitudePanel"><canvas id="altitudeChart"></canvas></div>
+      <div class="chart-wrap tab-panel" id="mismatchPanel" style="display:none;"><canvas id="mismatchChart"></canvas></div>
+      <div class="chart-wrap tab-panel" id="speedPanel" style="display:none;"><canvas id="speedChart"></canvas></div>
+      <div class="table-wrap tab-panel" id="tablePanel" style="display:none;"></div>
+    </section>
+  </div>
   <footer>
     Data source: K7UAZ launch-day telemetry and archived NEXRAD Level II derived candidates.
     Review status: near-track radar features requiring visual inspection and multi-radar confirmation.
@@ -958,7 +1120,7 @@ def render_dashboard_html(data: dict) -> str:
 """
 
 
-def write_dashboard(config_path: Path, top_n: int = 10) -> tuple[Path, Path]:
+def write_dashboard(config_path: Path, top_n: int = 10) -> tuple[Path, Path, Path]:
     case_dir = config_path.parent
     review_dir = case_dir / "outputs" / "discovery" / "review_packet"
     review_dir.mkdir(parents=True, exist_ok=True)
@@ -966,9 +1128,12 @@ def write_dashboard(config_path: Path, top_n: int = 10) -> tuple[Path, Path]:
 
     data_path = review_dir / "review_packet_dashboard_data.json"
     html_path = review_dir / "review_packet_dashboard.html"
+    index_path = review_dir / "index.html"
+    html = render_dashboard_html(data)
     data_path.write_text(json.dumps(data, indent=2, allow_nan=False), encoding="utf-8")
-    html_path.write_text(render_dashboard_html(data), encoding="utf-8")
-    return html_path, data_path
+    html_path.write_text(html, encoding="utf-8")
+    index_path.write_text(html, encoding="utf-8")
+    return html_path, data_path, index_path
 
 
 def main() -> None:
@@ -977,7 +1142,8 @@ def main() -> None:
     parser.add_argument("--top-n", type=int, default=10, help="Number of review rows to include")
     args = parser.parse_args()
 
-    html_path, data_path = write_dashboard(args.config, top_n=args.top_n)
+    html_path, data_path, index_path = write_dashboard(args.config, top_n=args.top_n)
+    print(f"Wrote primary review dashboard: {index_path}")
     print(f"Wrote review dashboard: {html_path}")
     print(f"Wrote dashboard data: {data_path}")
 

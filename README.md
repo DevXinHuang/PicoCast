@@ -148,6 +148,7 @@ python scripts/write_regional_discovery_report.py cases/k7uaz_20260322/config.ya
 python scripts/build_tracklet_review_packet.py cases/k7uaz_20260322/config.yaml --top-n 10
 python scripts/make_review_packet_gis_overlay.py cases/k7uaz_20260322/config.yaml --top-n 10
 python scripts/make_review_packet_dashboard.py cases/k7uaz_20260322/config.yaml --top-n 10
+open cases/k7uaz_20260322/outputs/discovery/review_packet/index.html
 ```
 
 The review packet deduplicates near-duplicate tracklet families, ranks
@@ -155,11 +156,14 @@ cross-radar associations before single-radar families, and writes cautious
 inspection artifacts under
 `cases/k7uaz_20260322/outputs/discovery/review_packet/`. Treat its contents as
 telemetry-consistent near-track radar features requiring visual inspection and
-multi-radar confirmation. The GIS overlay HTML places the review queue on top of
-the expected telemetry track, Maidenhead grid squares, radar sites, and range
-rings. The review dashboard is the presentation-ready website view with summary
-metrics, rank selection, map context, altitude charts, speed comparison, and
-raw point tables.
+multi-radar confirmation.
+
+The obvious presentation entry point is
+`cases/k7uaz_20260322/outputs/discovery/review_packet/index.html`. It tells the
+research story chronologically: known telemetry first, matched KEMX/KIWA radar
+features second, deduplicated review candidates third, and altitude/speed
+consistency checks last. Older map-only review exports are kept as archive
+provenance under `cases/k7uaz_20260322/outputs/discovery/review_packet/archive/`.
 
 ### Geospatial Mapping
 

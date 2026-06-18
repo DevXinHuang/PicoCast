@@ -14,6 +14,7 @@ from scripts.make_review_packet_dashboard import (
     compute_grid_center_speeds,
     render_dashboard_html,
     telemetry_gap_flags,
+    write_dashboard,
 )
 
 
@@ -176,3 +177,15 @@ def test_dashboard_html_uses_cautious_language(tmp_path):
     assert "Speed comparison is approximate" in html
     assert "detected balloon" not in html
     assert "confirmed detection" not in html
+
+
+def test_dashboard_writer_creates_obvious_index(tmp_path):
+    config_path = write_dashboard_fixture(tmp_path)
+
+    dashboard_path, data_path, index_path = write_dashboard(config_path, top_n=1)
+
+    assert dashboard_path.name == "review_packet_dashboard.html"
+    assert data_path.name == "review_packet_dashboard_data.json"
+    assert index_path.name == "index.html"
+    assert index_path.exists()
+    assert "K7UAZ Candidate Radar Feature Review" in index_path.read_text(encoding="utf-8")
