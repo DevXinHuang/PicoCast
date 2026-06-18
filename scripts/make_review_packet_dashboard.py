@@ -355,10 +355,24 @@ def build_dashboard_data(config_path: Path, top_n: int = 10) -> dict:
     review_queue = pd.read_csv(review_dir / "tracklet_review_queue.csv")
     cross_radar = pd.read_csv(review_dir / "cross_radar_review_queue.csv")
     
-    points_path = case_dir / "outputs" / "discovery" / "doppler_validation" / "doppler_validated_points.csv"
-    if not points_path.exists():
-        points_path = case_dir / "outputs" / "discovery" / "plausible_tracklet_points.csv"
+    points_path = case_dir / "outputs" / "discovery" / "plausible_tracklet_points.csv"
     points = pd.read_csv(points_path)
+    
+    doppler_points_path = case_dir / "outputs" / "discovery" / "doppler_validation" / "doppler_validated_points.csv"
+    if doppler_points_path.exists():
+        doppler_points = pd.read_csv(doppler_points_path)
+        # Only merge the necessary columns if they exist
+        cols_to_merge = ["tracklet_id", "scan_time_utc"]
+        for col in ["doppler_consistency_label", "doppler_notes", "observed_radial_velocity_ms"]:
+            if col in doppler_points.columns:
+                cols_to_merge.append(col)
+        points = points.merge(
+            doppler_points[cols_to_merge],
+            on=["tracklet_id", "scan_time_utc"],
+            how="left"
+        )
+        if "doppler_consistency_label" in points.columns:
+            points["doppler_consistency_label"] = points["doppler_consistency_label"].fillna("missing_doppler")
     
     track = compute_grid_center_speeds(pd.read_csv(case_dir / "expected_track.csv"))
     points = enrich_candidate_points(points, track)
