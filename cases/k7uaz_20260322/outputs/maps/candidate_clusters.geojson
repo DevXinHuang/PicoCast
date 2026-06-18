@@ -1,0 +1,4577 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.944550528726,
+          32.25224157318926
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_184937_loose_001",
+        "scan_time_utc": "2026-03-22T18:49:37Z",
+        "n_gates": 71482,
+        "cluster_max_reflectivity_dbz": 27.5,
+        "compactness_km": 22.778872327747457,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95628780703346,
+          32.26560937671493
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_184937_normal_001",
+        "scan_time_utc": "2026-03-22T18:49:37Z",
+        "n_gates": 17141,
+        "cluster_max_reflectivity_dbz": 25.0,
+        "compactness_km": 10.755242348042705,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.9591286255246,
+          32.26893264583
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_184937_tight_001",
+        "scan_time_utc": "2026-03-22T18:49:37Z",
+        "n_gates": 4216,
+        "cluster_max_reflectivity_dbz": 20.5,
+        "compactness_km": 5.163509530842378,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.94410640841896,
+          32.25249954380642
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_185642_loose_001",
+        "scan_time_utc": "2026-03-22T18:56:42Z",
+        "n_gates": 70858,
+        "cluster_max_reflectivity_dbz": 27.0,
+        "compactness_km": 22.71550025752555,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95653767028598,
+          32.26566186164426
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_185642_normal_001",
+        "scan_time_utc": "2026-03-22T18:56:42Z",
+        "n_gates": 17029,
+        "cluster_max_reflectivity_dbz": 22.5,
+        "compactness_km": 10.596861513737382,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95914170647704,
+          32.26895602272442
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_185642_tight_001",
+        "scan_time_utc": "2026-03-22T18:56:42Z",
+        "n_gates": 4200,
+        "cluster_max_reflectivity_dbz": 22.0,
+        "compactness_km": 5.16158272160508,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.9437382976164,
+          32.25270010800596
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_190348_loose_001",
+        "scan_time_utc": "2026-03-22T19:03:48Z",
+        "n_gates": 70596,
+        "cluster_max_reflectivity_dbz": 27.0,
+        "compactness_km": 22.720076890212177,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.956314626897,
+          32.26571414691749
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_190348_normal_001",
+        "scan_time_utc": "2026-03-22T19:03:48Z",
+        "n_gates": 16888,
+        "cluster_max_reflectivity_dbz": 27.0,
+        "compactness_km": 10.605849785894268,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95911427758006,
+          32.268979441305994
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_190348_tight_001",
+        "scan_time_utc": "2026-03-22T19:03:48Z",
+        "n_gates": 4189,
+        "cluster_max_reflectivity_dbz": 20.0,
+        "compactness_km": 5.161934102062602,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.94348109269724,
+          32.25241804365892
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191053_loose_001",
+        "scan_time_utc": "2026-03-22T19:10:53Z",
+        "n_gates": 70151,
+        "cluster_max_reflectivity_dbz": 32.0,
+        "compactness_km": 22.759987517209936,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95623294477195,
+          32.2658438177253
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191053_normal_001",
+        "scan_time_utc": "2026-03-22T19:10:53Z",
+        "n_gates": 16753,
+        "cluster_max_reflectivity_dbz": 24.5,
+        "compactness_km": 10.59963486589673,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95913076954142,
+          32.26905067607595
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191053_tight_001",
+        "scan_time_utc": "2026-03-22T19:10:53Z",
+        "n_gates": 4194,
+        "cluster_max_reflectivity_dbz": 18.5,
+        "compactness_km": 5.1547545747634596,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.94361219411036,
+          32.25163225950464
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191758_loose_001",
+        "scan_time_utc": "2026-03-22T19:17:58Z",
+        "n_gates": 69838,
+        "cluster_max_reflectivity_dbz": 30.5,
+        "compactness_km": 22.924583813338867,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.9564528441058,
+          32.26565952725623
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191758_normal_001",
+        "scan_time_utc": "2026-03-22T19:17:58Z",
+        "n_gates": 16790,
+        "cluster_max_reflectivity_dbz": 26.0,
+        "compactness_km": 10.747224966041935,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.9590976236051,
+          32.26908577624028
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191758_tight_001",
+        "scan_time_utc": "2026-03-22T19:17:58Z",
+        "n_gates": 4183,
+        "cluster_max_reflectivity_dbz": 21.0,
+        "compactness_km": 5.1536654652931535,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.95728795187182,
+          32.229474615028025
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_191758_tight_002",
+        "scan_time_utc": "2026-03-22T19:17:58Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250844450254093,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.88704707664115,
+          32.24796733768184
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_192504_loose_001",
+        "scan_time_utc": "2026-03-22T19:25:04Z",
+        "n_gates": 75704,
+        "cluster_max_reflectivity_dbz": 27.0,
+        "compactness_km": 22.92666491753312,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.89984851652017,
+          32.26528596284607
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_192504_normal_001",
+        "scan_time_utc": "2026-03-22T19:25:04Z",
+        "n_gates": 17909,
+        "cluster_max_reflectivity_dbz": 23.0,
+        "compactness_km": 10.748166942404366,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.84380547373344,
+          32.24108547309993
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_192504_normal_002",
+        "scan_time_utc": "2026-03-22T19:25:04Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250721486297858,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.90273713732792,
+          32.26920374281966
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_192504_tight_001",
+        "scan_time_utc": "2026-03-22T19:25:04Z",
+        "n_gates": 4481,
+        "cluster_max_reflectivity_dbz": 21.5,
+        "compactness_km": 5.15027419999827,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.82867681675856,
+          32.26081873572297
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_loose_001",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 77928,
+        "cluster_max_reflectivity_dbz": 40.5,
+        "compactness_km": 23.613064776718463,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.83886404632815,
+          32.28089512004398
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_normal_001",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 18653,
+        "cluster_max_reflectivity_dbz": 31.0,
+        "compactness_km": 10.787781929314972,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.93524335860552,
+          32.24261349963563
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_normal_002",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250996496273036,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.84209092679686,
+          32.28540915286102
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_tight_001",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 4609,
+        "cluster_max_reflectivity_dbz": 21.0,
+        "compactness_km": 5.188572359109996,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.8088224015962,
+          32.28585815870335
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_tight_002",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.9391161382360012,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.87435687792984,
+          32.26903277297733
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_tight_003",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.6956434582624278,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.83293590240189,
+          32.288392312917175
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193208_tight_004",
+        "scan_time_utc": "2026-03-22T19:32:08Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1251010491481018,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.77072406690972,
+          32.28858147425267
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193914_loose_001",
+        "scan_time_utc": "2026-03-22T19:39:14Z",
+        "n_gates": 75533,
+        "cluster_max_reflectivity_dbz": 47.0,
+        "compactness_km": 23.07645262732883,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.77686027294612,
+          32.30747240234024
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193914_normal_001",
+        "scan_time_utc": "2026-03-22T19:39:14Z",
+        "n_gates": 18355,
+        "cluster_max_reflectivity_dbz": 47.0,
+        "compactness_km": 10.917055331982986,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.77947008878664,
+          32.313638045490734
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193914_tight_001",
+        "scan_time_utc": "2026-03-22T19:39:14Z",
+        "n_gates": 4627,
+        "cluster_max_reflectivity_dbz": 22.0,
+        "compactness_km": 5.2003547112769,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.81377080997892,
+          32.30945925897571
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193914_tight_002",
+        "scan_time_utc": "2026-03-22T19:39:14Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1251010491473262,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7574142696827,
+          32.28258351411421
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_193914_tight_003",
+        "scan_time_utc": "2026-03-22T19:39:14Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1251049485000893,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.72035045974732,
+          32.31644611378612
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_194620_loose_001",
+        "scan_time_utc": "2026-03-22T19:46:20Z",
+        "n_gates": 69045,
+        "cluster_max_reflectivity_dbz": 38.5,
+        "compactness_km": 22.998953578250745,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7208482787574,
+          32.33350117938501
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_194620_normal_001",
+        "scan_time_utc": "2026-03-22T19:46:20Z",
+        "n_gates": 17002,
+        "cluster_max_reflectivity_dbz": 38.5,
+        "compactness_km": 11.660482265880317,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7236819413945,
+          32.343435497889146
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_194620_tight_001",
+        "scan_time_utc": "2026-03-22T19:46:20Z",
+        "n_gates": 3432,
+        "cluster_max_reflectivity_dbz": 38.5,
+        "compactness_km": 5.142085687376783,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.67837486098574,
+          32.321490451999125
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_194620_tight_002",
+        "scan_time_utc": "2026-03-22T19:46:20Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -7.0,
+        "compactness_km": 0.1250996496226284,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.68938944053308,
+          32.31976300316725
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_loose_001",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 65239,
+        "cluster_max_reflectivity_dbz": 42.0,
+        "compactness_km": 23.120747963522504,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.68252134541105,
+          32.33912957861105
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_normal_001",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 17261,
+        "cluster_max_reflectivity_dbz": 42.0,
+        "compactness_km": 11.476985396483045,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6848645828664,
+          32.3454247164685
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_001",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 1790,
+        "cluster_max_reflectivity_dbz": 17.0,
+        "compactness_km": 5.602514761190628,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7308361527673,
+          32.35441354160898
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_002",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.125058222808935,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.7053542597481,
+          32.37823480328048
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_003",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1250874014118727,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65213842431466,
+          32.32596800007254
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_004",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250679740735617,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65194183465404,
+          32.3768229356534
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_005",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 1.1247373836156165,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6819377870916,
+          32.36838248352624
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_006",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 10,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 1.6348396222508628,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.66138099596016,
+          32.32934258294691
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_195325_tight_007",
+        "scan_time_utc": "2026-03-22T19:53:25Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1251015959287095,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.66219043114026,
+          32.31514048745922
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_loose_001",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 62572,
+        "cluster_max_reflectivity_dbz": 46.5,
+        "compactness_km": 23.437836654638787,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6511436999895,
+          32.34050634854505
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_normal_001",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 12758,
+        "cluster_max_reflectivity_dbz": 32.0,
+        "compactness_km": 11.071909206990536,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63527069591498,
+          32.426312243769104
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_normal_002",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 0.1250254197446522,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.74521113476158,
+          32.372841886128676
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_normal_003",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 0.1250890784860397,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62446861679524,
+          32.40268660402066
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_normal_004",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250223380870503,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65277146820024,
+          32.34490437843061
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_001",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 183,
+        "cluster_max_reflectivity_dbz": 7.5,
+        "compactness_km": 5.0415836314280735,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.68473781198674,
+          32.37653386511168
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_002",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1251066860440711,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.686553895622,
+          32.35759976193357
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_003",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.8152441576496808,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6348592772531,
+          32.38290608178394
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_004",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1251017112485875,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.69763738830788,
+          32.329007083340585
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_005",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.4875368410444346,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65226104625074,
+          32.32596353311618
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_006",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250679740737107,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65443837150998,
+          32.3685033253396
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_007",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250913007632607,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63436623860466,
+          32.3308337171867
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_008",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1250660238208064,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.70106779705569,
+          32.351056818457934
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_009",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": 0.5,
+        "compactness_km": 0.6503893634114869,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.67953041896862,
+          32.33038681667554
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_010",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250526782422891,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.68243501472908,
+          32.3559966814465
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_011",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.2501532793026342,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.66408077337792,
+          32.36730526977675
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_012",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250899180939561,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65344171375014,
+          32.352090895260275
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_013",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250918643994122,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6247373900869,
+          32.38157051687017
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_014",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1250821328769745,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6163590051534,
+          32.329981230949244
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_015",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1251015959281559,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6523578101282,
+          32.32979292821649
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_016",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.2500977591974344,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62530871010608,
+          32.32905891030464
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200031_tight_017",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1250495279123214,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63729644104488,
+          32.31063098879008
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_loose_001",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 59782,
+        "cluster_max_reflectivity_dbz": 43.5,
+        "compactness_km": 23.822896570264778,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62191239517492,
+          32.36088152365374
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_normal_001",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 4086,
+        "cluster_max_reflectivity_dbz": 17.0,
+        "compactness_km": 12.198547015066048,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.60317104163732,
+          32.40666010476221
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_normal_002",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250735487909299,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.55527232264728,
+          32.37173964576468
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_normal_003",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250339908601506,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.64366109154818,
+          32.340414068845654
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_001",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1251105921894487,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6180170905916,
+          32.37890495190721
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_002",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 1.0102792062805224,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.59594086098107,
+          32.32671692381823
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_003",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.903865491030943,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.58533790337138,
+          32.37047710758479
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_004",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.125104732971586,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.56878884457788,
+          32.345437124344016
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_005",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.2502080108098799,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.66267466774568,
+          32.34843920729962
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_006",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1251056148608029,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63468364597816,
+          32.36720175718679
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_007",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.125105614860678,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.64995866687454,
+          32.32195955349576
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_008",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 9,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 1.7570014188755814,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62671970808483,
+          32.38300912810689
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_009",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 0.86958392796301,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61633774245374,
+          32.33048465106528
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_010",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.857464927420817,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65437508817124,
+          32.368850460181086
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_011",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": 2.5,
+        "compactness_km": 0.2501785367558608,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.66210464505777,
+          32.33942053977289
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_012",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250456436471998,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.64444550929674,
+          32.36909157896734
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_013",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1250890784861358,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62538281255434,
+          32.32905950899115
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_014",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250495279126666,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62495667277425,
+          32.366991133550464
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_200736_tight_015",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250339908592552,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61439307448958,
+          32.305451876721015
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_loose_001",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 55435,
+        "cluster_max_reflectivity_dbz": 44.0,
+        "compactness_km": 24.54742858559564,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61644228700628,
+          32.352610194132566
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_001",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 258,
+        "cluster_max_reflectivity_dbz": 9.0,
+        "compactness_km": 12.555727031456716,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.50479895504826,
+          32.38275519144318
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_002",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 25,
+        "cluster_max_reflectivity_dbz": 2.0,
+        "compactness_km": 3.9902906109117313,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.53516740379598,
+          32.27598489800834
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_003",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 1.229271548037135,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52888685576168,
+          32.35351621894327
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_004",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250468371319764,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.50078450676868,
+          32.365653141857045
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_005",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.5339352408381751,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.60234503409548,
+          32.424493962612175
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_normal_006",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1250126274536812,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.55668413833732,
+          32.36312790141476
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_001",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.125109518473938,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63444064447094,
+          32.33083320993377
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_002",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250660238205066,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6051597968306,
+          32.370712993188604
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_003",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250893510872228,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.58104831559928,
+          32.32210217807233
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_004",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1251010491457681,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.56334080304012,
+          32.320377148840166
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_005",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1251010491458308,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63451619963428,
+          32.34131124515586
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_006",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -7.0,
+        "compactness_km": 0.1250977033146003,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.54594986321692,
+          32.31745452000863
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_007",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250996496223111,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62538281255434,
+          32.32905950899115
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_008",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250495279126666,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61593931234682,
+          32.34230406145632
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_009",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250437015145563,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.60776015033576,
+          32.321961084333665
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_010",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250534121810767,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.595368430807,
+          32.37056091406116
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_201442_tight_011",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250339908597059,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.58853439389242,
+          32.301161777155095
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_loose_001",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 51910,
+        "cluster_max_reflectivity_dbz": 39.5,
+        "compactness_km": 25.08064391313076,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6100028791364,
+          32.3667212376621
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_001",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 60,
+        "cluster_max_reflectivity_dbz": -0.5,
+        "compactness_km": 7.771962441200595,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.53032136697088,
+          32.4140020120068
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_002",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 1.4361060022430867,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.49750527279734,
+          32.3586006572158
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_003",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1251066860443558,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.47720528945216,
+          32.391324965424474
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_004",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1251027798990673,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61646323594452,
+          32.324428704770966
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_005",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1251114702795129,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.58980971327486,
+          32.3232234283211
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_006",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1251114702795374,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.56096005739684,
+          32.269156014301934
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_007",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 12,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 2.1071613065966015,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5271872347283,
+          32.320233311140434
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_008",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1250844450206482,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52928539263448,
+          32.277014367577806
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_009",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250942063150543,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.50017237637324,
+          32.26364337221331
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_010",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -7.0,
+        "compactness_km": 0.1251173257004449,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.46749477600044,
+          32.303812638627576
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_011",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250679740759569,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.49485550339011,
+          32.35353103675549
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_012",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 1.9575633341032987,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.48907446078366,
+          32.308202518199494
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_013",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.7737508652288617,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.59261317103902,
+          32.29429967838287
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_normal_014",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1251065494260795,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.528694720055,
+          32.354261339712735
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202135_tight_001",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1250582228090307,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.54951826313662,
+          32.319059409027915
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_loose_001",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 27315,
+        "cluster_max_reflectivity_dbz": 32.0,
+        "compactness_km": 22.96033485111085,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61206832096168,
+          32.369696772384124
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_001",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 1.944160588770539,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.55663502021235,
+          32.36309548083244
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_002",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1251056148610387,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.51641757912188,
+          32.4098988023745
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_003",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1251209742773448,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.45470685485152,
+          32.39266502331187
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_004",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1251190229564214,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.44685800159236,
+          32.35524995802186
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_005",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250746837297862,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.62083300357564,
+          32.32762584232029
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_006",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 1.177426020837885,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.56506689276291,
+          32.30926672279297
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_007",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250679740744466,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.46497258199696,
+          32.30980738931827
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_008",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.9939684125193948,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5899751699368,
+          32.375263783478026
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_009",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 1.382025543062676,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.56349331879328,
+          32.26907314405426
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_010",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250747756815059,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5286520357604,
+          32.3136874344332
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_011",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.125059238585397,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.48283415321156,
+          32.37340240396753
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_normal_012",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250398172531074,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5286520357604,
+          32.3136874344332
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_202840_tight_001",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.125059238585397,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.51204625373792,
+          32.351176664736364
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_loose_001",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 5547,
+        "cluster_max_reflectivity_dbz": 12.5,
+        "compactness_km": 23.30853703470382,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.53794913119354,
+          32.35620831454354
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_001",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 12,
+        "cluster_max_reflectivity_dbz": -0.5,
+        "compactness_km": 3.529452449137024,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.44703189825464,
+          32.35474164652058
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_002",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1250874014142992,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.38886384709086,
+          32.340041404352476
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_003",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250893510899244,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.4921952109018,
+          32.37659300759971
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_004",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250371019523629,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.46623469707896,
+          32.31518599007964
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_005",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 1.662975726333354,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.54036139141614,
+          32.26556845251076
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_006",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250670071302143,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.39267830999307,
+          32.35396746400303
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_normal_007",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.1250223380880927,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52229622840945,
+          32.353563069371575
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_tight_001",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.6620387519377621,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.4786297118134,
+          32.32484412918659
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_tight_002",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250507312060422,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.4617693676124,
+          32.317969040756694
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_tight_003",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.5,
+        "compactness_km": 0.1250977033160981,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.458305011811,
+          32.302744800295635
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_203545_tight_004",
+        "scan_time_utc": "2026-03-22T20:35:45Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250996496230761,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.50535962847648,
+          32.265863924189844
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_loose_001",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 744,
+        "cluster_max_reflectivity_dbz": 6.5,
+        "compactness_km": 27.105665877748265,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5547604041946,
+          32.31864466236624
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_normal_001",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 0.1250996496216555,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52772168346696,
+          32.35902171694322
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_normal_002",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.2501481132132249,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.50163057747524,
+          32.381281907285455
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_normal_003",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 1.4068072689089004,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.44357258143026,
+          32.293272743508744
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_normal_004",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1250996496239172,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.39213823133008,
+          32.271259442191635
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204251_normal_005",
+        "scan_time_utc": "2026-03-22T20:42:51Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.7324353432193494,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.46879966150598,
+          32.23116415216074
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_loose_001",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 336,
+        "cluster_max_reflectivity_dbz": 2.0,
+        "compactness_km": 25.01915640679331,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.2432158593814,
+          32.30130601910254
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_loose_002",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -0.5,
+        "compactness_km": 3.0330568549720884,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.44409546826364,
+          32.36370473641282
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_loose_003",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 3.482638482153922,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.36399821063974,
+          32.448672784284
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_loose_004",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 2.567188532106379,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.42113869447294,
+          32.341106420148364
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_normal_001",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.125084079182894,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.3887174739643,
+          32.23958856899711
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_normal_002",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -7.5,
+        "compactness_km": 0.1250631228604209,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.37390729653464,
+          32.26070074087795
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_204955_normal_003",
+        "scan_time_utc": "2026-03-22T20:49:55Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.125051470050402,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5293290030882,
+          32.345937217868176
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_loose_001",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 48,
+        "cluster_max_reflectivity_dbz": -0.5,
+        "compactness_km": 9.133113556584732,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.46570177662912,
+          32.39301524218517
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_loose_002",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 0.1250727314714171,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.36484330169932,
+          32.26265160901165
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_loose_003",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 4.292734168298201,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.34636004106136,
+          32.191742962345224
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_loose_004",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 125,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 17.180704947591085,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.27252692448312,
+          32.349069277420384
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_loose_005",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1250638427491769,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.48646158835118,
+          32.30238910016931
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_205701_normal_001",
+        "scan_time_utc": "2026-03-22T20:57:01Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 0.1250514700479072,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.51784748661431,
+          32.36349002208783
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_loose_001",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 10,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 5.648098027464869,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.27054490692586,
+          32.192619853574
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_loose_002",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 111,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 12.31198958553493,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.41587314701712,
+          32.39013661167484
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_loose_003",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 2.407502951048508,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.47190800485416,
+          32.17929110896739
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_loose_004",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": -6.0,
+        "compactness_km": 4.060525237489137,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.38282291020248,
+          32.27783900407058
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_loose_005",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -7.0,
+        "compactness_km": 0.1250475857839037,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.38218947901925,
+          32.27881781141546
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_210407_normal_001",
+        "scan_time_utc": "2026-03-22T21:04:07Z",
+        "n_gates": 1,
+        "cluster_max_reflectivity_dbz": -7.0,
+        "compactness_km": 0.0,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.13652965186084,
+          32.35406408836177
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211105_loose_001",
+        "scan_time_utc": "2026-03-22T21:11:05Z",
+        "n_gates": 60,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 10.750879679866843,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.4957586767612,
+          32.36971435132537
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211105_loose_002",
+        "scan_time_utc": "2026-03-22T21:11:05Z",
+        "n_gates": 20,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 7.015432618797881,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.32204469680993,
+          32.271358469309654
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211105_loose_003",
+        "scan_time_utc": "2026-03-22T21:11:05Z",
+        "n_gates": 8,
+        "cluster_max_reflectivity_dbz": -5.0,
+        "compactness_km": 4.040182539567108,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.24763133223787,
+          32.19352542257576
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211105_loose_004",
+        "scan_time_utc": "2026-03-22T21:11:05Z",
+        "n_gates": 93,
+        "cluster_max_reflectivity_dbz": 3.5,
+        "compactness_km": 13.679123593179934,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.11858804162904,
+          32.34811458926708
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211805_loose_001",
+        "scan_time_utc": "2026-03-22T21:18:05Z",
+        "n_gates": 85,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 10.89675922350729,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.4671805313433,
+          32.38050582392512
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211805_loose_002",
+        "scan_time_utc": "2026-03-22T21:18:05Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 2.794052654962095,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.2819214031023,
+          32.434156703095425
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211805_loose_003",
+        "scan_time_utc": "2026-03-22T21:18:05Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 2.263846939708693,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.2432740638944,
+          32.1860661874674
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_211805_loose_004",
+        "scan_time_utc": "2026-03-22T21:18:05Z",
+        "n_gates": 76,
+        "cluster_max_reflectivity_dbz": 1.5,
+        "compactness_km": 8.073694485528243,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.08324055898376,
+          32.30611758865516
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_loose_001",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 163,
+        "cluster_max_reflectivity_dbz": 7.0,
+        "compactness_km": 10.92951544946434,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.24532310540924,
+          32.187638363721994
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_loose_002",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 109,
+        "cluster_max_reflectivity_dbz": 1.5,
+        "compactness_km": 8.896575231949711,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.29768067636132,
+          32.272667172339546
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_loose_003",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1250429430632509,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.43680278003744,
+          32.287407776758315
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_loose_004",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -6.5,
+        "compactness_km": 0.1250514700490813,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.30831868955738,
+          32.3729986315147
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_loose_005",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1250048589588902,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.30831868955738,
+          32.3729986315147
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_212504_normal_001",
+        "scan_time_utc": "2026-03-22T21:25:04Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -3.0,
+        "compactness_km": 0.1250048589588902,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.07614813727945,
+          32.304275700287036
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_loose_001",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 165,
+        "cluster_max_reflectivity_dbz": 9.5,
+        "compactness_km": 13.346492339965682,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.23345228780964,
+          32.178317387198156
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_loose_002",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 95,
+        "cluster_max_reflectivity_dbz": 4.5,
+        "compactness_km": 10.745469705288272,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.07090338298238,
+          32.159953708096864
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_loose_003",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250704550631284,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.1112285198346,
+          32.34255756842908
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_normal_001",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 14,
+        "cluster_max_reflectivity_dbz": 2.5,
+        "compactness_km": 2.4601372397959222,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.1272376096408,
+          32.3012085841137
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_normal_002",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.7727092046769484,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.08638608143862,
+          32.3011464415286
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213158_normal_003",
+        "scan_time_utc": "2026-03-22T21:31:58Z",
+        "n_gates": 12,
+        "cluster_max_reflectivity_dbz": 2.0,
+        "compactness_km": 2.851510025112012,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.077956336466,
+          32.30811089663931
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_loose_001",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 158,
+        "cluster_max_reflectivity_dbz": 6.5,
+        "compactness_km": 14.862044654385514,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.22040895374164,
+          32.17213872374627
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_loose_002",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 92,
+        "cluster_max_reflectivity_dbz": 1.5,
+        "compactness_km": 11.00796099804302,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.102721545848,
+          32.336268925028875
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_normal_001",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 7,
+        "cluster_max_reflectivity_dbz": 2.5,
+        "compactness_km": 3.2169253500795687,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.06389808305376,
+          32.29902255129998
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_normal_002",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 27,
+        "cluster_max_reflectivity_dbz": 3.0,
+        "compactness_km": 3.2485436317866476,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.12101820228794,
+          32.25990310036621
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_normal_003",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.2500870108429772,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04346443676675,
+          32.24145154097674
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_normal_004",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 1.209208677203692,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.05131291776812,
+          32.216095710822685
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_213852_normal_005",
+        "scan_time_utc": "2026-03-22T21:38:52Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1250463718968333,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.0911546881506,
+          32.32157124699053
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_loose_001",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 151,
+        "cluster_max_reflectivity_dbz": 6.5,
+        "compactness_km": 11.952547154635454,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.21762861303934,
+          32.286638913066646
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_loose_002",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.5,
+        "compactness_km": 0.1250724013664766,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.95617704586176,
+          32.26853525430683
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_loose_003",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 1.5504267747921996,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.21617174735609,
+          32.16857258764196
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_loose_004",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 82,
+        "cluster_max_reflectivity_dbz": 3.5,
+        "compactness_km": 10.714998866333424,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.0847574079508,
+          32.315552232275024
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_normal_001",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 50,
+        "cluster_max_reflectivity_dbz": 5.5,
+        "compactness_km": 7.478509641657901,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.14609191996502,
+          32.32312416973158
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_normal_002",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1250463718970747,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.02833025131964,
+          32.25480155850265
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_normal_003",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 0.1250153126920929,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.07229014404044,
+          32.216465135095895
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_214550_normal_004",
+        "scan_time_utc": "2026-03-22T21:45:50Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 0.2500781209111686,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.08265232509646,
+          32.31554973061208
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_loose_001",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 122,
+        "cluster_max_reflectivity_dbz": 5.0,
+        "compactness_km": 12.16576081335809,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.22171934568784,
+          32.1895867511752
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_loose_002",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 56,
+        "cluster_max_reflectivity_dbz": 1.0,
+        "compactness_km": 7.501153887334571,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.00103310618704,
+          32.345433216614936
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_loose_003",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1250114302974203,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.12821634117086,
+          32.34413361900385
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_normal_001",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.8345915148094782,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.06605194508654,
+          32.30226288189208
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_normal_002",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 42,
+        "cluster_max_reflectivity_dbz": 4.5,
+        "compactness_km": 5.176278223804021,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.06022474145824,
+          32.22339365044974
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_normal_003",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 0.1250483131025518,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.02588079889662,
+          32.22385649296163
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_normal_004",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.701614811064042,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04649558774176,
+          32.29277120583444
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215249_tight_001",
+        "scan_time_utc": "2026-03-22T21:52:49Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 0.7683652482724996,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.07784016368112,
+          32.31514568881678
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_loose_001",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 114,
+        "cluster_max_reflectivity_dbz": 5.0,
+        "compactness_km": 12.23080196303248,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.18552728011026,
+          32.18738322065341
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_loose_002",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 22,
+        "cluster_max_reflectivity_dbz": -3.5,
+        "compactness_km": 8.81242743125943,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.95053051335812,
+          32.30098341027142
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_loose_003",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1249485375402812,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.06319156015576,
+          32.31121042428286
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_normal_001",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 32,
+        "cluster_max_reflectivity_dbz": 3.5,
+        "compactness_km": 4.799311049267463,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.0636196966874,
+          32.228723208712765
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_normal_002",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 5,
+        "cluster_max_reflectivity_dbz": 0.5,
+        "compactness_km": 0.7099955227527607,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.95053051335812,
+          32.30098341027142
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_normal_003",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1249485375402812,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04097834982127,
+          32.30229316269043
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_tight_001",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1250269598797973,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.03990128472304,
+          32.28865665077981
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_tight_002",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": 2.5,
+        "compactness_km": 0.2500646588326211,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.02240530172584,
+          32.285909813984034
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_215943_tight_003",
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 2.0,
+        "compactness_km": 0.1250269598811531,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.07231425412208,
+          32.29910060368882
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_220636_loose_001",
+        "scan_time_utc": "2026-03-22T22:06:36Z",
+        "n_gates": 130,
+        "cluster_max_reflectivity_dbz": 9.0,
+        "compactness_km": 13.19449711449812,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.94382878604296,
+          32.10878417367745
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_220636_loose_002",
+        "scan_time_utc": "2026-03-22T22:06:36Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1249757271466128,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.05711191761868,
+          32.32018713265254
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_220636_normal_001",
+        "scan_time_utc": "2026-03-22T22:06:36Z",
+        "n_gates": 3,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 0.2500542971644467,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.06075281341572,
+          32.29333769071292
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_220636_normal_002",
+        "scan_time_utc": "2026-03-22T22:06:36Z",
+        "n_gates": 6,
+        "cluster_max_reflectivity_dbz": 9.0,
+        "compactness_km": 1.136232655880014,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04267580898524,
+          32.228597169325035
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_220636_normal_003",
+        "scan_time_utc": "2026-03-22T22:06:36Z",
+        "n_gates": 11,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 2.246429584172893,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.0593563497311,
+          32.285712484609384
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_221330_loose_001",
+        "scan_time_utc": "2026-03-22T22:13:30Z",
+        "n_gates": 84,
+        "cluster_max_reflectivity_dbz": 4.5,
+        "compactness_km": 7.14673552265376,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.00250172545827,
+          32.36057668399246
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_221330_loose_002",
+        "scan_time_utc": "2026-03-22T22:13:30Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.125056887865656,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.89226540757926,
+          32.3356071142956
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_221330_loose_003",
+        "scan_time_utc": "2026-03-22T22:13:30Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 0.1250374854308706,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.89334509319676,
+          32.33496677575765
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_221330_normal_001",
+        "scan_time_utc": "2026-03-22T22:13:30Z",
+        "n_gates": 1,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.0,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04420086593808,
+          32.2539715816315
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222024_loose_001",
+        "scan_time_utc": "2026-03-22T22:20:24Z",
+        "n_gates": 55,
+        "cluster_max_reflectivity_dbz": 3.0,
+        "compactness_km": 6.703835813159511,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.76952966712724,
+          32.28519940329457
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222024_loose_002",
+        "scan_time_utc": "2026-03-22T22:20:24Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 1.655242338097498,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.92276202049648,
+          32.33331588594555
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222024_loose_003",
+        "scan_time_utc": "2026-03-22T22:20:24Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.125045246398347,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7650091013602,
+          32.27087292344986
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222024_normal_001",
+        "scan_time_utc": "2026-03-22T22:20:24Z",
+        "n_gates": 1,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.0,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.61685628141144,
+          32.23550444539612
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222718_loose_001",
+        "scan_time_utc": "2026-03-22T22:27:18Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": 6.0,
+        "compactness_km": 2.307974605684934,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.88731787636186,
+          32.101639677317806
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222718_loose_002",
+        "scan_time_utc": "2026-03-22T22:27:18Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.0,
+        "compactness_km": 0.1250445085945942,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.62818034992378,
+          32.239937440298405
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222718_loose_003",
+        "scan_time_utc": "2026-03-22T22:27:18Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 1.0,
+        "compactness_km": 0.1249831588624862,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.60245335950802,
+          32.17985473831529
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_222718_loose_004",
+        "scan_time_utc": "2026-03-22T22:27:18Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 0.1249831588603842,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.6102760055258,
+          32.194453604668766
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_223411_loose_001",
+        "scan_time_utc": "2026-03-22T22:34:11Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 2.5,
+        "compactness_km": 0.1250526780890264,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.63543663963468,
+          32.25480999852754
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_223411_loose_002",
+        "scan_time_utc": "2026-03-22T22:34:11Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 0.0,
+        "compactness_km": 0.124983158862268,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.60242141671908,
+          32.17977107918644
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_223411_loose_003",
+        "scan_time_utc": "2026-03-22T22:34:11Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": 5.0,
+        "compactness_km": 0.1249831588628473,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.62170146400408,
+          32.22861460035128
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224105_loose_001",
+        "scan_time_utc": "2026-03-22T22:41:05Z",
+        "n_gates": 29,
+        "cluster_max_reflectivity_dbz": 6.0,
+        "compactness_km": 6.947978308723218,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.93485404275587,
+          32.159525919352454
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224105_loose_002",
+        "scan_time_utc": "2026-03-22T22:41:05Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -2.5,
+        "compactness_km": 0.1249981613037718,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.98261006485868,
+          32.29672222760358
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224105_loose_003",
+        "scan_time_utc": "2026-03-22T22:41:05Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1249563059934405,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.62039207262212,
+          32.231449920335315
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_loose_001",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 14,
+        "cluster_max_reflectivity_dbz": 4.0,
+        "compactness_km": 3.738296901983802,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.82240499304052,
+          32.24612797533138
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_loose_002",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1249842535950177,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.5996172288436,
+          32.17219982011379
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_loose_003",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 4,
+        "cluster_max_reflectivity_dbz": 3.0,
+        "compactness_km": 0.897993832096662,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.7771098340881,
+          32.0907100248484
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_loose_004",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.0,
+        "compactness_km": 0.1249842535946662,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.82240499304052,
+          32.24612797533138
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_normal_001",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1249842535950177,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.82240499304052,
+          32.24612797533138
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_224759_tight_001",
+        "scan_time_utc": "2026-03-22T22:47:59Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -1.5,
+        "compactness_km": 0.1249842535950177,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.61559898998748,
+          32.219179005710586
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_225453_loose_001",
+        "scan_time_utc": "2026-03-22T22:54:53Z",
+        "n_gates": 24,
+        "cluster_max_reflectivity_dbz": 10.0,
+        "compactness_km": 4.912583075447514,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.93366672885088,
+          32.147620735119716
+        ]
+      },
+      "properties": {
+        "cluster_id": "20260322_225453_loose_002",
+        "scan_time_utc": "2026-03-22T22:54:53Z",
+        "n_gates": 2,
+        "cluster_max_reflectivity_dbz": -4.0,
+        "compactness_km": 0.1249718429124352,
+        "radar_site": "KEMX"
+      }
+    }
+  ]
+}

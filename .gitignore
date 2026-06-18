@@ -25,11 +25,17 @@ data/truth/*
 cases/*/nexrad/*/raw/*
 cases/*/nexrad/*/logs/*
 cases/*/outputs/radar_preview/*
-cases/*/outputs/candidates/*
+cases/*/outputs/candidates/*/top_candidate_plots/*
+cases/*/outputs/candidates/*/summary_plots/*
+# Large gate-level CSV (often 500 MB+). Keep small summary CSVs trackable.
+cases/*/outputs/candidates/*/near_track_gates.csv
+cases/*/outputs/candidates/*/scan_gate_summary.csv
 !cases/*/nexrad/*/raw/.gitkeep
 !cases/*/nexrad/*/logs/.gitkeep
 !cases/*/outputs/radar_preview/.gitkeep
 !cases/*/outputs/candidates/.gitkeep
+!cases/*/outputs/candidates/*/top_candidate_plots/.gitkeep
+!cases/*/outputs/candidates/*/summary_plots/.gitkeep
 
 # Notebook execution artifacts.
 .ipynb_checkpoints/

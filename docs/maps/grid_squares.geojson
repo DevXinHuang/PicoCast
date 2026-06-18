@@ -1,0 +1,461 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.0,
+              32.25
+            ],
+            [
+              -110.91666666666667,
+              32.25
+            ],
+            [
+              -110.91666666666667,
+              32.291666666666664
+            ],
+            [
+              -111.0,
+              32.291666666666664
+            ],
+            [
+              -111.0,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:18:00Z",
+        "maidenhead_grid": "DM42mg",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.91666666666667,
+              32.25
+            ],
+            [
+              -110.83333333333333,
+              32.25
+            ],
+            [
+              -110.83333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.91666666666667,
+              32.291666666666664
+            ],
+            [
+              -110.91666666666667,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:28:00Z",
+        "maidenhead_grid": "DM42ng",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.83333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.75,
+              32.291666666666664
+            ],
+            [
+              -110.75,
+              32.333333333333336
+            ],
+            [
+              -110.83333333333333,
+              32.333333333333336
+            ],
+            [
+              -110.83333333333333,
+              32.291666666666664
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:38:00Z",
+        "maidenhead_grid": "DM42oh",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.109,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.75,
+              32.333333333333336
+            ],
+            [
+              -110.66666666666667,
+              32.333333333333336
+            ],
+            [
+              -110.66666666666667,
+              32.375
+            ],
+            [
+              -110.75,
+              32.375
+            ],
+            [
+              -110.75,
+              32.333333333333336
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:48:00Z",
+        "maidenhead_grid": "DM42pi",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.106,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.33333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.25,
+              32.291666666666664
+            ],
+            [
+              -110.25,
+              32.333333333333336
+            ],
+            [
+              -110.33333333333333,
+              32.333333333333336
+            ],
+            [
+              -110.33333333333333,
+              32.291666666666664
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:18:00Z",
+        "maidenhead_grid": "DM42uh",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.109,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.25,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.333333333333336
+            ],
+            [
+              -110.25,
+              32.333333333333336
+            ],
+            [
+              -110.25,
+              32.291666666666664
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:28:00Z",
+        "maidenhead_grid": "DM42vh",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.109,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.16666666666667,
+              32.25
+            ],
+            [
+              -110.08333333333333,
+              32.25
+            ],
+            [
+              -110.08333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:38:00Z",
+        "maidenhead_grid": "DM42wg",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.16666666666667,
+              32.25
+            ],
+            [
+              -110.08333333333333,
+              32.25
+            ],
+            [
+              -110.08333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.291666666666664
+            ],
+            [
+              -110.16666666666667,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:48:00Z",
+        "maidenhead_grid": "DM42wg",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.08333333333333,
+              32.25
+            ],
+            [
+              -110.0,
+              32.25
+            ],
+            [
+              -110.0,
+              32.291666666666664
+            ],
+            [
+              -110.08333333333333,
+              32.291666666666664
+            ],
+            [
+              -110.08333333333333,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:58:00Z",
+        "maidenhead_grid": "DM42xg",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.0,
+              32.25
+            ],
+            [
+              -109.91666666666667,
+              32.25
+            ],
+            [
+              -109.91666666666667,
+              32.291666666666664
+            ],
+            [
+              -110.0,
+              32.291666666666664
+            ],
+            [
+              -110.0,
+              32.25
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:08:00Z",
+        "maidenhead_grid": "DM52ag",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.113,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -109.91666666666667,
+              32.208333333333336
+            ],
+            [
+              -109.83333333333333,
+              32.208333333333336
+            ],
+            [
+              -109.83333333333333,
+              32.25
+            ],
+            [
+              -109.91666666666667,
+              32.25
+            ],
+            [
+              -109.91666666666667,
+              32.208333333333336
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:18:00Z",
+        "maidenhead_grid": "DM52bf",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.116,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -109.83333333333333,
+              32.208333333333336
+            ],
+            [
+              -109.75,
+              32.208333333333336
+            ],
+            [
+              -109.75,
+              32.25
+            ],
+            [
+              -109.83333333333333,
+              32.25
+            ],
+            [
+              -109.83333333333333,
+              32.208333333333336
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:28:00Z",
+        "maidenhead_grid": "DM52cf",
+        "grid_precision_chars": 6,
+        "grid_uncertainty_km": 9.116,
+        "position_source": "maidenhead_grid_bounds"
+      }
+    }
+  ]
+}

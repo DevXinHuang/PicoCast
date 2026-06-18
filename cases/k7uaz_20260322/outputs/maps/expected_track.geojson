@@ -1,0 +1,245 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.96,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:18:00Z",
+        "time_local": "2026-03-22T12:18:00-0700",
+        "maidenhead_grid": "DM42mg",
+        "grid_precision_chars": 6,
+        "alt_m": 2340.0,
+        "alt_km": 2.34,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.88,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:28:00Z",
+        "time_local": "2026-03-22T12:28:00-0700",
+        "maidenhead_grid": "DM42ng",
+        "grid_precision_chars": 6,
+        "alt_m": 2880.0,
+        "alt_km": 2.88,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.79,
+          32.31
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:38:00Z",
+        "time_local": "2026-03-22T12:38:00-0700",
+        "maidenhead_grid": "DM42oh",
+        "grid_precision_chars": 6,
+        "alt_m": 3660.0,
+        "alt_km": 3.66,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.71,
+          32.35
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T19:48:00Z",
+        "time_local": "2026-03-22T12:48:00-0700",
+        "maidenhead_grid": "DM42pi",
+        "grid_precision_chars": 6,
+        "alt_m": 4280.0,
+        "alt_km": 4.28,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.29,
+          32.31
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:18:00Z",
+        "time_local": "2026-03-22T14:18:00-0700",
+        "maidenhead_grid": "DM42uh",
+        "grid_precision_chars": 6,
+        "alt_m": 11280.0,
+        "alt_km": 11.28,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.21,
+          32.31
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:28:00Z",
+        "time_local": "2026-03-22T14:28:00-0700",
+        "maidenhead_grid": "DM42vh",
+        "grid_precision_chars": 6,
+        "alt_m": 11440.0,
+        "alt_km": 11.44,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.13,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:38:00Z",
+        "time_local": "2026-03-22T14:38:00-0700",
+        "maidenhead_grid": "DM42wg",
+        "grid_precision_chars": 6,
+        "alt_m": 11740.0,
+        "alt_km": 11.74,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.13,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:48:00Z",
+        "time_local": "2026-03-22T14:48:00-0700",
+        "maidenhead_grid": "DM42wg",
+        "grid_precision_chars": 6,
+        "alt_m": 11740.0,
+        "alt_km": 11.74,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.04,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T21:58:00Z",
+        "time_local": "2026-03-22T14:58:00-0700",
+        "maidenhead_grid": "DM42xg",
+        "grid_precision_chars": 6,
+        "alt_m": 11780.0,
+        "alt_km": 11.78,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.96,
+          32.27
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:08:00Z",
+        "time_local": "2026-03-22T15:08:00-0700",
+        "maidenhead_grid": "DM52ag",
+        "grid_precision_chars": 6,
+        "alt_m": 11760.0,
+        "alt_km": 11.76,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.88,
+          32.23
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:18:00Z",
+        "time_local": "2026-03-22T15:18:00-0700",
+        "maidenhead_grid": "DM52bf",
+        "grid_precision_chars": 6,
+        "alt_m": 12000.0,
+        "alt_km": 12.0,
+        "position_source": "maidenhead_grid_center"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.79,
+          32.23
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "time_utc": "2026-03-22T22:28:00Z",
+        "time_local": "2026-03-22T15:28:00-0700",
+        "maidenhead_grid": "DM52cf",
+        "grid_precision_chars": 6,
+        "alt_m": 11780.0,
+        "alt_km": 11.78,
+        "position_source": "maidenhead_grid_center"
+      }
+    }
+  ]
+}

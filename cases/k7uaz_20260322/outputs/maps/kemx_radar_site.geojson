@@ -1,0 +1,16 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -110.6302490234375,
+      31.89365005493164
+    ]
+  },
+  "properties": {
+    "site_id": "KEMX",
+    "lat": 31.89365005493164,
+    "lon": -110.6302490234375,
+    "alt_m": 1620.0
+  }
+}

@@ -124,6 +124,43 @@ The validation workflow uses known balloon time/position/altitude before any
 blind detection. Later NEXRAD Level II comparisons should ask whether compact
 non-weather radar candidates appear near these expected balloon positions.
 
+End-of-day candidate triage for KEMX:
+
+```bash
+python scripts/extract_near_track_gates.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+python scripts/cluster_near_track_gates.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+python scripts/score_near_track_candidates.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+python scripts/plot_top_candidates.py cases/k7uaz_20260322/config.yaml --radar-site KEMX --top-n 10
+python scripts/write_candidate_report.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+```
+
+This workflow produces near-track radar candidate CSVs, plots, and a cautious
+human-readable report under `cases/k7uaz_20260322/outputs/candidates/KEMX/`.
+It is for candidate inspection only and does not confirm a balloon association.
+
+### Geospatial Mapping
+
+Export GeoJSON layers and create interactive HTML maps for visual inspection of
+balloon track, Maidenhead grid-square regions, radar candidates, and KEMX radar
+geometry on real basemaps:
+
+```bash
+python scripts/export_case_geojson.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+python scripts/make_interactive_map.py cases/k7uaz_20260322/config.yaml --radar-site KEMX
+python scripts/make_candidate_validation_map.py cases/k7uaz_20260322/config.yaml --radar-site KEMX --rank 1
+python scripts/make_sequence_map.py cases/k7uaz_20260322/config.yaml --radar-site KEMX --ranks 1 3 6 7 9
+```
+
+Open the maps in your browser:
+
+```bash
+open cases/k7uaz_20260322/outputs/maps/interactive_candidate_map.html
+open cases/k7uaz_20260322/outputs/maps/rank_01_validation_map.html
+```
+
+> **Note:** Balloon position is estimated from Maidenhead grid-square centers,
+> not exact GPS. Candidate offsets are relative to the grid-center estimate.
+
 ## NOAA Data Attribution
 
 When distributing derived results from NOAA/NEXRAD data, attribute NOAA/NWS as

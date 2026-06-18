@@ -23,3 +23,14 @@ nexrad:
     - KFSX
     - KEPZ
   download_raw: true
+mapping:
+  enabled: true
+  max_gates_to_map: 5000
+  basemap: OpenStreetMap
+  range_rings_km:
+    - 50
+    - 100
+    - 150
+    - 200
+  show_grid_squares: true
+  show_candidate_labels: true

@@ -1,0 +1,225 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5286520357604,
+          32.3136874344332
+        ]
+      },
+      "properties": {
+        "candidate_rank": 1,
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "candidate_score": 0.7337843051998479,
+        "candidate_label": "strong_candidate",
+        "search_window": "normal",
+        "horizontal_distance_km": 2.1772335581405224,
+        "vertical_distance_m": 389.4629629629626,
+        "max_reflectivity_dbz": -6.0,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.89226540757926,
+          32.3356071142956
+        ]
+      },
+      "properties": {
+        "candidate_rank": 2,
+        "scan_time_utc": "2026-03-22T22:13:30Z",
+        "candidate_score": 0.715129489749981,
+        "candidate_label": "strong_candidate",
+        "search_window": "loose",
+        "horizontal_distance_km": 9.99368574126289,
+        "vertical_distance_m": 328.5,
+        "max_reflectivity_dbz": 0.0,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63436623860466,
+          32.3308337171867
+        ]
+      },
+      "properties": {
+        "candidate_rank": 3,
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "candidate_score": 0.7148006447063262,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 2.214986439819459,
+        "vertical_distance_m": 132.51851851851825,
+        "max_reflectivity_dbz": -1.5,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -109.95053051335812,
+          32.30098341027142
+        ]
+      },
+      "properties": {
+        "candidate_rank": 4,
+        "scan_time_utc": "2026-03-22T21:59:43Z",
+        "candidate_score": 0.7065577584243145,
+        "candidate_label": "strong_candidate",
+        "search_window": "loose",
+        "horizontal_distance_km": 7.909280426033386,
+        "vertical_distance_m": 1027.0666666666675,
+        "max_reflectivity_dbz": -1.0,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65226104625074,
+          32.32596353311618
+        ]
+      },
+      "properties": {
+        "candidate_rank": 5,
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "candidate_score": 0.7017389928250556,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 2.055133239582245,
+        "vertical_distance_m": 169.51851851851825,
+        "max_reflectivity_dbz": -4.5,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52888685576168,
+          32.35351621894327
+        ]
+      },
+      "properties": {
+        "candidate_rank": 6,
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "candidate_score": 0.6741204674268555,
+        "candidate_label": "strong_candidate",
+        "search_window": "normal",
+        "horizontal_distance_km": 5.577677796751033,
+        "vertical_distance_m": 24.83333333333303,
+        "max_reflectivity_dbz": -6.5,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61633774245374,
+          32.33048465106528
+        ]
+      },
+      "properties": {
+        "candidate_rank": 7,
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "candidate_score": 0.6736973332052801,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 1.2189588058224572,
+        "vertical_distance_m": 117.84444444444398,
+        "max_reflectivity_dbz": -6.5,
+        "n_gates": 5,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65443837150998,
+          32.3685033253396
+        ]
+      },
+      "properties": {
+        "candidate_rank": 8,
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "candidate_score": 0.6670767846011468,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 2.6894045764876253,
+        "vertical_distance_m": 185.98148148148175,
+        "max_reflectivity_dbz": -5.0,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5286520357604,
+          32.3136874344332
+        ]
+      },
+      "properties": {
+        "candidate_rank": 9,
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "candidate_score": 0.665612502938991,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 2.1772335581405224,
+        "vertical_distance_m": 389.4629629629626,
+        "max_reflectivity_dbz": -6.0,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.65344171375014,
+          32.352090895260275
+        ]
+      },
+      "properties": {
+        "candidate_rank": 10,
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "candidate_score": 0.6610993689022093,
+        "candidate_label": "strong_candidate",
+        "search_window": "tight",
+        "horizontal_distance_km": 0.8686867607661474,
+        "vertical_distance_m": 1034.4814814814818,
+        "max_reflectivity_dbz": -6.5,
+        "n_gates": 2,
+        "radar_site": "KEMX"
+      }
+    }
+  ]
+}
