@@ -244,6 +244,7 @@
             <a href="#maps">Interactive Maps</a>
             <a href="#altitude">Altitude Validation</a>
             <a href="#pathfit">Path Fitting</a>
+            <a href="#discovery">Regional Discovery</a>
             <a href="#geojson">GeoJSON Layers</a>
             <a href="#guide">Layers Guide</a>
         </div>
@@ -316,6 +317,13 @@
                     Interactive dashboard mapping the altitude-constrained radar candidate trajectory from 20:00–20:30 UTC. Features a dual-panel view with a GIS map on top and a dynamic altitude vs. time chart below.
                 </p>
                 <span class="tag" style="background: #f0883e33; color: #f0883e;">New Analysis</span>
+            </a>
+            <a class="card" href="discovery/regional_discovery_dashboard.html" style="border-color: #79c0ff;">
+                <h3>📡 Regional Multi-Radar Discovery Dashboard</h3>
+                <p>
+                    Interactive dual-panel dashboard showing candidate tracklets and cross-radar associations for both KEMX and KIWA radars. Compares candidates against the expected altitude profile.
+                </p>
+                <span class="tag" style="background: #79c0ff33; color: #79c0ff;">Multi-Radar</span>
             </a>
         </div>
 
@@ -553,6 +561,66 @@
                 </a>
                 <a href="path_fit/path_fit_report.md" style="display: inline-block; margin-left: 1rem; color: #58a6ff; text-decoration: none;">
                     Read Full Report
+                </a>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- REGIONAL MULTI-RADAR DISCOVERY -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="discovery">Regional Multi-Radar Discovery Mode</h2>
+
+        <div class="plot-section">
+            <h3>📡 Regional Multi-Radar Search & Association</h3>
+            <div class="explanation" style="margin-bottom: 1rem;">
+                Instead of searching near a strict track line, this mode searches multiple regional radars (scanning up to 250 km from the expected flight path) for balloon-like candidate clusters. It links clusters into tracklets using a branching forward search and performs spatial-temporal cross-radar association.
+            </div>
+            
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Radars Evaluated</strong></td>
+                        <td>10 regional stations (primary + secondary)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Active Radars (Visible)</strong></td>
+                        <td>2 sites (<span class="excellent">KEMX</span>, <span class="excellent">KIWA</span>); 8 sites skipped as too far</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Discovered Clusters</strong></td>
+                        <td>9,371 compact candidate clusters (6,631 KEMX, 2,740 KIWA)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linked Tracklets</strong></td>
+                        <td>20 candidate tracklets (10 per site, branching forward search)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cross-Radar Associations</strong></td>
+                        <td>100 associations (spatial/temporal overlap matches)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-finding" style="margin-top: 1.5rem;">
+                <strong>Key finding:</strong> PicoCAST discovered 20 altitude-consistent candidate tracklets across KEMX and KIWA. A total of 100 cross-radar candidate associations were linked, showing that both radars observed spatially and temporally compatible trajectory behavior, significantly increasing the probability of a physical balloon-like target.
+            </div>
+            <div class="caveat" style="margin-top: 0.75rem;">
+                <strong>Scientific terminology guardrails:</strong> All findings are presented as "balloon-like candidates," "candidate tracklets," and "cross-radar candidate associations." They represent telemetry-consistent candidates, not confirmed detections or exact GPS paths.
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <a href="discovery/regional_discovery_dashboard.html" style="display: inline-block; background: #238636; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">
+                    View Regional Discovery Dashboard
+                </a>
+                <a href="discovery/regional_discovery_report.md" style="display: inline-block; margin-left: 1rem; color: #58a6ff; text-decoration: none;">
+                    Read Regional Discovery Report
                 </a>
             </div>
         </div>

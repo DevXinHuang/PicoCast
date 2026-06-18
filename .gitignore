@@ -37,5 +37,15 @@ cases/*/outputs/candidates/*/scan_gate_summary.csv
 !cases/*/outputs/candidates/*/top_candidate_plots/.gitkeep
 !cases/*/outputs/candidates/*/summary_plots/.gitkeep
 
+# Regional multi-radar discovery local/intermediate files
+cases/*/nexrad/regional_nexrad_inventory.csv
+cases/*/nexrad/regional_radar_geometry.csv
+cases/*/nexrad/regional_scan_matches.csv
+cases/*/nexrad/*/raw/*
+cases/*/nexrad/*/index/*
+cases/*/outputs/discovery/regional_discovered_clusters.parquet
+cases/*/outputs/discovery/KEMX/
+cases/*/outputs/discovery/KIWA/
+
 # Notebook execution artifacts.
 .ipynb_checkpoints/

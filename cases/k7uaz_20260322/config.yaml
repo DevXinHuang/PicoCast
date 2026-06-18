@@ -4,12 +4,8 @@ date_local: 2026-03-22
 timezone: America/Phoenix
 source_csv: raw/K7UAZ_39_12m_launch_day_20260322.csv
 primary_radar_site: KEMX
-candidate_radar_sites:
-  - KEMX
-  - KIWA
-  - KFSX
-  - KEPZ
 notes: First PicoCAST validation case using known launch-day balloon telemetry.
+
 nexrad:
   bucket: unidata-nexrad-level2
   level: 2
@@ -17,12 +13,8 @@ nexrad:
   start_time_utc: "2026-03-22T18:45:00Z"
   end_time_utc: "2026-03-22T23:00:00Z"
   primary_radar_site: KEMX
-  candidate_radar_sites:
-    - KEMX
-    - KIWA
-    - KFSX
-    - KEPZ
   download_raw: true
+
 mapping:
   enabled: true
   max_gates_to_map: 5000
@@ -34,3 +26,92 @@ mapping:
     - 200
   show_grid_squares: true
   show_candidate_labels: true
+
+discovery:
+  enabled: true
+  radar_sites_primary:
+    - KEMX
+    - KIWA
+    - KFSX
+    - KYUX
+    - KEPZ
+  radar_sites_secondary:
+    - KABX
+    - KHDX
+    - KFDX
+    - KESX
+    - KNKX
+  time_window_utc:
+    start: "2026-03-22T18:45:00Z"
+    end: "2026-03-22T23:00:00Z"
+  altitude_padding_m: 1500
+  horizontal_corridor_padding_km: 40
+  max_candidates_per_scan: 100
+  max_gates_per_scan_to_cluster: 200000
+  min_gates_per_cluster: 1
+  max_gates_per_cluster: 25
+  reflectivity_min_dbz: null
+  reflectivity_max_dbz: 20
+  max_segment_speed_kmh: 200
+  allow_missing_scans: true
+  output_format: parquet
+
+performance:
+  local_machine: "Apple Silicon M4, 32 GB RAM"
+  max_workers: 6
+  per_radar_parallel: true
+  per_file_parallel: false
+  write_intermediate_parquet: true
+  do_not_keep_all_gates_in_memory: true
+
+tracklet_linking:
+  method: branching_forward_search
+  max_tracklets_per_radar: 10
+  max_active_paths_per_step: 200
+  max_segment_speed_kmh: 200
+  max_altitude_jump_m: 2500
+  allow_missing_scans: true
+  max_missing_scans: 2
+  duplicate_overlap_threshold: 0.7
+
+radar_sites:
+  KEMX:
+    lat: 31.89365
+    lon: -110.63025
+    alt_m: 1621.2
+  KIWA:
+    lat: 33.28923
+    lon: -111.66991
+    alt_m: 434.6
+  KFSX:
+    lat: 34.57433
+    lon: -111.19844
+    alt_m: 2290.3
+  KYUX:
+    lat: 32.49528
+    lon: -114.65671
+    alt_m: 72.8
+  KEPZ:
+    lat: 31.87306
+    lon: -106.69800
+    alt_m: 1285.6
+  KABX:
+    lat: 35.14972
+    lon: -106.82389
+    alt_m: 1813.9
+  KHDX:
+    lat: 33.07639
+    lon: -106.12003
+    alt_m: 1301.5
+  KFDX:
+    lat: 34.63417
+    lon: -103.61888
+    alt_m: 1432.0
+  KESX:
+    lat: 35.70135
+    lon: -114.89165
+    alt_m: 1508.2
+  KNKX:
+    lat: 32.91902
+    lon: -117.04180
+    alt_m: 320.6
