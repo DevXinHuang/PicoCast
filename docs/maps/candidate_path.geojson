@@ -1,0 +1,212 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.63436623860466,
+          32.3308337171867,
+          5121.0
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "radar_site": "KEMX",
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "original_candidate_rank": 3,
+        "altitude_priority_rank": 7,
+        "candidate_alt_m": 5121.0,
+        "expected_grid_center_lat_deg": 32.34443703703704,
+        "expected_grid_center_lon_deg": -110.65158888888888,
+        "expected_alt_m": 5253.518518518518,
+        "signed_vertical_m": -132.51851851851825,
+        "abs_vertical_distance_m": 132.51851851851825,
+        "horizontal_distance_km": 2.214986439819459,
+        "candidate_score": 0.7148006447063262,
+        "altitude_consistency_score": 1.0,
+        "altitude_consistency_label": "excellent_altitude_match",
+        "n_gates": 2,
+        "max_reflectivity_dbz": -1.5,
+        "segment_speed_kmh": 0.0,
+        "segment_bearing_deg": 0.0,
+        "path_step_score": 0.8136412030776031,
+        "path_selected_reason": "excellent altitude match; near grid center; compact return",
+        "notes": "DBSCAN cluster"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.61633774245374,
+          32.33048465106528,
+          5686.6
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "radar_site": "KEMX",
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "original_candidate_rank": 7,
+        "altitude_priority_rank": 13,
+        "candidate_alt_m": 5686.6,
+        "expected_grid_center_lat_deg": 32.34128888888889,
+        "expected_grid_center_lon_deg": -110.61853333333332,
+        "expected_alt_m": 5804.444444444444,
+        "signed_vertical_m": -117.84444444444398,
+        "abs_vertical_distance_m": 117.84444444444398,
+        "horizontal_distance_km": 1.2189588058224572,
+        "candidate_score": 0.6736973332052801,
+        "altitude_consistency_score": 1.0,
+        "altitude_consistency_label": "excellent_altitude_match",
+        "n_gates": 5,
+        "max_reflectivity_dbz": -6.5,
+        "segment_speed_kmh": 14.352147505468107,
+        "segment_bearing_deg": 91.30783407243632,
+        "path_step_score": 0.8341740473184629,
+        "path_selected_reason": "excellent altitude match; near grid center",
+        "notes": "DBSCAN cluster"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.52888685576168,
+          32.35351621894327,
+          6381.5
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "radar_site": "KEMX",
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "original_candidate_rank": 6,
+        "altitude_priority_rank": 4,
+        "candidate_alt_m": 6381.5,
+        "expected_grid_center_lat_deg": 32.33813333333333,
+        "expected_grid_center_lon_deg": -110.5854,
+        "expected_alt_m": 6356.666666666667,
+        "signed_vertical_m": 24.83333333333303,
+        "abs_vertical_distance_m": 24.83333333333303,
+        "horizontal_distance_km": 5.577677796751033,
+        "candidate_score": 0.6741204674268555,
+        "altitude_consistency_score": 1.0,
+        "altitude_consistency_label": "excellent_altitude_match",
+        "n_gates": 2,
+        "max_reflectivity_dbz": -6.5,
+        "segment_speed_kmh": 72.72266264877074,
+        "segment_bearing_deg": 72.66313127693934,
+        "path_step_score": 0.8654865102073308,
+        "path_selected_reason": "excellent altitude match; compact return",
+        "notes": "DBSCAN cluster"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.49485550339011,
+          32.35353103675549,
+          6811.428571428572
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "radar_site": "KEMX",
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "original_candidate_rank": 27,
+        "altitude_priority_rank": 14,
+        "candidate_alt_m": 6811.428571428572,
+        "expected_grid_center_lat_deg": 32.33507407407408,
+        "expected_grid_center_lon_deg": -110.55327777777778,
+        "expected_alt_m": 6892.037037037037,
+        "signed_vertical_m": -80.60846560846585,
+        "abs_vertical_distance_m": 80.60846560846585,
+        "horizontal_distance_km": 5.859535625843064,
+        "candidate_score": 0.6004107511946779,
+        "altitude_consistency_score": 1.0,
+        "altitude_consistency_label": "excellent_altitude_match",
+        "n_gates": 7,
+        "max_reflectivity_dbz": -3.0,
+        "segment_speed_kmh": 27.86453533520609,
+        "segment_bearing_deg": 89.9613621959532,
+        "path_step_score": 0.8257081850374226,
+        "path_selected_reason": "excellent altitude match",
+        "notes": "DBSCAN cluster"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.48283415321156,
+          32.37340240396753,
+          7907.5
+        ]
+      },
+      "properties": {
+        "case_id": "k7uaz_20260322",
+        "radar_site": "KEMX",
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "original_candidate_rank": 15,
+        "altitude_priority_rank": 37,
+        "candidate_alt_m": 7907.5,
+        "expected_grid_center_lat_deg": 32.33192592592593,
+        "expected_grid_center_lon_deg": -110.52022222222222,
+        "expected_alt_m": 7442.962962962963,
+        "signed_vertical_m": 464.5370370370374,
+        "abs_vertical_distance_m": 464.5370370370374,
+        "horizontal_distance_km": 5.796952740583048,
+        "candidate_score": 0.6483298751743781,
+        "altitude_consistency_score": 0.8,
+        "altitude_consistency_label": "strong_altitude_match",
+        "n_gates": 2,
+        "max_reflectivity_dbz": -5.0,
+        "segment_speed_kmh": 21.018585333238324,
+        "segment_bearing_deg": 27.063353630463382,
+        "path_step_score": 0.7969590337637664,
+        "path_selected_reason": "strong altitude match; compact return",
+        "notes": "DBSCAN cluster"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -110.63436623860466,
+            32.3308337171867
+          ],
+          [
+            -110.61633774245374,
+            32.33048465106528
+          ],
+          [
+            -110.52888685576168,
+            32.35351621894327
+          ],
+          [
+            -110.49485550339011,
+            32.35353103675549
+          ],
+          [
+            -110.48283415321156,
+            32.37340240396753
+          ]
+        ]
+      },
+      "properties": {
+        "type": "candidate_path_line",
+        "n_points": 5
+      }
+    }
+  ]
+}

@@ -242,6 +242,7 @@
         <div class="nav-pills" style="justify-content: center; margin-top: 1.2rem;">
             <a href="#maps">Interactive Maps</a>
             <a href="#altitude">Altitude Validation</a>
+            <a href="#pathfit">Path Fitting</a>
             <a href="#geojson">GeoJSON Layers</a>
             <a href="#guide">Layers Guide</a>
         </div>
@@ -286,6 +287,13 @@
                     for each candidate's scan time.
                 </p>
                 <span class="tag">Time Series</span>
+            </a>
+            <a class="card" href="path_fit/interactive_path_dashboard.html" style="border-color: #f0883e;">
+                <h3>🚀 Candidate Trajectory Dashboard</h3>
+                <p>
+                    Interactive dashboard mapping the altitude-constrained radar candidate trajectory from 20:00–20:30 UTC. Features a dual-panel view with a GIS map on top and a dynamic altitude vs. time chart below.
+                </p>
+                <span class="tag" style="background: #f0883e33; color: #f0883e;">New Analysis</span>
             </a>
         </div>
 
@@ -469,6 +477,64 @@
             </div>
         </div>
 
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PATH FITTING -->
+        <!-- ============================================================ -->
+
+        <h2 class="section-title" id="pathfit">Altitude-Constrained Candidate Trajectory</h2>
+
+        <div class="plot-section">
+            <h3>🔗 Trajectory Analysis (20:00–20:30 UTC)</h3>
+            <div class="explanation" style="margin-bottom: 1rem;">
+                This analysis tests whether the top altitude-consistent candidates can be connected into a smooth, physically plausible trajectory. We focus on the period with the strongest altitude matches (20:00–20:30 UTC).
+            </div>
+            
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Time Window</strong></td>
+                        <td>20:00:31 → 20:28:40 UTC</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Path Points</strong></td>
+                        <td>5 points (from 5 unique scan times)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Median Vertical Mismatch</strong></td>
+                        <td><span class="excellent">118 m</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max Segment Speed</strong></td>
+                        <td><span class="excellent">73 km/h</span> (physically plausible)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-finding" style="margin-top: 1.5rem;">
+                <strong>Key finding:</strong> PicoCAST identified an altitude-consistent KEMX candidate sequence that can be connected into a smooth radar-assisted candidate trajectory. The path follows the expected altitude curve and progresses steadily without physically impossible jumps.
+            </div>
+            <div class="caveat" style="margin-top: 0.75rem;">
+                <strong>Caution:</strong> This constitutes a <em>possible balloon-associated sequence</em>. It is not a confirmed detection without independent verification.
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <a href="path_fit/interactive_path_dashboard.html" style="display: inline-block; background: #238636; color: white; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 500;">
+                    View Interactive Dashboard
+                </a>
+                <a href="path_fit/path_fit_report.md" style="display: inline-block; margin-left: 1rem; color: #58a6ff; text-decoration: none;">
+                    Read Full Report
+                </a>
+            </div>
+        </div>
+
         <!-- ============================================================ -->
         <!-- GeoJSON Layers -->
         <!-- ============================================================ -->
@@ -507,6 +573,18 @@
                     <td>Point</td>
                     <td>254</td>
                     <td>All scored gate clusters</td>
+                </tr>
+                <tr>
+                    <td><a href="maps/candidate_path.geojson" style="color:#58a6ff">candidate_path.geojson</a></td>
+                    <td>Point / LineString</td>
+                    <td>5</td>
+                    <td>Altitude-constrained path connecting top candidates</td>
+                </tr>
+                <tr>
+                    <td><a href="maps/smoothed_candidate_path.geojson" style="color:#58a6ff">smoothed_candidate_path.geojson</a></td>
+                    <td>Point / LineString</td>
+                    <td>5</td>
+                    <td>3-point rolling average smoothed trajectory</td>
                 </tr>
                 <tr>
                     <td><a href="maps/kemx_radar_site.geojson" style="color:#58a6ff">kemx_radar_site.geojson</a></td>

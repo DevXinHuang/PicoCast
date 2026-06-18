@@ -1,0 +1,117 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.6253519905292,
+          32.33065918412599
+        ]
+      },
+      "properties": {
+        "scan_time_utc": "2026-03-22T20:00:31Z",
+        "type": "smoothed_point",
+        "original_lat": 32.3308337171867,
+        "original_lon": -110.63436623860466
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.59319694560669,
+          32.33827819573175
+        ]
+      },
+      "properties": {
+        "scan_time_utc": "2026-03-22T20:07:36Z",
+        "type": "smoothed_point",
+        "original_lat": 32.33048465106528,
+        "original_lon": -110.61633774245374
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.54669336720184,
+          32.34584396892135
+        ]
+      },
+      "properties": {
+        "scan_time_utc": "2026-03-22T20:14:42Z",
+        "type": "smoothed_point",
+        "original_lat": 32.35351621894327,
+        "original_lon": -110.52888685576168
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.5021921707878,
+          32.36014988655543
+        ]
+      },
+      "properties": {
+        "scan_time_utc": "2026-03-22T20:21:35Z",
+        "type": "smoothed_point",
+        "original_lat": 32.35353103675549,
+        "original_lon": -110.49485550339011
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.48884482830084,
+          32.363466720361515
+        ]
+      },
+      "properties": {
+        "scan_time_utc": "2026-03-22T20:28:40Z",
+        "type": "smoothed_point",
+        "original_lat": 32.37340240396753,
+        "original_lon": -110.48283415321156
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -110.6253519905292,
+            32.33065918412599
+          ],
+          [
+            -110.59319694560669,
+            32.33827819573175
+          ],
+          [
+            -110.54669336720184,
+            32.34584396892135
+          ],
+          [
+            -110.5021921707878,
+            32.36014988655543
+          ],
+          [
+            -110.48884482830084,
+            32.363466720361515
+          ]
+        ]
+      },
+      "properties": {
+        "type": "smoothed_path_line",
+        "n_points": 5
+      }
+    }
+  ]
+}
