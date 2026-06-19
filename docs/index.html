@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PicoCAST K7UAZ Review</title>
+  <meta name="description" content="PicoCAST K7UAZ candidate radar feature review including Evidence Audit v1.1 with independent scoring.">
   <style>
     * {
       box-sizing: border-box;
@@ -590,6 +591,7 @@
         </p>
         <div class="button-row">
           <a class="button" href="review_packet/index.html">Open main review packet</a>
+          <a class="button" style="background:#15803d;border-color:#15803d" href="evidence_audit/index.html">Evidence Audit v1.1 &#8599;</a>
           <a class="button secondary" href="#research-trail">Follow the research trail</a>
         </div>
       </div>
@@ -605,6 +607,7 @@
     <nav class="nav-wrap" aria-label="Page sections">
       <div class="nav">
         <a href="#main-review">Main review</a>
+        <a href="#evidence-audit" style="background:rgba(220,252,231,0.15);border-color:rgba(21,128,61,0.5);color:#86efac">&#10003; Evidence Audit v1.1</a>
         <a href="#research-trail">Research trail</a>
         <a href="#evidence-gallery">Evidence gallery</a>
         <a href="#maps">Interactive maps</a>
@@ -749,6 +752,103 @@
           </div>
           <a href="review_packet/index.html">Open packet</a>
         </div>
+        <div class="timeline-row" style="border-color:#15803d;background:linear-gradient(135deg,#f0fdf4,#fff)">
+          <time style="color:#15803d">Step 6 &#10003;</time>
+          <div>
+            <strong>Evidence Audit v1.1 — independent scoring</strong>
+            <span>Each candidate re-evaluated using altitude, radar moments, persistence, and false-positive flags — not the detector's own score. Verdict upgrades/downgrades shown explicitly.</span>
+          </div>
+          <a href="evidence_audit/index.html" style="color:#15803d">Open audit</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ EVIDENCE AUDIT v1.1 ═══ -->
+    <section class="section" id="evidence-audit">
+      <div class="section-header">
+        <div>
+          <h2>Evidence Audit v1.1</h2>
+          <p>
+            An independent second-opinion audit that scores each candidate purely on extracted
+            radar evidence — not on the detector's own ranking — to catch circular reasoning.
+            Each candidate gets an <strong>evidence_score</strong> from 7 positive criteria
+            and 6 false-positive flag penalties.
+          </p>
+        </div>
+        <span class="pill" style="border-color:#15803d;background:#f0fdf4;color:#166534">New &#10003;</span>
+      </div>
+
+      <div class="feature">
+        <article class="panel lead-panel">
+          <div class="panel-body">
+            <h3>How the independent score works</h3>
+            <p>
+              Each candidate earns <strong>+1 point</strong> for every positive radar criterion
+              (good altitude agreement, plausible reflectivity, cross-radar support, etc.) and
+              loses <strong>1 point</strong> for every triggered false-positive flag
+              (weather contamination, ground clutter, biological echo, anomalous propagation,
+              isolated artifact, impossible jump).
+            </p>
+            <p>
+              The final <strong>verdict_v1_1</strong> is compared against the v1 verdict that
+              was based on the detector's own <code>review_priority_score</code>, and any upgrade
+              or downgrade is highlighted with a badge.
+            </p>
+            <div class="notice">
+              A001 — the detector's top-ranked candidate — was <strong>downgraded</strong> in
+              v1.1 due to ground clutter, biological echo risk, and an impossible trajectory jump
+              flag despite strong altitude and offset scores.
+            </div>
+            <div class="button-row">
+              <a class="button" style="background:#15803d;border-color:#15803d" href="evidence_audit/index.html">Open Audit Index</a>
+              <a class="button secondary" href="evidence_audit/candidate_A001.html">View A001 Detail</a>
+              <a class="button secondary" href="evidence_audit/top_tracklet_audit.csv">Download CSV</a>
+            </div>
+          </div>
+        </article>
+
+        <section class="panel" aria-label="Evidence Audit preview">
+          <iframe class="preview-frame" title="Evidence Audit v1.1 preview" src="evidence_audit/index.html"></iframe>
+        </section>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <a class="card" href="evidence_audit/candidate_A001.html">
+          <span class="label">Rank 1 · Cross-radar</span>
+          <h3>Candidate A001</h3>
+          <p>KEMX + KIWA. Detector top pick. Evidence score: +4 with 3 flags. v1.1 verdict: likely false positive.</p>
+          <span class="open">View evidence &rarr;</span>
+        </a>
+        <a class="card" href="evidence_audit/candidate_A007.html">
+          <span class="label">Rank 2 · Cross-radar</span>
+          <h3>Candidate A007</h3>
+          <p>KEMX + KIWA. Moderate cross-radar candidate. View independent score breakdown.</p>
+          <span class="open">View evidence &rarr;</span>
+        </a>
+        <a class="card" href="evidence_audit/candidate_A012.html">
+          <span class="label">Rank 3 · Cross-radar</span>
+          <h3>Candidate A012</h3>
+          <p>KEMX + KIWA. 23 min overlap. View independent score breakdown.</p>
+          <span class="open">View evidence &rarr;</span>
+        </a>
+        <a class="card" href="evidence_audit/candidate_KEMX_F001.html">
+          <span class="label">Rank 8 · Single-radar</span>
+          <h3>KEMX Family F001</h3>
+          <p>KEMX representative. 39 m median vertical mismatch. View evidence.</p>
+          <span class="open">View evidence &rarr;</span>
+        </a>
+        <a class="card" href="evidence_audit/candidate_KIWA_F001.html">
+          <span class="label">Rank 7 · Single-radar</span>
+          <h3>KIWA Family F001</h3>
+          <p>KIWA representative. 78 m median vertical mismatch. View evidence.</p>
+          <span class="open">View evidence &rarr;</span>
+        </a>
+        <a class="card" href="evidence_audit/index.html" style="border-style:dashed">
+          <span class="label">All candidates</span>
+          <h3>Full Audit Index</h3>
+          <p>All 10 candidates ranked with evidence scores, flag summary, and verdict change indicators.</p>
+          <span class="open">Open full table &rarr;</span>
+        </a>
       </div>
     </section>
 
@@ -849,6 +949,12 @@
           <p>KEMX and KIWA tracklets plus cross-radar candidate associations.</p>
           <span class="open">Open artifact</span>
         </a>
+        <a class="card" href="evidence_audit/index.html" style="border-color:#15803d">
+          <span class="label" style="color:#15803d">Audit · New</span>
+          <h3>Evidence Audit v1.1</h3>
+          <p>Independent evidence scoring for each candidate — not derived from the detector's own ranking.</p>
+          <span class="open" style="color:#15803d">Open audit &rarr;</span>
+        </a>
       </div>
     </section>
 
@@ -902,6 +1008,16 @@
             <td>Report</td>
             <td>Altitude-first validation write-up.</td>
           </tr>
+          <tr style="background:#f0fdf4">
+            <td><a href="evidence_audit/index.html" style="color:#15803d">evidence_audit/index.html</a></td>
+            <td>Audit Dashboard</td>
+            <td>Evidence Audit v1.1 — independent scoring for top 10 candidates.</td>
+          </tr>
+          <tr style="background:#f0fdf4">
+            <td><a href="evidence_audit/top_tracklet_audit.csv" style="color:#15803d">top_tracklet_audit.csv</a></td>
+            <td>CSV</td>
+            <td>Evidence audit table with evidence_score, verdict_v1_1, and verdict_changed_from_v1 columns.</td>
+          </tr>
           <tr>
             <td><a href="https://github.com/DevXinHuang/PicoCast">GitHub repository</a></td>
             <td>Source</td>
@@ -920,6 +1036,7 @@
     </p>
     <p>
       <a href="review_packet/index.html">Open the main review packet</a> ·
+      <a href="evidence_audit/index.html">Evidence Audit v1.1</a> ·
       <a href="https://github.com/DevXinHuang/PicoCast">View source on GitHub</a>
     </p>
   </footer>
