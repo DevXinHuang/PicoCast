@@ -148,6 +148,84 @@ tr:hover td { background: #f8fafc; }
     </div>
   </div>
 
+  
+  <!-- ── Mini Siting Map ── -->
+  <div class="card" style="margin-top:1.5rem;">
+    <h2 style="margin-top:0">Siting Map — A098</h2>
+    <div style="margin-bottom:10px;"><div style="font-size:11px;margin-bottom:3px;"><strong style="color:#f59e0b">KEMX_T006</strong> — ID Score: <strong style="color:#22c55e">0.728</strong> (moderate confidence siting)</div><div style="font-size:11px;margin-bottom:3px;"><strong style="color:#a78bfa">KIWA_T007</strong> — ID Score: <strong style="color:#22c55e">0.677</strong> (moderate confidence siting)</div></div>
+    <div id="minimap-A098" style="height:280px;border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;"></div>
+    <div style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <a href="../maps/balloon_siting_timeline_map.html"
+         target="_blank"
+         style="display:inline-block;background:#1e3a5f;color:#38bdf8;border:1px solid #38bdf8;
+                border-radius:6px;padding:6px 14px;font-size:12px;font-weight:600;text-decoration:none;">
+        🗺 View on Full Timeline Map
+      </a>
+      <span style="font-size:11px;color:#94a3b8;">
+        Dashed cyan = telemetry track · Colored paths = radar candidate tracklets
+      </span>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+  (function() {
+    const TELEMETRY = [{"time_utc": "2026-03-22T19:18:00Z", "lat_deg": 32.27, "lon_deg": -110.96, "alt_m": 2340.0}, {"time_utc": "2026-03-22T19:28:00Z", "lat_deg": 32.27, "lon_deg": -110.88, "alt_m": 2880.0}, {"time_utc": "2026-03-22T19:38:00Z", "lat_deg": 32.31, "lon_deg": -110.79, "alt_m": 3660.0}, {"time_utc": "2026-03-22T19:48:00Z", "lat_deg": 32.35, "lon_deg": -110.71, "alt_m": 4280.0}, {"time_utc": "2026-03-22T21:18:00Z", "lat_deg": 32.31, "lon_deg": -110.29, "alt_m": 11280.0}, {"time_utc": "2026-03-22T21:28:00Z", "lat_deg": 32.31, "lon_deg": -110.21, "alt_m": 11440.0}, {"time_utc": "2026-03-22T21:38:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0}, {"time_utc": "2026-03-22T21:48:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0}, {"time_utc": "2026-03-22T21:58:00Z", "lat_deg": 32.27, "lon_deg": -110.04, "alt_m": 11780.0}, {"time_utc": "2026-03-22T22:08:00Z", "lat_deg": 32.27, "lon_deg": -109.96, "alt_m": 11760.0}, {"time_utc": "2026-03-22T22:18:00Z", "lat_deg": 32.23, "lon_deg": -109.88, "alt_m": 12000.0}, {"time_utc": "2026-03-22T22:28:00Z", "lat_deg": 32.23, "lon_deg": -109.79, "alt_m": 11780.0}];
+    const FEATURES  = [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.725138, 32.229177, 4729.8], [-110.665351, 32.275286, 5492.5], [-110.65124, 32.307385, 5818.5], [-110.634516, 32.341311, 6170.0], [-110.678472, 32.415829, 6925.0], [-110.738211, 32.441125, 7299.0]]}, "properties": {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "identification_score": 0.7275, "identification_tier": "moderate_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 88.5, "mean_corridor_km": 6.84, "spaghetti_score": 64.62, "speed_ratio": 1.3, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4729.8, 5492.5, 5818.5, 6170.0, 6925.0, 7299.0], "centroid_lat": 32.33501883333333, "centroid_lon": -110.68215466666668, "centroid_alt_m": 6072.466666666667}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.839702, 32.255364, 2843.5], [-110.856321, 32.256827, 2818.0], [-110.85654, 32.257, 3768.0], [-110.859639, 32.299578, 4098.2], [-110.791223, 32.34509, 4548.7], [-110.749812, 32.466688, 5407.0], [-110.739933, 32.566172, 6346.5]]}, "properties": {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "identification_score": 0.6768, "identification_tier": "moderate_confidence_siting", "duration_min": 49.8, "median_alt_mismatch_m": 147.6, "mean_corridor_km": 7.29, "spaghetti_score": 201.67, "speed_ratio": 1.06, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z", "2026-03-22T20:16:28Z"], "point_alts_m": [2843.5, 2818.0, 3768.0, 4098.2, 4548.7, 5407.0, 6346.5], "centroid_lat": 32.349531285714285, "centroid_lon": -110.81330999999999, "centroid_alt_m": 4261.414285714286}}];
+    const RADARS    = {"KEMX": {"lat": 31.89365, "lon": -110.63025}, "KIWA": {"lat": 33.28923, "lon": -111.66991}};
+
+    const m = L.map('minimap-A098', {
+      center: [32.2800, -110.3142],
+      zoom: 8,
+      zoomControl: true,
+      attributionControl: false,
+    });
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {maxZoom: 18}).addTo(m);
+
+    // Telemetry track
+    const telCoords = TELEMETRY.map(p => [p.lat_deg, p.lon_deg]);
+    L.polyline(telCoords, {color:'#22d3ee', weight:2, dashArray:'5 6', opacity:0.7}).addTo(m);
+    TELEMETRY.forEach(p => {
+      L.circleMarker([p.lat_deg, p.lon_deg], {
+        radius: 4, color:'#0f172a', weight:1,
+        fillColor: '#38bdf8', fillOpacity: 0.85,
+      }).addTo(m);
+    });
+
+    // Candidate tracklets
+    const COLORS = {'KEMX':'#f59e0b','KIWA':'#a78bfa'};
+    FEATURES.forEach(feat => {
+      const radar = feat.properties.radar_site;
+      const col = COLORS[radar] || '#94a3b8';
+      const coords = feat.geometry.coordinates.map(c => [c[1], c[0]]);
+      L.polyline(coords, {color: col, weight: 2.5, opacity: 0.85}).addTo(m);
+      // Centroid dot
+      L.circleMarker([feat.properties.centroid_lat, feat.properties.centroid_lon], {
+        radius: 7 + feat.properties.identification_score * 10,
+        color: '#0f172a', weight: 1.5,
+        fillColor: col, fillOpacity: 0.9,
+      }).bindTooltip(feat.properties.tracklet_id + ' · ' + (feat.properties.identification_score*100).toFixed(0) + '%', {permanent: false}).addTo(m);
+    });
+
+    // Radar sites
+    Object.entries(RADARS).forEach(([site, r]) => {
+      L.circleMarker([r.lat, r.lon], {
+        radius: 6, color: '#22d3ee', weight: 2, fillColor: '#0f172a', fillOpacity: 0.9,
+      }).bindTooltip(site).addTo(m);
+    });
+
+    // Fit bounds
+    if (FEATURES.length > 0) {
+      const allPts = FEATURES.flatMap(f => f.geometry.coordinates.map(c => [c[1], c[0]]));
+      allPts.push(...telCoords);
+      m.fitBounds(L.latLngBounds(allPts).pad(0.15));
+    }
+  })();
+  </script>
+
   <p style="font-size:0.8rem;color:#94a3b8;margin-top:2rem">
     PicoCAST Evidence Audit v1.1 — k7uaz_20260322
   </p>

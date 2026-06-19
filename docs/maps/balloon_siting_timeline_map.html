@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PicoCAST — K7UAZ 3-22 Balloon Siting Timeline Map</title>
+<meta name="description" content="Interactive timeline map of all balloon potential siting candidates for the K7UAZ 2026-03-22 NEXRAD case"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0f1e;
+    color: #e2e8f0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Header ───────────────────────────── */
+  #header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-bottom: 1px solid #334155;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+  #header .badge {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  #header h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f1f5f9;
+    flex: 1;
+  }
+  #header .meta {
+    font-size: 11px;
+    color: #64748b;
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ── Main layout ───────────────────────── */
+  #main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ───────────────────────────── */
+  #sidebar {
+    width: 290px;
+    flex-shrink: 0;
+    background: #0f172a;
+    border-right: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .panel {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .panel-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 10px;
+  }
+
+  /* Time scrubber */
+  #scrubber-time {
+    font-size: 20px;
+    font-weight: 700;
+    color: #38bdf8;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 2px;
+    letter-spacing: -0.02em;
+  }
+  #scrubber-phase {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+  }
+  #scrubber {
+    width: 100%;
+    accent-color: #38bdf8;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .scrubber-btns {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .scrubber-btns button {
+    flex: 1;
+    padding: 5px 0;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    background: #0f172a;
+    color: #94a3b8;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .scrubber-btns button:hover { background: #1e3a5f; color: #38bdf8; border-color: #38bdf8; }
+  .scrubber-btns button.active { background: #1e3a5f; color: #38bdf8; border-color: #38bdf8; }
+
+  /* Layer toggles */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.1s;
+  }
+  .toggle-row:hover { background: #0f172a; }
+  .toggle-row input[type=checkbox] {
+    width: 15px; height: 15px;
+    accent-color: #38bdf8;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .toggle-label { font-size: 12px; color: #cbd5e1; flex: 1; }
+  .toggle-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Siting list */
+  .siting-item {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .siting-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+  }
+  .siting-item:hover { border-color: #38bdf8; background: #0a1628; }
+  .siting-item.highlight { border-color: #fbbf24; background: #1a1200; }
+  .siting-rank { font-size: 10px; color: #64748b; font-weight: 600; }
+  .siting-id { font-size: 12px; font-weight: 600; color: #f1f5f9; }
+  .siting-score-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: #1e293b;
+    margin: 5px 0 3px;
+    overflow: hidden;
+  }
+  .siting-score-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .siting-meta { font-size: 10px; color: #64748b; }
+
+  /* Altitude legend */
+  .alt-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .alt-gradient {
+    flex: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #3b82f6, #22d3ee, #84cc16, #f59e0b, #ef4444);
+  }
+  .alt-legend-label { font-size: 10px; color: #64748b; }
+
+  /* ── Map ───────────────────────────────── */
+  #map {
+    flex: 1;
+    background: #0a0f1e;
+  }
+
+  /* Leaflet overrides */
+  .leaflet-popup-content-wrapper {
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid #334155;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+  }
+  .leaflet-popup-content { margin: 12px 16px; color: #e2e8f0; min-width: 200px; }
+  .leaflet-popup-tip { background: rgba(15, 23, 42, 0.96); }
+  .popup-header { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+  .popup-row { display: flex; justify-content: space-between; font-size: 11px; padding: 2px 0; border-bottom: 1px solid #1e293b; }
+  .popup-key { color: #64748b; }
+  .popup-val { color: #f1f5f9; font-weight: 500; }
+  .popup-tier {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Score badge on markers */
+  .score-badge {
+    background: rgba(15,23,42,0.9);
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #38bdf8;
+    white-space: nowrap;
+  }
+
+  /* Gap info */
+  .gap-notice {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 10px;
+    color: #fca5a5;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="badge">PicoCAST</div>
+  <h1>K7UAZ · 2026-03-22 · Balloon Siting Timeline</h1>
+  <div class="meta">
+    KEMX + KIWA · 20 candidates · 12 telemetry fixes<br/>
+    19:18 – 22:28 UTC · 3.1 hr window
+  </div>
+</div>
+
+<div id="main">
+  <!-- ── SIDEBAR ────────────────────────────── -->
+  <div id="sidebar">
+
+    <!-- Time scrubber -->
+    <div class="panel">
+      <div class="panel-title">Time Scrubber (UTC)</div>
+      <div id="scrubber-time">19:18</div>
+      <div id="scrubber-phase">—</div>
+      <input type="range" id="scrubber" min="0" max="100" value="0" step="1"/>
+      <div class="scrubber-btns">
+        <button id="btn-play" onclick="togglePlay()">▶ Play</button>
+        <button id="btn-reset" onclick="resetScrubber()">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Layer toggles -->
+    <div class="panel">
+      <div class="panel-title">Layers</div>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-telemetry" checked onchange="toggleLayer('telemetry')"/>
+        <div class="toggle-dot" style="background:#38bdf8;"></div>
+        <span class="toggle-label">Balloon Telemetry Track</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-kemx" checked onchange="toggleLayer('kemx')"/>
+        <div class="toggle-dot" style="background:#f59e0b;"></div>
+        <span class="toggle-label">KEMX Candidates (10)</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-kiwa" checked onchange="toggleLayer('kiwa')"/>
+        <div class="toggle-dot" style="background:#a78bfa;"></div>
+        <span class="toggle-label">KIWA Candidates (10)</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-gap" checked onchange="toggleLayer('gap')"/>
+        <div class="toggle-dot" style="background:#ef4444;"></div>
+        <span class="toggle-label">Data Gap (90 min)</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-rings" checked onchange="toggleLayer('rings')"/>
+        <div class="toggle-dot" style="background:#475569;"></div>
+        <span class="toggle-label">Radar Range Rings</span>
+      </label>
+      <label class="toggle-row">
+        <input type="checkbox" id="tog-sites" checked onchange="toggleLayer('sites')"/>
+        <div class="toggle-dot" style="background:#22d3ee;"></div>
+        <span class="toggle-label">Radar Sites</span>
+      </label>
+    </div>
+
+    <!-- Altitude legend -->
+    <div class="panel">
+      <div class="panel-title">Telemetry Altitude</div>
+      <div class="alt-legend">
+        <span class="alt-legend-label">2 km</span>
+        <div class="alt-gradient"></div>
+        <span class="alt-legend-label">12 km</span>
+      </div>
+      <div style="font-size:10px;color:#64748b;margin-top:5px;">
+        Circle size = fix index · Color = altitude
+      </div>
+    </div>
+
+    <!-- Gap notice -->
+    <div class="gap-notice">
+      ⚠ <strong>90-min data gap</strong><br/>
+      12:48 → 14:18 local (19:48 → 21:18 UTC)<br/>
+      Balloon climbed from 4.3 km toward ~11 km float. No telemetry during ascent.
+    </div>
+
+    <!-- Siting score list -->
+    <div class="panel" style="padding-bottom:4px;">
+      <div class="panel-title">Siting Candidates (ranked)</div>
+      <div id="siting-list"></div>
+    </div>
+
+  </div>
+
+  <!-- ── MAP ──────────────────────────────── -->
+  <div id="map"></div>
+</div>
+
+<script>
+// ─── Embedded data ──────────────────────────────────────────────────────────
+const TELEMETRY = [{"point_id": "k7uaz_20260322_001", "time_local": "2026-03-22T12:18:00-0700", "time_utc": "2026-03-22T19:18:00Z", "lat_deg": 32.27, "lon_deg": -110.96, "alt_m": 2340.0, "maidenhead_grid": "DM42mg", "speed_kmh": 19.0, "vertical_speed_m_min": null, "temperature_c": 21.0}, {"point_id": "k7uaz_20260322_002", "time_local": "2026-03-22T12:28:00-0700", "time_utc": "2026-03-22T19:28:00Z", "lat_deg": 32.27, "lon_deg": -110.88, "alt_m": 2880.0, "maidenhead_grid": "DM42ng", "speed_kmh": 37.0, "vertical_speed_m_min": 54.0, "temperature_c": 16.0}, {"point_id": "k7uaz_20260322_003", "time_local": "2026-03-22T12:38:00-0700", "time_utc": "2026-03-22T19:38:00Z", "lat_deg": 32.31, "lon_deg": -110.79, "alt_m": 3660.0, "maidenhead_grid": "DM42oh", "speed_kmh": 48.0, "vertical_speed_m_min": 78.0, "temperature_c": 11.0}, {"point_id": "k7uaz_20260322_004", "time_local": "2026-03-22T12:48:00-0700", "time_utc": "2026-03-22T19:48:00Z", "lat_deg": 32.35, "lon_deg": -110.71, "alt_m": 4280.0, "maidenhead_grid": "DM42pi", "speed_kmh": 30.0, "vertical_speed_m_min": 62.0, "temperature_c": 6.0}, {"point_id": "k7uaz_20260322_005", "time_local": "2026-03-22T14:18:00-0700", "time_utc": "2026-03-22T21:18:00Z", "lat_deg": 32.31, "lon_deg": -110.29, "alt_m": 11280.0, "maidenhead_grid": "DM42uh", "speed_kmh": 33.0, "vertical_speed_m_min": 78.0, "temperature_c": -21.0}, {"point_id": "k7uaz_20260322_006", "time_local": "2026-03-22T14:28:00-0700", "time_utc": "2026-03-22T21:28:00Z", "lat_deg": 32.31, "lon_deg": -110.21, "alt_m": 11440.0, "maidenhead_grid": "DM42vh", "speed_kmh": 37.0, "vertical_speed_m_min": 16.0, "temperature_c": -18.0}, {"point_id": "k7uaz_20260322_007", "time_local": "2026-03-22T14:38:00-0700", "time_utc": "2026-03-22T21:38:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0, "maidenhead_grid": "DM42wg", "speed_kmh": 41.0, "vertical_speed_m_min": 30.0, "temperature_c": -22.0}, {"point_id": "k7uaz_20260322_008", "time_local": "2026-03-22T14:48:00-0700", "time_utc": "2026-03-22T21:48:00Z", "lat_deg": 32.27, "lon_deg": -110.13, "alt_m": 11740.0, "maidenhead_grid": "DM42wg", "speed_kmh": 41.0, "vertical_speed_m_min": 0.0, "temperature_c": -19.0}, {"point_id": "k7uaz_20260322_009", "time_local": "2026-03-22T14:58:00-0700", "time_utc": "2026-03-22T21:58:00Z", "lat_deg": 32.27, "lon_deg": -110.04, "alt_m": 11780.0, "maidenhead_grid": "DM42xg", "speed_kmh": 41.0, "vertical_speed_m_min": 4.0, "temperature_c": -23.0}, {"point_id": "k7uaz_20260322_010", "time_local": "2026-03-22T15:08:00-0700", "time_utc": "2026-03-22T22:08:00Z", "lat_deg": 32.27, "lon_deg": -109.96, "alt_m": 11760.0, "maidenhead_grid": "DM52ag", "speed_kmh": 41.0, "vertical_speed_m_min": -2.0, "temperature_c": -22.0}, {"point_id": "k7uaz_20260322_011", "time_local": "2026-03-22T15:18:00-0700", "time_utc": "2026-03-22T22:18:00Z", "lat_deg": 32.23, "lon_deg": -109.88, "alt_m": 12000.0, "maidenhead_grid": "DM52bf", "speed_kmh": 37.0, "vertical_speed_m_min": 24.0, "temperature_c": -25.0}, {"point_id": "k7uaz_20260322_012", "time_local": "2026-03-22T15:28:00-0700", "time_utc": "2026-03-22T22:28:00Z", "lat_deg": 32.23, "lon_deg": -109.79, "alt_m": 11780.0, "maidenhead_grid": "DM52cf", "speed_kmh": 37.0, "vertical_speed_m_min": -22.0, "temperature_c": -28.0}];
+const TRACKLETS = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.760378, 32.391056, 4810.5], [-110.708662, 32.339373, 5233.5], [-110.65124, 32.307385, 5818.5], [-110.528887, 32.353516, 6381.5], [-110.505281, 32.367675, 6583.0], [-110.482834, 32.373402, 7907.5], [-110.367497, 32.427367, 9049.5]]}, "properties": {"tracklet_id": "KEMX_T004", "radar_site": "KEMX", "identification_score": 0.8666, "identification_tier": "high_confidence_siting", "duration_min": 56.5, "median_alt_mismatch_m": 46.2, "mean_corridor_km": 5.01, "spaghetti_score": 146.14, "speed_ratio": 1.09, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:49:55Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z", "2026-03-22T20:49:55Z"], "point_alts_m": [4810.5, 5233.5, 5818.5, 6381.5, 6583.0, 7907.5, 9049.5], "centroid_lat": 32.365682, "centroid_lon": -110.57211128571429, "centroid_alt_m": 6540.571428571428}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.687353, 32.39856, 4795.5], [-110.69198, 32.354786, 5346.0], [-110.702162, 32.303262, 5818.5], [-110.736586, 32.269329, 6528.5], [-110.747895, 32.279594, 6688.0], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T005", "radar_site": "KEMX", "identification_score": 0.8079, "identification_tier": "high_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 93.3, "mean_corridor_km": 4.05, "spaghetti_score": 121.34, "speed_ratio": 1.02, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4795.5, 5346.0, 5818.5, 6528.5, 6688.0, 7445.7], "centroid_lat": 32.32283483333333, "centroid_lon": -110.72488733333334, "centroid_alt_m": 6103.7}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.708662, 32.339373, 5233.5], [-110.728036, 32.30168, 5841.5], [-110.752063, 32.26594, 6528.5], [-110.762686, 32.272647, 6644.5], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T008", "radar_site": "KEMX", "identification_score": 0.7963, "identification_tier": "high_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 28.6, "mean_corridor_km": 3.74, "spaghetti_score": 149.58, "speed_ratio": 0.94, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4706.5, 5233.5, 5841.5, 6528.5, 6644.5, 7445.7], "centroid_lat": 32.31641866666667, "centroid_lon": -110.72826883333335, "centroid_alt_m": 6066.7}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.962432, 32.218439, 2780.0], [-110.97086, 32.27399, 3537.0], [-110.97047, 32.313397, 3857.0], [-110.93547, 32.426633, 3967.5], [-110.854762, 32.450665, 5168.2], [-110.812751, 32.437712, 5336.7], [-110.722324, 32.411261, 7124.5]]}, "properties": {"tracklet_id": "KIWA_T004", "radar_site": "KIWA", "identification_score": 0.7944, "identification_tier": "high_confidence_siting", "duration_min": 56.9, "median_alt_mismatch_m": 78.2, "mean_corridor_km": 9.44, "spaghetti_score": 75.93, "speed_ratio": 1.09, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:23:34Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z", "2026-03-22T20:23:34Z"], "point_alts_m": [2780.0, 3537.0, 3857.0, 3967.5, 5168.2, 5336.7, 7124.5], "centroid_lat": 32.361728142857146, "centroid_lon": -110.889867, "centroid_alt_m": 4538.7}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.839702, 32.255364, 2843.5], [-110.856321, 32.256827, 2818.0], [-110.85654, 32.257, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.791223, 32.34509, 4548.7], [-110.812751, 32.437712, 5336.7]]}, "properties": {"tracklet_id": "KIWA_T003", "radar_site": "KIWA", "identification_score": 0.7832, "identification_tier": "high_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 177.2, "mean_corridor_km": 4.46, "spaghetti_score": 176.49, "speed_ratio": 0.97, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2843.5, 2818.0, 3768.0, 4573.0, 4548.7, 5336.7], "centroid_lat": 32.311231666666664, "centroid_lon": -110.83060733333333, "centroid_alt_m": 3981.316666666667}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.708662, 32.339373, 5233.5], [-110.728036, 32.30168, 5841.5], [-110.736586, 32.269329, 6528.5], [-110.747895, 32.279594, 6688.0], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T003", "radar_site": "KEMX", "identification_score": 0.7778, "identification_tier": "high_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 28.6, "mean_corridor_km": 3.82, "spaghetti_score": 170.9, "speed_ratio": 0.94, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4706.5, 5233.5, 5841.5, 6528.5, 6688.0, 7445.7], "centroid_lat": 32.31814133333334, "centroid_lon": -110.72322416666667, "centroid_alt_m": 6073.95}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.644749, 32.378279, 4647.5], [-110.654438, 32.368503, 5439.5], [-110.702162, 32.303262, 5818.5], [-110.736586, 32.269329, 6528.5], [-110.762686, 32.272647, 6644.5], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T009", "radar_site": "KEMX", "identification_score": 0.7778, "identification_tier": "high_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 112.8, "mean_corridor_km": 4.06, "spaghetti_score": 144.36, "speed_ratio": 1.02, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4647.5, 5439.5, 5818.5, 6528.5, 6644.5, 7445.7], "centroid_lat": 32.320583, "centroid_lon": -110.71399483333335, "centroid_alt_m": 6087.366666666666}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.654438, 32.368503, 5439.5], [-110.702162, 32.303262, 5818.5], [-110.736586, 32.269329, 6528.5], [-110.747895, 32.279594, 6688.0], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T002", "radar_site": "KEMX", "identification_score": 0.7714, "identification_tier": "high_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 93.0, "mean_corridor_km": 4.26, "spaghetti_score": 163.05, "speed_ratio": 1.02, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4706.5, 5439.5, 5818.5, 6528.5, 6688.0, 7445.7], "centroid_lat": 32.32326, "centroid_lon": -110.70987450000001, "centroid_alt_m": 6104.45}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.839702, 32.255364, 2843.5], [-110.856321, 32.256827, 2818.0], [-110.85654, 32.257, 3768.0], [-110.859639, 32.299578, 4098.2], [-110.800838, 32.338281, 4550.6], [-110.812751, 32.437712, 5336.7]]}, "properties": {"tracklet_id": "KIWA_T006", "radar_site": "KIWA", "identification_score": 0.7354, "identification_tier": "moderate_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 125.8, "mean_corridor_km": 4.41, "spaghetti_score": 178.66, "speed_ratio": 0.97, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2843.5, 2818.0, 3768.0, 4098.2, 4550.6, 5336.7], "centroid_lat": 32.30746033333333, "centroid_lon": -110.83763183333333, "centroid_alt_m": 3902.5000000000005}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.725138, 32.229177, 4729.8], [-110.665351, 32.275286, 5492.5], [-110.65124, 32.307385, 5818.5], [-110.634516, 32.341311, 6170.0], [-110.678472, 32.415829, 6925.0], [-110.738211, 32.441125, 7299.0]]}, "properties": {"tracklet_id": "KEMX_T006", "radar_site": "KEMX", "identification_score": 0.7275, "identification_tier": "moderate_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 88.5, "mean_corridor_km": 6.84, "spaghetti_score": 64.62, "speed_ratio": 1.3, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4729.8, 5492.5, 5818.5, 6170.0, 6925.0, 7299.0], "centroid_lat": 32.33501883333333, "centroid_lon": -110.68215466666668, "centroid_alt_m": 6072.466666666667}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.901571, 32.2366, 2808.7], [-110.905025, 32.241398, 2792.0], [-110.887169, 32.278406, 3653.8], [-110.827107, 32.315397, 4573.0], [-110.800838, 32.338281, 4550.6], [-110.749812, 32.466688, 5407.0], [-110.739933, 32.566172, 6346.5]]}, "properties": {"tracklet_id": "KIWA_T010", "radar_site": "KIWA", "identification_score": 0.7202, "identification_tier": "moderate_confidence_siting", "duration_min": 49.8, "median_alt_mismatch_m": 183.9, "mean_corridor_km": 7.28, "spaghetti_score": 138.96, "speed_ratio": 1.03, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z", "2026-03-22T20:16:28Z"], "point_alts_m": [2808.7, 2792.0, 3653.8, 4573.0, 4550.6, 5407.0, 6346.5], "centroid_lat": 32.34899171428571, "centroid_lon": -110.83020785714284, "centroid_alt_m": 4304.5142857142855}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.708662, 32.339373, 5233.5], [-110.780349, 32.297154, 5912.0], [-110.822839, 32.32971, 6358.0], [-110.860937, 32.389223, 7067.5], [-110.868798, 32.405865, 7231.5]]}, "properties": {"tracklet_id": "KEMX_T010", "radar_site": "KEMX", "identification_score": 0.7023, "identification_tier": "moderate_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 63.8, "mean_corridor_km": 5.82, "spaghetti_score": 77.44, "speed_ratio": 1.6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4706.5, 5233.5, 5912.0, 6358.0, 7067.5, 7231.5], "centroid_lat": 32.35811983333334, "centroid_lon": -110.7794005, "centroid_alt_m": 6084.833333333333}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.634366, 32.330834, 5121.0], [-110.65124, 32.307385, 5818.5], [-110.736586, 32.269329, 6528.5], [-110.747895, 32.279594, 6688.0], [-110.783348, 32.331478, 7445.7]]}, "properties": {"tracklet_id": "KEMX_T001", "radar_site": "KEMX", "identification_score": 0.6974, "identification_tier": "moderate_confidence_siting", "duration_min": 35.2, "median_alt_mismatch_m": 73.3, "mean_corridor_km": 3.91, "spaghetti_score": 142.88, "speed_ratio": 1.3, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z"], "point_alts_m": [4706.5, 5121.0, 5818.5, 6528.5, 6688.0, 7445.7], "centroid_lat": 32.317669, "centroid_lon": -110.69804216666667, "centroid_alt_m": 6051.366666666666}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.634818, 32.387394, 4706.5], [-110.652261, 32.325964, 5084.0], [-110.65124, 32.307385, 5818.5], [-110.528887, 32.353516, 6381.5], [-110.505281, 32.367675, 6583.0], [-110.482834, 32.373402, 7907.5], [-110.392678, 32.353967, 8046.5], [-110.104091, 32.328725, 9643.0]]}, "properties": {"tracklet_id": "KEMX_T007", "radar_site": "KEMX", "identification_score": 0.6904, "identification_tier": "moderate_confidence_siting", "duration_min": 63.6, "median_alt_mismatch_m": 38.7, "mean_corridor_km": 4.1, "spaghetti_score": 144.05, "speed_ratio": 1.45, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:57:01Z", "scan_times": ["2026-03-22T19:53:25Z", "2026-03-22T20:00:31Z", "2026-03-22T20:07:36Z", "2026-03-22T20:14:42Z", "2026-03-22T20:21:35Z", "2026-03-22T20:28:40Z", "2026-03-22T20:35:45Z", "2026-03-22T20:57:01Z"], "point_alts_m": [4706.5, 5084.0, 5818.5, 6381.5, 6583.0, 7907.5, 8046.5, 9643.0], "centroid_lat": 32.3497535, "centroid_lon": -110.49401125, "centroid_alt_m": 6771.3125}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.839702, 32.255364, 2843.5], [-110.856321, 32.256827, 2818.0], [-110.85654, 32.257, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.800838, 32.338281, 4550.6], [-110.749812, 32.466688, 5407.0]]}, "properties": {"tracklet_id": "KIWA_T001", "radar_site": "KIWA", "identification_score": 0.6813, "identification_tier": "moderate_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 4.46, "spaghetti_score": 191.38, "speed_ratio": 0.73, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2843.5, 2818.0, 3768.0, 4573.0, 4550.6, 5407.0], "centroid_lat": 32.314926166666666, "centroid_lon": -110.82171999999998, "centroid_alt_m": 3993.35}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.839702, 32.255364, 2843.5], [-110.856321, 32.256827, 2818.0], [-110.85654, 32.257, 3768.0], [-110.859639, 32.299578, 4098.2], [-110.791223, 32.34509, 4548.7], [-110.749812, 32.466688, 5407.0], [-110.739933, 32.566172, 6346.5]]}, "properties": {"tracklet_id": "KIWA_T007", "radar_site": "KIWA", "identification_score": 0.6768, "identification_tier": "moderate_confidence_siting", "duration_min": 49.8, "median_alt_mismatch_m": 147.6, "mean_corridor_km": 7.29, "spaghetti_score": 201.67, "speed_ratio": 1.06, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z", "2026-03-22T20:16:28Z"], "point_alts_m": [2843.5, 2818.0, 3768.0, 4098.2, 4548.7, 5407.0, 6346.5], "centroid_lat": 32.349531285714285, "centroid_lon": -110.81330999999999, "centroid_alt_m": 4261.414285714286}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.93447, 32.19818, 2863.0], [-110.920461, 32.199746, 2875.5], [-110.867186, 32.25114, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.791223, 32.34509, 4548.7], [-110.812751, 32.437712, 5336.7]]}, "properties": {"tracklet_id": "KIWA_T009", "radar_site": "KIWA", "identification_score": 0.6392, "identification_tier": "moderate_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 177.2, "mean_corridor_km": 6.19, "spaghetti_score": 163.92, "speed_ratio": 1.56, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2863.0, 2875.5, 3768.0, 4573.0, 4548.7, 5336.7], "centroid_lat": 32.29121083333333, "centroid_lon": -110.85886633333335, "centroid_alt_m": 3994.15}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.93447, 32.19818, 2863.0], [-110.920461, 32.199746, 2875.5], [-110.867186, 32.25114, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.800838, 32.338281, 4550.6], [-110.749812, 32.466688, 5407.0]]}, "properties": {"tracklet_id": "KIWA_T002", "radar_site": "KIWA", "identification_score": 0.6385, "identification_tier": "moderate_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 6.19, "spaghetti_score": 165.31, "speed_ratio": 1.56, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2863.0, 2875.5, 3768.0, 4573.0, 4550.6, 5407.0], "centroid_lat": 32.29490533333333, "centroid_lon": -110.849979, "centroid_alt_m": 4006.183333333333}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.93447, 32.19818, 2863.0], [-110.920461, 32.199746, 2875.5], [-110.85654, 32.257, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.791223, 32.34509, 4548.7], [-110.749812, 32.466688, 5407.0], [-110.739933, 32.566172, 6346.5]]}, "properties": {"tracklet_id": "KIWA_T008", "radar_site": "KIWA", "identification_score": 0.5804, "identification_tier": "moderate_confidence_siting", "duration_min": 49.8, "median_alt_mismatch_m": 147.6, "mean_corridor_km": 8.78, "spaghetti_score": 193.12, "speed_ratio": 1.3, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z", "2026-03-22T20:16:28Z"], "point_alts_m": [2863.0, 2875.5, 3768.0, 4573.0, 4548.7, 5407.0, 6346.5], "centroid_lat": 32.335467571428566, "centroid_lon": -110.83136371428573, "centroid_alt_m": 4340.242857142857}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-110.93447, 32.19818, 2863.0], [-110.920461, 32.199746, 2875.5], [-110.85654, 32.257, 3768.0], [-110.827107, 32.315397, 4573.0], [-110.800838, 32.338281, 4550.6], [-110.812751, 32.437712, 5336.7]]}, "properties": {"tracklet_id": "KIWA_T005", "radar_site": "KIWA", "identification_score": 0.5635, "identification_tier": "moderate_confidence_siting", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 6.14, "spaghetti_score": 165.9, "speed_ratio": 1.45, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "scan_times": ["2026-03-22T19:26:39Z", "2026-03-22T19:33:45Z", "2026-03-22T19:40:52Z", "2026-03-22T19:48:00Z", "2026-03-22T19:55:07Z", "2026-03-22T20:02:14Z"], "point_alts_m": [2863.0, 2875.5, 3768.0, 4573.0, 4550.6, 5336.7], "centroid_lat": 32.291052666666666, "centroid_lon": -110.85869450000001, "centroid_alt_m": 3994.4666666666667}}]};
+const SCORES    = [{"siting_rank": 1, "tracklet_id": "KEMX_T004", "radar_site": "KEMX", "n_points": 7, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:49:55Z", "duration_min": 56.5, "median_alt_mismatch_m": 46.2, "mean_corridor_km": 5.01, "spaghetti_score": 146.14, "speed_ratio": 1.09, "cross_radar_score": 1.0, "factor_altitude": 1.0, "factor_horizontal": 0.9086, "factor_smoothness": 0.6411, "factor_speed": 0.775, "factor_cross_radar": 1.0, "factor_duration": 0.8071, "identification_score": 0.8666, "identification_tier": "high_confidence_siting"}, {"siting_rank": 2, "tracklet_id": "KEMX_T005", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 93.3, "mean_corridor_km": 4.05, "spaghetti_score": 121.34, "speed_ratio": 1.02, "cross_radar_score": 0.5, "factor_altitude": 0.9038, "factor_horizontal": 0.9523, "factor_smoothness": 0.7444, "factor_speed": 0.95, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.8079, "identification_tier": "high_confidence_siting"}, {"siting_rank": 3, "tracklet_id": "KEMX_T008", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 28.6, "mean_corridor_km": 3.74, "spaghetti_score": 149.58, "speed_ratio": 0.94, "cross_radar_score": 0.5, "factor_altitude": 1.0, "factor_horizontal": 0.9664, "factor_smoothness": 0.6267, "factor_speed": 0.85, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7963, "identification_tier": "high_confidence_siting"}, {"siting_rank": 4, "tracklet_id": "KIWA_T004", "radar_site": "KIWA", "n_points": 7, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:23:34Z", "duration_min": 56.9, "median_alt_mismatch_m": 78.2, "mean_corridor_km": 9.44, "spaghetti_score": 75.93, "speed_ratio": 1.09, "cross_radar_score": 0.5, "factor_altitude": 0.9373, "factor_horizontal": 0.7073, "factor_smoothness": 0.9336, "factor_speed": 0.775, "factor_cross_radar": 0.5, "factor_duration": 0.8129, "identification_score": 0.7944, "identification_tier": "high_confidence_siting"}, {"siting_rank": 5, "tracklet_id": "KIWA_T003", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 177.2, "mean_corridor_km": 4.46, "spaghetti_score": 176.49, "speed_ratio": 0.97, "cross_radar_score": 1.0, "factor_altitude": 0.7173, "factor_horizontal": 0.9336, "factor_smoothness": 0.5146, "factor_speed": 0.925, "factor_cross_radar": 1.0, "factor_duration": 0.5086, "identification_score": 0.7832, "identification_tier": "high_confidence_siting"}, {"siting_rank": 6, "tracklet_id": "KEMX_T003", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 28.6, "mean_corridor_km": 3.82, "spaghetti_score": 170.9, "speed_ratio": 0.94, "cross_radar_score": 0.5, "factor_altitude": 1.0, "factor_horizontal": 0.9627, "factor_smoothness": 0.5379, "factor_speed": 0.85, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7778, "identification_tier": "high_confidence_siting"}, {"siting_rank": 7, "tracklet_id": "KEMX_T009", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 112.8, "mean_corridor_km": 4.06, "spaghetti_score": 144.36, "speed_ratio": 1.02, "cross_radar_score": 0.5, "factor_altitude": 0.8604, "factor_horizontal": 0.9518, "factor_smoothness": 0.6485, "factor_speed": 0.95, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7778, "identification_tier": "high_confidence_siting"}, {"siting_rank": 8, "tracklet_id": "KEMX_T002", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 93.0, "mean_corridor_km": 4.26, "spaghetti_score": 163.05, "speed_ratio": 1.02, "cross_radar_score": 0.5, "factor_altitude": 0.9044, "factor_horizontal": 0.9427, "factor_smoothness": 0.5706, "factor_speed": 0.95, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7714, "identification_tier": "high_confidence_siting"}, {"siting_rank": 9, "tracklet_id": "KIWA_T006", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 125.8, "mean_corridor_km": 4.41, "spaghetti_score": 178.66, "speed_ratio": 0.97, "cross_radar_score": 0.5, "factor_altitude": 0.8316, "factor_horizontal": 0.9359, "factor_smoothness": 0.5056, "factor_speed": 0.925, "factor_cross_radar": 0.5, "factor_duration": 0.5086, "identification_score": 0.7354, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 10, "tracklet_id": "KEMX_T006", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 88.5, "mean_corridor_km": 6.84, "spaghetti_score": 64.62, "speed_ratio": 1.3, "cross_radar_score": 0.5, "factor_altitude": 0.9144, "factor_horizontal": 0.8255, "factor_smoothness": 0.9808, "factor_speed": 0.25, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7275, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 11, "tracklet_id": "KIWA_T010", "radar_site": "KIWA", "n_points": 7, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "duration_min": 49.8, "median_alt_mismatch_m": 183.9, "mean_corridor_km": 7.28, "spaghetti_score": 138.96, "speed_ratio": 1.03, "cross_radar_score": 0.5, "factor_altitude": 0.7024, "factor_horizontal": 0.8055, "factor_smoothness": 0.671, "factor_speed": 0.925, "factor_cross_radar": 0.5, "factor_duration": 0.7114, "identification_score": 0.7202, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 12, "tracklet_id": "KEMX_T010", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 63.8, "mean_corridor_km": 5.82, "spaghetti_score": 77.44, "speed_ratio": 1.6, "cross_radar_score": 0.5, "factor_altitude": 0.9693, "factor_horizontal": 0.8718, "factor_smoothness": 0.9273, "factor_speed": 0.0, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.7023, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 13, "tracklet_id": "KEMX_T001", "radar_site": "KEMX", "n_points": 6, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:28:40Z", "duration_min": 35.2, "median_alt_mismatch_m": 73.3, "mean_corridor_km": 3.91, "spaghetti_score": 142.88, "speed_ratio": 1.3, "cross_radar_score": 0.5, "factor_altitude": 0.9482, "factor_horizontal": 0.9586, "factor_smoothness": 0.6547, "factor_speed": 0.25, "factor_cross_radar": 0.5, "factor_duration": 0.5029, "identification_score": 0.6974, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 14, "tracklet_id": "KEMX_T007", "radar_site": "KEMX", "n_points": 8, "start_time_utc": "2026-03-22T19:53:25Z", "end_time_utc": "2026-03-22T20:57:01Z", "duration_min": 63.6, "median_alt_mismatch_m": 38.7, "mean_corridor_km": 4.1, "spaghetti_score": 144.05, "speed_ratio": 1.45, "cross_radar_score": 0.5, "factor_altitude": 1.0, "factor_horizontal": 0.95, "factor_smoothness": 0.6498, "factor_speed": 0.0, "factor_cross_radar": 0.5, "factor_duration": 0.9086, "identification_score": 0.6904, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 15, "tracklet_id": "KIWA_T001", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 4.46, "spaghetti_score": 191.38, "speed_ratio": 0.73, "cross_radar_score": 1.0, "factor_altitude": 0.7193, "factor_horizontal": 0.9336, "factor_smoothness": 0.4526, "factor_speed": 0.325, "factor_cross_radar": 1.0, "factor_duration": 0.5086, "identification_score": 0.6813, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 16, "tracklet_id": "KIWA_T007", "radar_site": "KIWA", "n_points": 7, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "duration_min": 49.8, "median_alt_mismatch_m": 147.6, "mean_corridor_km": 7.29, "spaghetti_score": 201.67, "speed_ratio": 1.06, "cross_radar_score": 0.5, "factor_altitude": 0.7831, "factor_horizontal": 0.805, "factor_smoothness": 0.4097, "factor_speed": 0.85, "factor_cross_radar": 0.5, "factor_duration": 0.7114, "identification_score": 0.6768, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 17, "tracklet_id": "KIWA_T009", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 177.2, "mean_corridor_km": 6.19, "spaghetti_score": 163.92, "speed_ratio": 1.56, "cross_radar_score": 1.0, "factor_altitude": 0.7173, "factor_horizontal": 0.855, "factor_smoothness": 0.567, "factor_speed": 0.0, "factor_cross_radar": 1.0, "factor_duration": 0.5086, "identification_score": 0.6392, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 18, "tracklet_id": "KIWA_T002", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 6.19, "spaghetti_score": 165.31, "speed_ratio": 1.56, "cross_radar_score": 1.0, "factor_altitude": 0.7193, "factor_horizontal": 0.855, "factor_smoothness": 0.5612, "factor_speed": 0.0, "factor_cross_radar": 1.0, "factor_duration": 0.5086, "identification_score": 0.6385, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 19, "tracklet_id": "KIWA_T008", "radar_site": "KIWA", "n_points": 7, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:16:28Z", "duration_min": 49.8, "median_alt_mismatch_m": 147.6, "mean_corridor_km": 8.78, "spaghetti_score": 193.12, "speed_ratio": 1.3, "cross_radar_score": 0.5, "factor_altitude": 0.7831, "factor_horizontal": 0.7373, "factor_smoothness": 0.4453, "factor_speed": 0.25, "factor_cross_radar": 0.5, "factor_duration": 0.7114, "identification_score": 0.5804, "identification_tier": "moderate_confidence_siting"}, {"siting_rank": 20, "tracklet_id": "KIWA_T005", "radar_site": "KIWA", "n_points": 6, "start_time_utc": "2026-03-22T19:26:39Z", "end_time_utc": "2026-03-22T20:02:14Z", "duration_min": 35.6, "median_alt_mismatch_m": 176.3, "mean_corridor_km": 6.14, "spaghetti_score": 165.9, "speed_ratio": 1.45, "cross_radar_score": 0.5, "factor_altitude": 0.7193, "factor_horizontal": 0.8573, "factor_smoothness": 0.5587, "factor_speed": 0.0, "factor_cross_radar": 0.5, "factor_duration": 0.5086, "identification_score": 0.5635, "identification_tier": "moderate_confidence_siting"}];
+const RADARS    = {"KEMX": {"lat": 31.89365, "lon": -110.63025, "alt_m": 1621.2}, "KIWA": {"lat": 33.28923, "lon": -111.66991, "alt_m": 434.6}};
+const GAP_START = "2026-03-22T19:48:00Z";
+const GAP_END   = "2026-03-22T21:18:00Z";
+
+// ─── Map init ───────────────────────────────────────────────────────────────
+const map = L.map('map', {
+  center: [32.28, -110.4],
+  zoom: 9,
+  zoomControl: true,
+});
+
+const tileLayers = {
+  'Esri WorldImagery': L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {attribution: 'Esri WorldImagery', maxZoom: 19}
+  ),
+  'OpenStreetMap': L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {attribution: '© OpenStreetMap', maxZoom: 19}
+  ),
+  'OpenTopoMap': L.tileLayer(
+    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+    {attribution: '© OpenTopoMap', maxZoom: 17}
+  ),
+};
+tileLayers['Esri WorldImagery'].addTo(map);
+L.control.layers(tileLayers, {}).addTo(map);
+
+// ─── Layer groups ───────────────────────────────────────────────────────────
+const layers = {
+  telemetry: L.layerGroup().addTo(map),
+  kemx:      L.layerGroup().addTo(map),
+  kiwa:      L.layerGroup().addTo(map),
+  gap:       L.layerGroup().addTo(map),
+  rings:     L.layerGroup().addTo(map),
+  sites:     L.layerGroup().addTo(map),
+};
+
+function toggleLayer(name) {
+  const cb = document.getElementById('tog-' + name);
+  if (cb.checked) map.addLayer(layers[name]);
+  else map.removeLayer(layers[name]);
+}
+
+// ─── Utility ─────────────────────────────────────────────────────────────────
+function altToColor(alt_m) {
+  const min = 2340, max = 12000;
+  const t = Math.max(0, Math.min(1, (alt_m - min) / (max - min)));
+  // Blue → Cyan → Green → Amber → Red
+  if (t < 0.25) {
+    const s = t / 0.25;
+    return `rgb(${Math.round(59+s*(-59+34))}, ${Math.round(130+s*(211-130))}, ${Math.round(246+s*(238-246))})`;
+  } else if (t < 0.5) {
+    const s = (t-0.25)/0.25;
+    return `rgb(${Math.round(34+s*(132-34))}, ${Math.round(211+s*(204-211))}, ${Math.round(238+s*(22-238))})`;
+  } else if (t < 0.75) {
+    const s = (t-0.5)/0.25;
+    return `rgb(${Math.round(132+s*(245-132))}, ${Math.round(204+s*(158-204))}, ${Math.round(22+s*(11-22))})`;
+  } else {
+    const s = (t-0.75)/0.25;
+    return `rgb(${Math.round(245+s*(239-245))}, ${Math.round(158+s*(68-158))}, ${Math.round(11+s*(68-11))})`;
+  }
+}
+
+function tierColor(tier) {
+  if (tier === 'high_confidence_siting')     return '#22c55e';
+  if (tier === 'moderate_confidence_siting') return '#f59e0b';
+  if (tier === 'low_confidence_siting')      return '#ef4444';
+  return '#64748b';
+}
+
+function tierBg(tier) {
+  if (tier === 'high_confidence_siting')     return 'rgba(34,197,94,0.15)';
+  if (tier === 'moderate_confidence_siting') return 'rgba(245,158,11,0.15)';
+  return 'rgba(100,116,139,0.15)';
+}
+
+function scoreToRadius(score) {
+  return 6 + score * 14;
+}
+
+function utcLabel(iso) {
+  return iso.replace('T','  ').replace('Z',' UTC');
+}
+
+// ─── Telemetry track ─────────────────────────────────────────────────────────
+const telCoords = TELEMETRY.map(p => [p.lat_deg, p.lon_deg]);
+
+// Dashed connector line
+L.polyline(telCoords, {
+  color: 'rgba(255,255,255,0.35)',
+  weight: 1.5,
+  dashArray: '5 7',
+}).addTo(layers.telemetry);
+
+TELEMETRY.forEach((p, i) => {
+  const col = altToColor(p.alt_m);
+  const r = 7 + (i / (TELEMETRY.length - 1)) * 6;
+
+  const marker = L.circleMarker([p.lat_deg, p.lon_deg], {
+    radius: r,
+    color: '#0f172a',
+    weight: 1.5,
+    fillColor: col,
+    fillOpacity: 0.92,
+  });
+
+  const popupHTML = `
+    <div class="popup-header" style="color:${col}">📡 Telemetry Fix #${i+1}</div>
+    <div class="popup-row"><span class="popup-key">Time UTC</span><span class="popup-val">${p.time_utc.replace('T',' ').replace('Z','')}</span></div>
+    <div class="popup-row"><span class="popup-key">Time Local</span><span class="popup-val">${p.time_local}</span></div>
+    <div class="popup-row"><span class="popup-key">Altitude</span><span class="popup-val">${(p.alt_m/1000).toFixed(2)} km (${p.alt_m.toFixed(0)} m)</span></div>
+    <div class="popup-row"><span class="popup-key">Grid Square</span><span class="popup-val">${p.maidenhead_grid}</span></div>
+    <div class="popup-row"><span class="popup-key">Position</span><span class="popup-val">${p.lat_deg.toFixed(3)}°N, ${p.lon_deg.toFixed(3)}°W</span></div>
+    ${p.speed_kmh ? `<div class="popup-row"><span class="popup-key">Speed</span><span class="popup-val">${p.speed_kmh} km/h</span></div>` : ''}
+    ${p.vertical_speed_m_min ? `<div class="popup-row"><span class="popup-key">V-Speed</span><span class="popup-val">${p.vertical_speed_m_min} m/min</span></div>` : ''}
+    ${p.temperature_c !== undefined ? `<div class="popup-row"><span class="popup-key">Temp</span><span class="popup-val">${p.temperature_c}°C</span></div>` : ''}
+  `;
+  marker.bindPopup(popupHTML, {maxWidth: 260});
+  marker.addTo(layers.telemetry);
+});
+
+// ─── Data gap shading (rectangle spanning the gap longitude range) ─────────
+// We shade the approximate lat/lon bounding box during the gap
+// (approx: 32.35°N, -110.71°W → 32.31°N, -110.29°W)
+const gapBounds = [[31.9, -111.2], [32.7, -110.05]];
+const gapRect = L.rectangle(gapBounds, {
+  color: 'rgba(239,68,68,0.6)',
+  weight: 1,
+  fillColor: 'rgba(239,68,68,0.08)',
+  fillOpacity: 1,
+  dashArray: '4 6',
+});
+gapRect.bindPopup(`
+  <div class="popup-header" style="color:#ef4444">⚠ 90-Minute Data Gap</div>
+  <div class="popup-row"><span class="popup-key">Gap Start</span><span class="popup-val">12:48 local / 19:48 UTC</span></div>
+  <div class="popup-row"><span class="popup-key">Gap End</span><span class="popup-val">14:18 local / 21:18 UTC</span></div>
+  <div style="font-size:11px;color:#94a3b8;margin-top:8px;">Balloon ascended from 4.3 km toward ~11 km float.<br/>No telemetry received during this window.</div>
+`);
+gapRect.addTo(layers.gap);
+
+// Gap label
+L.marker([32.6, -110.65], {
+  icon: L.divIcon({
+    className: '',
+    html: '<div style="background:rgba(239,68,68,0.8);color:#fff;font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;font-family:Inter,sans-serif;">90-MIN GAP · 19:48–21:18 UTC</div>',
+    iconAnchor: [75, 0],
+  })
+}).addTo(layers.gap);
+
+// ─── Radar sites + range rings ───────────────────────────────────────────────
+const RING_KM = [50, 100, 150, 200];
+
+Object.entries(RADARS).forEach(([site, info]) => {
+  const col = site === 'KEMX' ? '#22d3ee' : '#a78bfa';
+
+  // Range rings
+  RING_KM.forEach(km => {
+    L.circle([info.lat, info.lon], {
+      radius: km * 1000,
+      color: col,
+      weight: 0.5,
+      opacity: 0.25,
+      fillOpacity: 0,
+      dashArray: '3 8',
+    }).addTo(layers.rings);
+  });
+
+  // Site marker
+  const siteIcon = L.divIcon({
+    className: '',
+    html: `<div style="
+      background: rgba(15,23,42,0.9);
+      border: 2px solid ${col};
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      color: ${col};
+      font-family: Inter, sans-serif;
+      box-shadow: 0 0 10px ${col}66;
+    ">${site.slice(1)}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+  });
+
+  L.marker([info.lat, info.lon], {icon: siteIcon})
+    .bindPopup(`
+      <div class="popup-header" style="color:${col}">${site} Radar Site</div>
+      <div class="popup-row"><span class="popup-key">Location</span><span class="popup-val">${info.lat.toFixed(3)}°N, ${info.lon.toFixed(3)}°W</span></div>
+      <div class="popup-row"><span class="popup-key">Elevation</span><span class="popup-val">${info.alt_m.toFixed(0)} m MSL</span></div>
+      <div class="popup-row"><span class="popup-key">Candidates</span><span class="popup-val">10 tracklets</span></div>
+    `)
+    .addTo(layers.sites);
+});
+
+// ─── Candidate tracklet halos ────────────────────────────────────────────────
+const trackletMarkers = {}; // tracklet_id → marker
+
+SCORES.forEach(s => {
+  const feat = TRACKLETS.features.find(f => f.properties.tracklet_id === s.tracklet_id);
+  if (!feat) return;
+
+  const props = feat.properties;
+  const isKEMX = s.radar_site === 'KEMX';
+  const radarColor = isKEMX ? '#f59e0b' : '#a78bfa';
+  const cLat = props.centroid_lat;
+  const cLon = props.centroid_lon;
+  const radius = scoreToRadius(s.identification_score);
+  const tcol = tierColor(s.identification_tier);
+
+  // Outer halo (pulsing glow effect via CSS would need keyframes; use simple circle)
+  const halo = L.circle([cLat, cLon], {
+    radius: radius * 800,
+    color: radarColor,
+    weight: 1,
+    opacity: 0.3,
+    fillColor: radarColor,
+    fillOpacity: 0.06,
+  }).addTo(layers[isKEMX ? 'kemx' : 'kiwa']);
+
+  // Score dot
+  const dot = L.circleMarker([cLat, cLon], {
+    radius: radius,
+    color: '#0f172a',
+    weight: 1.5,
+    fillColor: radarColor,
+    fillOpacity: 0.85,
+  });
+
+  const scoreBar = `<div style="height:6px;background:#1e293b;border-radius:3px;margin:4px 0;overflow:hidden;">
+    <div style="width:${(s.identification_score*100).toFixed(0)}%;height:100%;background:${tcol};border-radius:3px;"></div>
+  </div>`;
+
+  const popupHTML = `
+    <div class="popup-header" style="color:${radarColor}">${s.tracklet_id}</div>
+    ${scoreBar}
+    <div class="popup-row"><span class="popup-key">ID Score</span><span class="popup-val" style="color:${tcol};font-weight:700;">${s.identification_score.toFixed(3)}</span></div>
+    <div class="popup-row"><span class="popup-key">Tier</span><span class="popup-val">${s.identification_tier.replace(/_/g,' ')}</span></div>
+    <div class="popup-row"><span class="popup-key">Radar</span><span class="popup-val">${s.radar_site}</span></div>
+    <div class="popup-row"><span class="popup-key">Points</span><span class="popup-val">${s.n_points}</span></div>
+    <div class="popup-row"><span class="popup-key">Duration</span><span class="popup-val">${s.duration_min.toFixed(1)} min</span></div>
+    <div class="popup-row"><span class="popup-key">Alt mismatch</span><span class="popup-val">${s.median_alt_mismatch_m.toFixed(0)} m</span></div>
+    <div class="popup-row"><span class="popup-key">Corridor dist</span><span class="popup-val">${s.mean_corridor_km.toFixed(1)} km</span></div>
+    <div class="popup-row"><span class="popup-key">Speed ratio</span><span class="popup-val">${s.speed_ratio.toFixed(2)}×</span></div>
+    <div class="popup-row"><span class="popup-key">Window</span><span class="popup-val">${props.start_time_utc.slice(11,16)} → ${props.end_time_utc.slice(11,16)} UTC</span></div>
+    <div style="margin-top:8px;">
+      <div style="font-size:10px;color:#64748b;margin-bottom:4px;">Factor breakdown</div>
+      ${['altitude','horizontal','smoothness','speed','cross_radar','duration'].map(f => {
+        const v = s['factor_' + f];
+        return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+          <span style="font-size:9px;color:#94a3b8;width:70px;">${f}</span>
+          <div style="flex:1;height:4px;background:#1e293b;border-radius:2px;overflow:hidden;">
+            <div style="width:${(v*100).toFixed(0)}%;height:100%;background:${v>0.7?'#22c55e':v>0.4?'#f59e0b':'#ef4444'};border-radius:2px;"></div>
+          </div>
+          <span style="font-size:9px;color:#94a3b8;width:28px;text-align:right;">${(v*100).toFixed(0)}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+
+  dot.bindPopup(popupHTML, {maxWidth: 280});
+  dot.addTo(layers[isKEMX ? 'kemx' : 'kiwa']);
+  trackletMarkers[s.tracklet_id] = {dot, halo, isKEMX};
+
+  // Draw tracklet path (faint)
+  const lineCoords = feat.geometry.coordinates.map(c => [c[1], c[0]]);
+  L.polyline(lineCoords, {
+    color: radarColor,
+    weight: 1.5,
+    opacity: 0.35,
+    dashArray: '4 5',
+  }).addTo(layers[isKEMX ? 'kemx' : 'kiwa']);
+});
+
+// ─── Sidebar siting list ─────────────────────────────────────────────────────
+function buildSitingList() {
+  const el = document.getElementById('siting-list');
+  el.innerHTML = '';
+  SCORES.forEach((s, i) => {
+    const isKEMX = s.radar_site === 'KEMX';
+    const rcol = isKEMX ? '#f59e0b' : '#a78bfa';
+    const tcol = tierColor(s.identification_tier);
+    const div = document.createElement('div');
+    div.className = 'siting-item';
+    div.id = 'siting-' + s.tracklet_id;
+    div.style.borderLeftColor = rcol;
+    div.style.setProperty('--radar-color', rcol);
+    div.innerHTML = `
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+        <span class="siting-rank">#${s.siting_rank}</span>
+        <span class="siting-id">${s.tracklet_id}</span>
+        <span style="margin-left:auto;font-size:10px;color:${tcol};font-weight:700;">${(s.identification_score*100).toFixed(0)}%</span>
+      </div>
+      <div class="siting-score-bar">
+        <div class="siting-score-fill" style="width:${(s.identification_score*100).toFixed(0)}%;background:${tcol};"></div>
+      </div>
+      <div class="siting-meta">${s.radar_site} · ${s.duration_min.toFixed(0)} min · ${s.identification_tier.replace(/_/g,' ')}</div>
+    `;
+    div.style.borderLeft = `3px solid ${rcol}`;
+    div.addEventListener('click', () => flyToTracklet(s.tracklet_id));
+    el.appendChild(div);
+  });
+}
+buildSitingList();
+
+function flyToTracklet(tid) {
+  const feat = TRACKLETS.features.find(f => f.properties.tracklet_id === tid);
+  if (!feat) return;
+  const p = feat.properties;
+  map.flyTo([p.centroid_lat, p.centroid_lon], 11, {duration: 1.2});
+  // Highlight in sidebar
+  document.querySelectorAll('.siting-item').forEach(el => el.classList.remove('highlight'));
+  const el = document.getElementById('siting-' + tid);
+  if (el) { el.classList.add('highlight'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  // Open popup
+  setTimeout(() => {
+    const m = trackletMarkers[tid];
+    if (m) m.dot.openPopup();
+  }, 1200);
+}
+
+// ─── Time scrubber ────────────────────────────────────────────────────────────
+const TIME_MIN_UTC = new Date('2026-03-22T19:18:00Z').getTime();
+const TIME_MAX_UTC = new Date('2026-03-22T22:28:00Z').getTime();
+const GAP_S = new Date('2026-03-22T19:48:00Z').getTime();
+const GAP_E = new Date('2026-03-22T21:18:00Z').getTime();
+
+const PHASES = [
+  {start: TIME_MIN_UTC, end: GAP_S, label: 'Ascent Phase · 2.3 – 4.3 km'},
+  {start: GAP_S, end: GAP_E, label: '⚠ Data Gap · Balloon ascending to float'},
+  {start: GAP_E, end: TIME_MAX_UTC, label: 'Float Phase · ~11.5 – 12 km'},
+];
+
+let playInterval = null;
+let isPlaying = false;
+
+function currentTimeMs(val) {
+  return TIME_MIN_UTC + (val / 100) * (TIME_MAX_UTC - TIME_MIN_UTC);
+}
+
+function formatUTC(ms) {
+  const d = new Date(ms);
+  return d.toISOString().slice(11,16);
+}
+
+function getPhase(ms) {
+  for (const ph of PHASES) {
+    if (ms >= ph.start && ms <= ph.end) return ph.label;
+  }
+  return '';
+}
+
+function updateScrubberDisplay(val) {
+  const ms = currentTimeMs(val);
+  document.getElementById('scrubber-time').textContent = formatUTC(ms) + ' UTC';
+  document.getElementById('scrubber-phase').textContent = getPhase(ms);
+
+  // Highlight tracklets active at this time
+  SCORES.forEach(s => {
+    const st = new Date(s.start_time_utc).getTime();
+    const en = new Date(s.end_time_utc).getTime();
+    const m = trackletMarkers[s.tracklet_id];
+    if (!m) return;
+    const active = ms >= st - 5*60000 && ms <= en + 5*60000;
+    const isKEMX = s.radar_site === 'KEMX';
+    const rcol = isKEMX ? '#f59e0b' : '#a78bfa';
+    m.dot.setStyle({
+      fillOpacity: active ? 0.95 : 0.2,
+      opacity: active ? 1 : 0.2,
+      weight: active ? 2.5 : 1,
+    });
+    m.halo.setStyle({
+      opacity: active ? 0.5 : 0.05,
+      fillOpacity: active ? 0.12 : 0.01,
+    });
+  });
+}
+
+document.getElementById('scrubber').addEventListener('input', function() {
+  updateScrubberDisplay(parseInt(this.value));
+});
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  document.getElementById('btn-play').textContent = isPlaying ? '⏸ Pause' : '▶ Play';
+  document.getElementById('btn-play').classList.toggle('active', isPlaying);
+  if (isPlaying) {
+    playInterval = setInterval(() => {
+      const s = document.getElementById('scrubber');
+      const newVal = parseInt(s.value) + 1;
+      if (newVal > 100) { resetScrubber(); return; }
+      s.value = newVal;
+      updateScrubberDisplay(newVal);
+    }, 80);
+  } else {
+    clearInterval(playInterval);
+  }
+}
+
+function resetScrubber() {
+  clearInterval(playInterval);
+  isPlaying = false;
+  document.getElementById('btn-play').textContent = '▶ Play';
+  document.getElementById('btn-play').classList.remove('active');
+  const s = document.getElementById('scrubber');
+  s.value = 0;
+  updateScrubberDisplay(0);
+}
+
+// Init display
+updateScrubberDisplay(0);
+</script>
+</body>
+</html>
