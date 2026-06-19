@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Candidate A098 — Evidence Audit v1.1</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0; background: #f1f5f9; color: #0f172a;
+}
+.page { max-width: 1280px; margin: 0 auto; padding: 2rem; }
+h1 { margin-top: 0; color: #0f172a; font-size: 1.6rem; }
+h2 { font-size: 1.1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem;
+     margin-top: 2rem; color: #1e293b; }
+p { color: #475569; line-height: 1.6; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem;
+        background: white; border-radius: 8px; overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+th, td { text-align: left; padding: 0.7rem 1rem; border-bottom: 1px solid #e2e8f0; }
+th { background: #f8fafc; font-weight: 600; font-size: 0.82rem;
+     text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8fafc; }
+.card { background: white; border-radius: 8px; padding: 1.5rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-top: 1.5rem; }
+.tag { padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem;
+       font-weight: 700; display: inline-block; margin: 0.15rem; }
+.tag-green  { background: #dcfce7; color: #15803d; }
+.tag-yellow { background: #fef9c3; color: #a16207; }
+.tag-red    { background: #fee2e2; color: #b91c1c; }
+.tag-blue   { background: #dbeafe; color: #1d4ed8; }
+.tag-gray   { background: #f1f5f9; color: #475569; }
+.score-box { display: inline-block; border-radius: 8px; padding: 0.5rem 1.2rem;
+             font-size: 1.5rem; font-weight: 800; margin-right: 1rem; }
+.score-green  { background: #dcfce7; color: #15803d; }
+.score-yellow { background: #fef9c3; color: #a16207; }
+.score-red    { background: #fee2e2; color: #b91c1c; }
+.score-gray   { background: #f1f5f9; color: #475569; }
+.change-badge { font-size: 0.8rem; font-weight: 700; padding: 0.2rem 0.6rem;
+                border-radius: 4px; margin-left: 0.5rem; }
+.upgraded   { background: #dcfce7; color: #15803d; }
+.downgraded { background: #fee2e2; color: #b91c1c; }
+.unchanged  { background: #f1f5f9; color: #64748b; }
+.flag-row   { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.reason-box { background: #f8fafc; border-left: 3px solid #94a3b8; padding: 0.75rem 1rem;
+              font-size: 0.85rem; color: #334155; border-radius: 0 6px 6px 0;
+              margin-top: 0.75rem; line-height: 1.7; }
+.plot-box { text-align: center; background: #f8fafc; border-radius: 8px;
+            padding: 1rem; margin-top: 1rem; }
+.plot-box img { max-width: 100%; border-radius: 6px; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: #2563eb;
+             font-weight: 500; }
+.scores-row { display: flex; gap: 1.5rem; align-items: flex-start;
+              flex-wrap: wrap; margin-top: 0.75rem; }
+.score-item { text-align: center; }
+.score-label { font-size: 0.75rem; color: #64748b; font-weight: 600;
+               text-transform: uppercase; letter-spacing: 0.04em;
+               margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back-link" href="index.html">&larr; Back to Audit Index</a>
+  <h1>Candidate A098</h1>
+
+  <!-- ── Verdict & Score Breakdown ── -->
+  <div class="card">
+    <h2 style="margin-top:0">Verdict &amp; Evidence Score Breakdown</h2>
+    <div class="scores-row">
+      <div class="score-item">
+        <div class="score-label">Verdict v1.1 (independent)</div>
+        <span class="tag tag-red" style="font-size:1rem;padding:0.4rem 1rem">
+          likely false positive
+        </span>
+        <span class="change-badge downgraded">&#8595; Downgraded from v1: was "plausible but weak"</span>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Evidence Score</div>
+        <span class="score-box score-red">+5</span>
+        <small style="color:#64748b">8+ &nbsp; 3−</small>
+      </div>
+      <div class="score-item">
+        <div class="score-label">Review Priority Score (v1 ref only)</div>
+        <span class="score-box score-gray" style="font-size:1rem;padding:0.4rem 1rem">
+          0.750
+        </span>
+        <span class="tag tag-yellow" style="font-size:0.75rem">v1: plausible but weak</span>
+      </div>
+    </div>
+    <div class="reason-box">
+      <strong style='color:#15803d'>Positive evidence:</strong><ul style='margin:0.3rem 0 0.6rem 1.2rem;padding:0'><li>altitude agreement 144 m < 150 m threshold</li><li>horizontal offset 4.1 km < 15 km threshold</li><li>motion consistency (σ=2.22 m/s) < 3.0 m/s</li><li>persists across 13 scans (≥5 required)</li><li>reflectivity -0.6 dBZ in balloon-plausible range [−15, +5]</li><li>velocity 0.1 m/s within plausible drift range (|v| < 30 m/s)</li><li>spectrum width 2.7 m/s < 4.0 m/s (narrow, non-weather)</li><li>cross-radar corroboration from ≥2 independent sites</li></ul><strong style='color:#b91c1c'>Negative evidence (flags):</strong><ul style='margin:0.3rem 0 0.6rem 1.2rem;padding:0'><li>ground clutter / low-elevation risk</li><li>biological echo risk (low reflectivity at low altitude)</li><li>impossible trajectory jump (speed > 150 km/h)</li></ul>
+    </div>
+  </div>
+
+  <!-- ── Identification ── -->
+  <div class="card">
+    <h2 style="margin-top:0">Identification</h2>
+    <table>
+      <tbody>
+        <tr><th style="width:30%">Rank</th><td>6</td></tr>
+        <tr><th>Candidate ID</th><td><strong>A098</strong></td></tr>
+        <tr><th>Type</th><td>cross-radar</td></tr>
+        <tr><th>Radar Site(s)</th><td>KEMX;KIWA</td></tr>
+        <tr><th>Time Range</th><td>19:26 – 20:28 UTC</td></tr>
+        <tr><th>Number of Scans</th><td>13</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Radar & Telemetry Metrics ── -->
+  <div class="card">
+    <h2 style="margin-top:0">Radar &amp; Telemetry Metrics</h2>
+    <table>
+      <tbody>
+        <tr><th style="width:40%">Altitude Agreement (Median)</th><td>144.0 m</td></tr>
+        <tr><th>Horizontal Offset (Median)</th><td>4.10 km</td></tr>
+        <tr><th>Motion Consistency (Velocity σ)</th><td>2.22 m/s</td></tr>
+        <tr><th>Reflectivity (Mean / Max)</th><td>-0.6 / 9.0 dBZ</td></tr>
+        <tr><th>Velocity (Mean / Max)</th><td>0.1 / 2.5 m/s</td></tr>
+        <tr><th>Spectrum Width (Mean / Max)</th><td>2.7 / 4.3 m/s</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── False Positive Flags ── -->
+  <div class="card">
+    <h2 style="margin-top:0">False-Positive Flags</h2>
+    <div class="flag-row">
+      <span class="tag tag-green">&#10004; Weather Contamination</span><span class="tag tag-red">&#10008; Ground Clutter / Low Elevation</span><span class="tag tag-red">&#10008; Biological Echo Risk</span><span class="tag tag-green">&#10004; Anomalous Propagation Risk</span><span class="tag tag-green">&#10004; Isolated Artifact (1-scan)</span><span class="tag tag-red">&#10008; Impossible Trajectory Jump</span>
+    </div>
+  </div>
+
+  <!-- ── Visual Evidence ── -->
+  <div class="card">
+    <h2 style="margin-top:0">Visual Evidence</h2>
+    <div class="plot-box">
+      <img src='../review_packet/plots/review_rank_06_A098.png' alt='Candidate plot — map and altitude-time plot' />
+    </div>
+  </div>
+
+  <p style="font-size:0.8rem;color:#94a3b8;margin-top:2rem">
+    PicoCAST Evidence Audit v1.1 — k7uaz_20260322
+  </p>
+</div>
+</body>
+</html>

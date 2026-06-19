@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Evidence Audit v1.1 — k7uaz_20260322</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0; background: #f1f5f9; color: #0f172a;
+}
+.page { max-width: 1280px; margin: 0 auto; padding: 2rem; }
+h1 { margin-top: 0; color: #0f172a; font-size: 1.6rem; }
+h2 { font-size: 1.1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem;
+     margin-top: 2rem; color: #1e293b; }
+p { color: #475569; line-height: 1.6; }
+a { color: #2563eb; text-decoration: none; }
+a:hover { text-decoration: underline; }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem;
+        background: white; border-radius: 8px; overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+th, td { text-align: left; padding: 0.7rem 1rem; border-bottom: 1px solid #e2e8f0; }
+th { background: #f8fafc; font-weight: 600; font-size: 0.82rem;
+     text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8fafc; }
+.card { background: white; border-radius: 8px; padding: 1.5rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-top: 1.5rem; }
+.tag { padding: 0.25rem 0.6rem; border-radius: 9999px; font-size: 0.75rem;
+       font-weight: 700; display: inline-block; margin: 0.15rem; }
+.tag-green  { background: #dcfce7; color: #15803d; }
+.tag-yellow { background: #fef9c3; color: #a16207; }
+.tag-red    { background: #fee2e2; color: #b91c1c; }
+.tag-blue   { background: #dbeafe; color: #1d4ed8; }
+.tag-gray   { background: #f1f5f9; color: #475569; }
+.score-box { display: inline-block; border-radius: 8px; padding: 0.5rem 1.2rem;
+             font-size: 1.5rem; font-weight: 800; margin-right: 1rem; }
+.score-green  { background: #dcfce7; color: #15803d; }
+.score-yellow { background: #fef9c3; color: #a16207; }
+.score-red    { background: #fee2e2; color: #b91c1c; }
+.score-gray   { background: #f1f5f9; color: #475569; }
+.change-badge { font-size: 0.8rem; font-weight: 700; padding: 0.2rem 0.6rem;
+                border-radius: 4px; margin-left: 0.5rem; }
+.upgraded   { background: #dcfce7; color: #15803d; }
+.downgraded { background: #fee2e2; color: #b91c1c; }
+.unchanged  { background: #f1f5f9; color: #64748b; }
+.flag-row   { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.reason-box { background: #f8fafc; border-left: 3px solid #94a3b8; padding: 0.75rem 1rem;
+              font-size: 0.85rem; color: #334155; border-radius: 0 6px 6px 0;
+              margin-top: 0.75rem; line-height: 1.7; }
+.plot-box { text-align: center; background: #f8fafc; border-radius: 8px;
+            padding: 1rem; margin-top: 1rem; }
+.plot-box img { max-width: 100%; border-radius: 6px; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: #2563eb;
+             font-weight: 500; }
+.scores-row { display: flex; gap: 1.5rem; align-items: flex-start;
+              flex-wrap: wrap; margin-top: 0.75rem; }
+.score-item { text-align: center; }
+.score-label { font-size: 0.75rem; color: #64748b; font-weight: 600;
+               text-transform: uppercase; letter-spacing: 0.04em;
+               margin-bottom: 0.3rem; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Evidence Audit v1.1 — k7uaz_20260322</h1>
+  <p>
+    Top 10 review-packet candidates evaluated using an <strong>independent evidence score</strong>
+    computed from radar moments, telemetry agreement, persistence, and false-positive flags —
+    not from the detector's own ranking. The original <code>review_priority_score</code> is shown
+    for reference only.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Candidate</th>
+        <th>Radar(s)</th>
+        <th>Verdict v1.1</th>
+        <th>Evidence Score</th>
+        <th>Priority Score (v1 ref)</th>
+        <th>FP Flags</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+            <tr>
+              <td>1</td>
+              <td><strong>A001</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+4</span>
+                  <small style="color:#94a3b8">(7+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.860</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A001.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>A007</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(8+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.822</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A007.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>A012</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+4</span>
+                  <small style="color:#94a3b8">(7+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.820</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A012.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>A051</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(8+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.795</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A051.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>A078</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(8+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.780</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A078.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><strong>A098</strong><br>
+                  <small style="color:#64748b">cross-radar</small></td>
+              <td>KEMX;KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(8+ / 3-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.750</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span><span class="tag tag-red">Jump</span></td>
+              <td><a href="candidate_A098.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><strong>KIWA_F001</strong><br>
+                  <small style="color:#64748b">single-radar</small></td>
+              <td>KIWA</td>
+              <td><span class="tag tag-red">likely false positive</span> <span style="color:#b91c1c">&#8595;</span></td>
+              <td><span class="score-box score-red" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(7+ / 2-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.798</td>
+              <td><span class="tag tag-red">Clutter</span><span class="tag tag-red">Biology</span></td>
+              <td><a href="candidate_KIWA_F001.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td><strong>KEMX_F001</strong><br>
+                  <small style="color:#64748b">single-radar</small></td>
+              <td>KEMX</td>
+              <td><span class="tag tag-green">strong candidate</span> <span style="color:#15803d">&#8593;</span></td>
+              <td><span class="score-box score-green" style="font-size:1rem;padding:0.2rem 0.7rem">+6</span>
+                  <small style="color:#94a3b8">(6+ / 0-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.786</td>
+              <td><span class="tag tag-green">Clean</span></td>
+              <td><a href="candidate_KEMX_F001.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td><strong>KEMX_F002</strong><br>
+                  <small style="color:#64748b">single-radar</small></td>
+              <td>KEMX</td>
+              <td><span class="tag tag-green">strong candidate</span> <span style="color:#15803d">&#8593;</span></td>
+              <td><span class="score-box score-green" style="font-size:1rem;padding:0.2rem 0.7rem">+5</span>
+                  <small style="color:#94a3b8">(5+ / 0-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.714</td>
+              <td><span class="tag tag-green">Clean</span></td>
+              <td><a href="candidate_KEMX_F002.html">View &rarr;</a></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td><strong>KEMX_F003</strong><br>
+                  <small style="color:#64748b">single-radar</small></td>
+              <td>KEMX</td>
+              <td><span class="tag tag-green">strong candidate</span> <span style="color:#15803d">&#8593;</span></td>
+              <td><span class="score-box score-green" style="font-size:1rem;padding:0.2rem 0.7rem">+4</span>
+                  <small style="color:#94a3b8">(4+ / 0-)</small></td>
+              <td style="color:#64748b;font-size:0.88rem">0.703</td>
+              <td><span class="tag tag-green">Clean</span></td>
+              <td><a href="candidate_KEMX_F003.html">View &rarr;</a></td>
+            </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:2rem;font-size:0.8rem;color:#94a3b8">
+    Generated by PicoCAST v1.1 Evidence Audit pipeline.
+    &#8593;/&#8595; indicates verdict upgrade/downgrade relative to v1.
+  </p>
+</div>
+</body>
+</html>
